@@ -1,0 +1,11 @@
+{
+  "colorize.colorize_only_visible_beta": true,
+  "colorize.colorized_colors": ["BROWSERS_COLORS", "HEXA", "RGB", "HSL"],
+  "colorize.ignore_files_extensions_deprecation": true,
+  "bracket-pair-colorizer-2.forceIterationColorCycle": true,
+  "bracket-pair-colorizer-2.forceUniqueOpeningColor": true,
+  "bracket-pair-colorizer-2.highlightActiveScope": true,
+  "bracket-pair-colorizer-2.showBracketsInRuler": true,
+  "bracket-pair-colorizer-2.showBracketsInGutter": true,
+  "workbench.colorTheme": "Dare (rainglow)"
+}
