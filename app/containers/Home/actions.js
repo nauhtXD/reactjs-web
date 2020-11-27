@@ -1,8 +1,14 @@
+/*
+ *
+ * Home actions
+ *
+ */
+
 import * as types from './constants';
 
-export function homeAction({ ...data }) {
+export function getCategories(data) {
   return {
-    type: types.DEFAULT_REQUEST,
+    type: types.GET_CATEGORY,
     payload: data,
   };
 }

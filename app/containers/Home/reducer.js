@@ -1,20 +1,31 @@
-/* eslint-disable no-unused-vars */
+/*
+ *
+ * Home reducer
+ *
+ */
 import produce from 'immer';
 import * as types from './constants';
 
-export const initialState = {};
+export const initialState = {
+  loadingCategories: false,
+  categories: [],
+};
 
 /* eslint-disable default-case, no-param-reassign */
 const homeReducer = (state = initialState, action) =>
   produce(state, draft => {
     switch (action.type) {
-      case types.DEFAULT_REQUEST:
+      case types.GET_CATEGORY:
+        draft.loadingCategories = true;
         break;
-      case types.DEFAULT_SUCCESS:
+      case types.GET_CATEGORY_SUCCESS:
+        draft.categories = action.categories;
+        draft.loadingCategories = false;
         break;
-      case types.DEFAULT_FAILURE:
+      case types.GET_CATEGORY_FAIL:
+        draft.categories = [];
+        draft.loadingCategories = false;
         break;
     }
   });
-
 export default homeReducer;
