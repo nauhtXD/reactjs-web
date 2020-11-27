@@ -9,7 +9,6 @@ import { Helmet } from 'react-helmet';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import styled from 'styled-components';
-import Header from 'components/Header';
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
 import makeSelectHome from './selectors';
@@ -39,6 +38,12 @@ const mapStateToProps = createStructuredSelector({});
 
 const mapDispatchToProps = () => ({});
 
-const withConnect = connect(mapStateToProps, mapDispatchToProps);
+const withConnect = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+);
 
-export default compose(withConnect, memo)(Home);
+export default compose(
+  withConnect,
+  memo,
+)(Home);
