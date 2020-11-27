@@ -3,7 +3,7 @@ import env from '../env';
 
 const config = {
   develop: {
-    apiUrl: 'https://localhost:8080/api/',
+    apiUrl: 'http://localhost:8080/api/',
     envTag: 'd',
   },
   staging: {

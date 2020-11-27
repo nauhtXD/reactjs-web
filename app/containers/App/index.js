@@ -1,11 +1,11 @@
 /* eslint-disable no-unused-vars */
-import 'antd/dist/antd.css';
 import React, { memo, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import { connect } from 'react-redux';
 
 import { Switch, Route, Redirect } from 'react-router-dom';
 import { Layout } from 'antd';
+import 'antd/dist/antd.css';
 
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
@@ -19,10 +19,10 @@ function App(props) {
   return (
     <>
       <Helmet
-        titleTemplate="%s - Tin tức Digihubs"
-        defaultTitle="Tin tức Digihubs"
+        titleTemplate="%s - Hội quán nông dân"
+        defaultTitle="Hội quán nông dân"
       >
-        <meta name="description" content="Tin tức Digihubs" />
+        <meta name="description" content="Hội quán nông dân" />
       </Helmet>
       <div>
         <Switch>

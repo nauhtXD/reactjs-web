@@ -14,23 +14,25 @@ import reducer from './reducer';
 import saga from './saga';
 import makeSelect from './selectors';
 import MyLayout from '../../components/MyLayout/Loadable';
-import H3news from '../../components/H3news/Loadable';
-import CenterImgWT from '../../components/CenterImgWT/Loadable';
-import LeftImgWttd from '../../components/LeftImgWttd/Loadable';
-import RightImgWttd from '../../components/RightImgWttd/Loadable';
+import ImgCom from '../../components/ImgCom/Loadable';
 import TitleCom from '../../components/TitleCom/Loadable';
 import * as action from './actions';
+
+
 
 // #region  row
 const row = [];
 for (let i = 0; i < 4; i++) {
   row.push(
     <Col span={6}>
-      <CenterImgWT
+      <ImgCom
+        mStyle="center"
         mWidth="150px"
         mSrc="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
         mLink="/News"
-        linkTitle="Title2"
+        mTitle="Title2"
+        mDay="dd/MM/yyyy"
+        mContent="Content"
       />
     </Col>,
   );
@@ -40,11 +42,14 @@ const rowc = [];
 for (let i = 0; i < 3; i++) {
   rowc.push(
     <Col span={8}>
-      <LeftImgWttd
+      <ImgCom
+        mStyle="left"
         mWidth="150px"
         mSrc="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
         mLink="/News"
         mTitle="Title2"
+        mDay="dd/MM/yyyy"
+        mContent="Content"
       />
     </Col>,
   );
@@ -54,13 +59,31 @@ const rowc1 = [];
 for (let i = 0; i < 3; i++) {
   rowc.push(
     <Col span={8}>
-      <RightImgWttd
+      <ImgCom
+        mStyle="right"
         mWidth="150px"
         mSrc="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
         mLink="/News"
         mTitle="Title2"
+        mDay="dd/MM/yyyy"
+        mContent="Content"
       />
     </Col>,
+  );
+}
+
+const rowhcont = [];
+for (let i = 0; i < 3; i++) {
+  rowhcont.push(
+    <ImgCom
+      mStyle="left"
+      mWidth="100px"
+      mSrc="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
+      mLink="/News"
+      mTitle="Title2"
+      mDay="dd/MM/yyyy"
+      mContent="Content"
+    />,
   );
 }
 
@@ -68,15 +91,7 @@ const rowh = [];
 for (let i = 0; i < 3; i++) {
   rowh.push(
     <Col span={8}>
-      <H3news
-        num={3}
-        mWidth="100px"
-        mSrc="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
-        mLink="/News"
-        mTitle="Title2"
-        mDay="dd/MM/yyyy"
-        mCategory="Category"
-      />
+      <TitleCom mCategory="Category" mCont={<div>{rowhcont}</div>} />
     </Col>,
   );
 }
