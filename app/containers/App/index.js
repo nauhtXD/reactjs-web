@@ -10,8 +10,16 @@ import 'antd/dist/antd.css';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 
-import Home from 'containers/Home/Loadable';
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
+import Home from '../Home/Loadable';
+import News from '../News/Loadable';
+// import Crops from '../Crops/Loadable';
+import Documents from '../Documents/Loadable';
+import Admin from '../Admin/Loadable';
+import Dashboard from '../Admin/pages/dashboard';
+import User from '../Admin/pages/user';
+import Post from '../Admin/pages/post';
+import Report from '../Admin/pages/report';
 
 import GlobalStyle from '../../global-styles';
 
@@ -26,7 +34,15 @@ function App(props) {
       </Helmet>
       <div>
         <Switch>
-          <Route path="/" component={Home} />
+          <Route exact path="/" component={Home} />
+          <Route exact path="/News" component={News} />
+          {/* <Route exact path="/Crops" component={Crops} /> */}
+          <Route exact path="/Documents" component={Documents} />
+          <Route path="/Admin" component={Admin} />
+          <Route exact path="/Admin/Dashboard" component={Dashboard} />
+          <Route exact path="/Admin/User" component={User} />
+          <Route exact path="/Admin/Post" component={Post} />
+          <Route exact path="/Admin/Report" component={Report} />
           <Route path="" component={NotFoundPage} />
         </Switch>
       </div>

@@ -67,7 +67,7 @@ export function User(props) {
           <p style={{ fontSize: '30px', margin: '10px 0 10px 0' }}>
             List of users
           </p>
-          <div style={MyBox}>
+          <MyBox>
             <Row>
               <Col span={4}>
                 <Select defaultValue="jack" style={{ width: 120 }}>
@@ -87,12 +87,12 @@ export function User(props) {
                 </Button>
               </Col>
             </Row>
-          </div>
+          </MyBox>
         </div>
         <div style={{ clear: 'both', height: '10px' }} />
-        <div style={MyBox}>
+        <MyBox>
           <Table columns={columns} dataSource={props.adminReducer.users} />
-        </div>
+        </MyBox>
       </div>
       <Modal
         title="Create new user"

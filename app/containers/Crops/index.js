@@ -15,9 +15,7 @@ import reducer from './reducer';
 import saga from './saga';
 // import messages from './messages';
 import MyLayout from '../../components/MyLayout/Loadable';
-import HImgWct from '../../components/HImgWct/Loadable';
 import TitleCom from '../../components/TitleCom/Loadable';
-import ImgWd from '../../components/ImgWd/Loadable';
 
 const item = [];
 for (let i = 0; i < 4; i += 1) {

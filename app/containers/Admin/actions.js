@@ -12,3 +12,17 @@ export function getUsers(data) {
     payload: data,
   };
 }
+
+export function getPosts(data) {
+  return {
+    type: types.GET_POST,
+    payload: data,
+  };
+}
+
+export function createPost(data) {
+  return {
+    type: types.CREATE_POST,
+    payload: data,
+  };
+}

@@ -1,4 +1,5 @@
-import React, { memo, useState } from 'react';
+import React, { memo, useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
 import { createStructuredSelector } from 'reselect';
@@ -17,8 +18,14 @@ import {
 import styled from 'styled-components';
 import moment from 'moment';
 import ReactQuill from 'react-quill';
-import MyBox from '../../../components/MyBox/index';
 import 'react-quill/dist/quill.snow.css';
+import { useInjectSaga } from 'utils/injectSaga';
+import { useInjectReducer } from 'utils/injectReducer';
+import reducer from '../reducer';
+import saga from '../saga';
+import makeSelect from '../selectors';
+import * as action from '../actions';
+import MyBox from '../../../components/MyBox/index';
 
 const dateFormat = 'DD/MM/YYYY';
 const { Option } = Select;
@@ -47,8 +54,12 @@ function getBase64(file) {
   });
 }
 
-export function Post() {
+export function Post(props) {
+  useInjectReducer({ key: 'admin', reducer });
+  useInjectSaga({ key: 'admin', saga });
+
   // #region useState
+  const [form] = Form.useForm();
   const [fileList, setFileList] = useState([
     {
       uid: '-1',
@@ -76,6 +87,15 @@ export function Post() {
       file.name || file.url.substring(file.url.lastIndexOf('/') + 1),
     );
   };
+  
+  const handleSubmit = () => {
+    form.validateFields().then(values => {
+      const { url } = fileList[0];
+      values.img = url;
+      values.publishAt = values.publishAt.format();
+      props.createPost(values);
+    });
+  };
 
   return (
     <div>
@@ -93,34 +113,31 @@ export function Post() {
         >
           Post
         </p>
-        <Row>
-          <Col span={16}>
-            <div style={MyBox}>
-              <Row>
-                <Col span={2}>
-                  <h4 style={{ margin: '5px' }}>Title</h4>
-                </Col>
-                <Col span={22}>
+        <Form form={form} name="basic">
+          <Row>
+            <Col span={16}>
+              <MyBox>
+                <Form.Item name="title" label="Title">
                   <Input placeholder="Title" />
-                </Col>
-              </Row>
-            </div>
-            <div style={MyBox}>
-              <Mrq
-                theme="snow"
-                modules={Post.modules}
-                formats={Post.formats}
-                bounds=".app"
-                style={{ height: '400px' }}
-              />
-            </div>
-          </Col>
-          <Col span={8}>
-            <div style={MyBox}>
-              <Form {...layout} name="basic">
-                <Form.Item label="Ảnh hiển thị" name="image">
+                </Form.Item>
+              </MyBox>
+              <MyBox>
+                <Form.Item name="content">
+                  <Mrq
+                    theme="snow"
+                    modules={Post.modules}
+                    formats={Post.formats}
+                    bounds=".app"
+                    style={{ height: '400px' }}
+                  />
+                </Form.Item>
+              </MyBox>
+            </Col>
+            <Col span={8}>
+              <MyBox>
+                <Form.Item {...layout} label="Ảnh hiển thị">
                   <Upload
-                    action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+                    // action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
                     listType="picture-card"
                     fileList={fileList}
                     onChange={onChange}
@@ -129,30 +146,31 @@ export function Post() {
                     {fileList.length < 1 && '+ Upload'}
                   </Upload>
                 </Form.Item>
-                <Form.Item label="Danh mục" name="category">
-                  <Select id="select" defaultValue="lucy">
-                    <Option value="lucy">Lucy</Option>
+                <Form.Item {...layout} label="Danh mục" name="subcategoryId">
+                  <Select defaultValue="lucy">
+                    <Option value="2">Trồng trọt</Option>
                     <Option value="jack">Jack</Option>
                     <Option value="windy">Windy</Option>
                   </Select>
                 </Form.Item>
-                <Form.Item label="Nguồn" name="source">
-                  <Input id="source" placeholder="Source" />
+                <Form.Item {...layout} label="Nguồn" name="source">
+                  <Input placeholder="Source" />
                 </Form.Item>
-                <Form.Item label="Ngày viết" name="datepicker">
+                <Form.Item {...layout} label="Ngày viết" name="publishAt">
                   <DatePicker
-                    id="daypicker"
                     defaultValue={moment(moment().date, dateFormat)}
                     format={dateFormat}
                   />
                 </Form.Item>
                 <Form.Item {...tailLayout}>
-                  <Button type="primary">Đăng</Button>
+                  <Button type="primary" onClick={handleSubmit}>
+                    Đăng
+                  </Button>
                 </Form.Item>
-              </Form>
-            </div>
-          </Col>
-        </Row>
+              </MyBox>
+            </Col>
+          </Row>
+        </Form>
       </div>
       <Modal
         centered
@@ -196,11 +214,20 @@ Post.formats = [
   'image',
 ];
 
-Post.propTypes = {};
+Post.propTypes = {
+  adminReducer: PropTypes.any,
+  createPost: PropTypes.func,
+};
 
-const mapStateToProps = createStructuredSelector({});
+const mapStateToProps = createStructuredSelector({
+  adminReducer: makeSelect(),
+});
 
-const mapDispatchToProps = () => ({});
+const mapDispatchToProps = dispatch => ({
+  createPost: data => {
+    dispatch(action.createPost(data));
+  },
+});
 
 const withConnect = connect(
   mapStateToProps,

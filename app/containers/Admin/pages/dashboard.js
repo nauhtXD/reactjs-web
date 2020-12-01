@@ -9,39 +9,11 @@ import React, { memo } from 'react';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
 import { Card, Row, Col } from 'antd';
-import { Line } from '@ant-design/charts';
 import { BookOutlined } from '@ant-design/icons';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 
 const { Meta } = Card;
-
-const data = [
-  { year: '1991', value1: 3 },
-  { year: '1992', value: 4 },
-  { year: '1993', value: 3.5 },
-  { year: '1994', value: 5 },
-  { year: '1995', value: 4.9 },
-  { year: '1996', value: 6 },
-  { year: '1997', value: 7 },
-  { year: '1998', value: 9 },
-  { year: '1999', value: 13 },
-];
-const config = {
-  data,
-  height: 400,
-  xField: 'year',
-  yField: 'value',
-  point: {
-    size: 5,
-    shape: 'diamond',
-  },
-  label: {
-    style: {
-      fill: '#aaa',
-    },
-  },
-};
 
 export function Dashboard() {
   return (
@@ -77,7 +49,6 @@ export function Dashboard() {
             </Card>
           </Col>
         </Row>
-        <Line {...config} />
       </div>
     </div>
   );

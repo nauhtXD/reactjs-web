@@ -83,25 +83,18 @@ function MyMenu(props) {
       {props.mCategories &&
         props.mCategories.length > 0 &&
         props.mCategories.map(i => (
-          <NavItem key="home">
-            <MLink href="/">{i.name}</MLink>
+          <NavItem key={i.key}>
+            <MLink href={`/${i.key}`}>{i.name}</MLink>
           </NavItem>
         ))}
-      {/* <NavItem>
-        <MLink>GIỚI THIỆU</MLink>
-      </NavItem>
+      {/*
       <SubNav key="" title="TIN TỨC - SỰ KIỆN">
         <SubItem href=".">Khuyến nông</SubItem>
         <SubItem>
           <MSubLink href="/Crops">Trồng trọt</MSubLink>
         </SubItem>
         <SubItem href=".">Chăn nuôi</SubItem>
-      </SubNav>
-      <NavItem>HOẠT ĐỘNG CỦA HỘI</NavItem>
-      <NavItem>
-        <MLink href="/Documents">VĂN BẢN HỘI</MLink>
-      </NavItem>
-      <NavItem>NHÀ NÔNG CẦN BIẾT</NavItem> */}
+      </SubNav> */}
       <NavItem key="login" icon={<UIcon />} style={{ float: 'right' }}>
         ĐĂNG NHẬP
       </NavItem>

@@ -34,6 +34,39 @@ export function* getUserSaga({ payload }) {
   }
 }
 
+export function* createPostSaga({ payload }) {
+  try {
+    const response = yield call(api.createPost, payload);
+    if (response && response.status === 200) {
+      yield put({
+        type: types.CREATE_POST_SUCCESS,
+      });
+    } else {
+      yield put({
+        type: types.CREATE_POST_FAIL,
+        error: response && response.data ? response.data.messages : 'API Error',
+      });
+      notification.error({
+        message: 'Error',
+        description:
+          response && response.data ? response.data.messages : 'API Error',
+      });
+    }
+  } catch (err) {
+    yield put({
+      type: types.CREATE_POST_FAIL,
+      error: err,
+    });
+    notification.error({
+      message: 'Error',
+      description: err,
+    });
+  }
+}
+
 export default function* rootSaga() {
-  yield all([takeLatest(types.GET_USER, getUserSaga)]);
+  yield all([
+    takeLatest(types.GET_USER, getUserSaga),
+    takeLatest(types.CREATE_POST, createPostSaga),
+  ]);
 }
