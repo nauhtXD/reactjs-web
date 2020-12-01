@@ -18,8 +18,6 @@ import ImgCom from '../../components/ImgCom/Loadable';
 import TitleCom from '../../components/TitleCom/Loadable';
 import * as action from './actions';
 
-
-
 // #region  row
 const row = [];
 for (let i = 0; i < 4; i++) {
@@ -102,6 +100,7 @@ export function Home(props) {
   useInjectSaga({ key: 'home', saga });
   useEffect(() => {
     props.getCategories();
+    props.getSubCategories();
   }, []);
   return (
     <div>
@@ -134,6 +133,7 @@ export function Home(props) {
           </div>
         }
         mCategories={props.homeReducer.categories}
+        mSubCategories={props.homeReducer.subCategories}
       />
     </div>
   );
@@ -142,6 +142,7 @@ export function Home(props) {
 Home.propTypes = {
   homeReducer: PropTypes.any,
   getCategories: PropTypes.func,
+  getSubCategories: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -151,6 +152,9 @@ const mapStateToProps = createStructuredSelector({
 const mapDispatchToProps = dispatch => ({
   getCategories: data => {
     dispatch(action.getCategories(data));
+  },
+  getSubCategories: data => {
+    dispatch(action.getSubCategories(data));
   },
 });
 

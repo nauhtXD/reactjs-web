@@ -78,23 +78,37 @@ const MSubLink = styled.a`
 // #endregion
 
 function MyMenu(props) {
+  const items = [];
   return (
     <FMenu mode="horizontal">
+      <NavItem key="home">
+        <MLink href="/">Trang chủ</MLink>
+      </NavItem>
       {props.mCategories &&
         props.mCategories.length > 0 &&
-        props.mCategories.map(i => (
-          <NavItem key={i.key}>
-            <MLink href={`/${i.key}`}>{i.name}</MLink>
-          </NavItem>
-        ))}
-      {/*
-      <SubNav key="" title="TIN TỨC - SỰ KIỆN">
-        <SubItem href=".">Khuyến nông</SubItem>
-        <SubItem>
-          <MSubLink href="/Crops">Trồng trọt</MSubLink>
-        </SubItem>
-        <SubItem href=".">Chăn nuôi</SubItem>
-      </SubNav> */}
+        props.mCategories.map(i => {
+          {
+            items.push(
+              props.mSubCategories.some(j => j.categoryId === i.id) ? (
+                <SubNav key={i.key} title={i.name}>
+                  {props.mSubCategories.map(
+                    j =>
+                      j.categoryId === i.id && (
+                        <SubItem key={j.key}>
+                          <MSubLink href={`/${j.key}`}>{j.name}</MSubLink>
+                        </SubItem>
+                      ),
+                  )}
+                </SubNav>
+              ) : (
+                <NavItem key={i.key}>
+                  <MLink href={`/${i.key}`}>{i.name}</MLink>
+                </NavItem>
+              ),
+            );
+          }
+        })}
+      {items}
       <NavItem key="login" icon={<UIcon />} style={{ float: 'right' }}>
         ĐĂNG NHẬP
       </NavItem>
@@ -104,6 +118,7 @@ function MyMenu(props) {
 
 MyMenu.propTypes = {
   mCategories: PropTypes.any,
+  mSubCategories: PropTypes.any,
 };
 
 export default memo(MyMenu);

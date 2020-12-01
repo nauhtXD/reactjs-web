@@ -24,7 +24,7 @@ const ContentStyle = styled.h3`
 function Header(props) {
   return (
     <div style={{ width: '90%', margin: 'auto' }}>
-      <MyMenu mCategories={props.mCategories} />
+      <MyMenu mCategories={props.mCategories} mSubCategories={props.mSubCategories} />
       <div style={{ marginTop: '50px ' }}>
         <Carousel autoplay effect="fade">
           <div>
@@ -68,6 +68,7 @@ function Header(props) {
 
 Header.propTypes = {
   mCategories: PropTypes.any,
+  mSubCategories: PropTypes.any,
 };
 
 export default memo(Header);

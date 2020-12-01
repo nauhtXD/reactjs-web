@@ -12,3 +12,10 @@ export function getCategories(data) {
     payload: data,
   };
 }
+
+export function getSubCategories(data) {
+  return {
+    type: types.GET_SUB_CATEGORY,
+    payload: data,
+  };
+}

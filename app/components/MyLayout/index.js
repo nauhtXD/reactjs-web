@@ -20,7 +20,10 @@ const { Content, Sider } = Layout;
 function MyLayout(props) {
   return (
     <div>
-      <Header mCategories={props.mCategories} />
+      <Header
+        mCategories={props.mCategories}
+        mSubCategories={props.mSubCategories}
+      />
       <div style={{ width: '90%', margin: 'auto' }}>
         <Layout style={{ backgroundColor: '#fff' }}>
           <Content style={{ marginRight: '10px' }}>{props.mCont}</Content>
@@ -37,6 +40,7 @@ function MyLayout(props) {
 MyLayout.propTypes = {
   mCont: PropTypes.any,
   mCategories: PropTypes.any,
+  mSubCategories: PropTypes.any,
 };
 
 export default memo(MyLayout);

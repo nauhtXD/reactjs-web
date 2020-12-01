@@ -1,18 +1,51 @@
 import produce from 'immer';
 import * as types from './constants';
 
-export const initialState = {};
+export const initialState = {
+  loadingPost: false,
+  post: [],
+  loadingCategories: false,
+  categories: [],
+  loadingSubCategories: false,
+  subCategories: [],
+};
 
 /* eslint-disable default-case, no-param-reassign */
 const newsReducer = (state = initialState, action) =>
   produce(state, draft => {
-    const { data, error } = action;
     switch (action.type) {
-      case types.DEFAULT_REQUEST:
+      case types.GET_POST:
+        draft.loadingPost = true;
         break;
-      case types.DEFAULT_SUCCESS:
+      case types.GET_POST_SUCCESS:
+        draft.loadingPost = false;
+        draft.post = action.post;
         break;
-      case types.DEFAULT_FAILURE:
+      case types.GET_POST_FAIL:
+        draft.loadingPost = false;
+        draft.post = [];
+        break;
+      case types.GET_CATEGORY:
+        draft.loadingCategories = true;
+        break;
+      case types.GET_CATEGORY_SUCCESS:
+        draft.categories = action.categories;
+        draft.loadingCategories = false;
+        break;
+      case types.GET_CATEGORY_FAIL:
+        draft.categories = [];
+        draft.loadingCategories = false;
+        break;
+      case types.GET_SUB_CATEGORY:
+        draft.loadingSubCategories = true;
+        break;
+      case types.GET_SUB_CATEGORY_SUCCESS:
+        draft.subCategories = action.subCategories;
+        draft.loadingSubCategories = false;
+        break;
+      case types.GET_SUB_CATEGORY_FAIL:
+        draft.subCategories = [];
+        draft.loadingSubCategories = false;
         break;
     }
   });

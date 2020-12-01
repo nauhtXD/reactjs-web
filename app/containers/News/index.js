@@ -1,5 +1,5 @@
-import React, { memo } from 'react';
-// import PropTypes from 'prop-types';
+import React, { memo, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
 // import { FormattedMessage } from 'react-intl';
@@ -11,10 +11,11 @@ import moment from 'moment';
 
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
-import makeSelectNews from './selectors';
+import makeSelect from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 // import messages from './messages';
+import * as action from './actions';
 import MyLayout from '../../components/MyLayout/Loadable';
 import TitleCom from '../../components/TitleCom/Loadable';
 
@@ -78,10 +79,17 @@ const data1 = [
     ),
   },
 ];
-export function News() {
+
+export function News(props) {
   useInjectReducer({ key: 'news', reducer });
   useInjectSaga({ key: 'news', saga });
-
+  useEffect(() => {
+    props.getPost(1);
+    props.getCategories();
+    props.getSubCategories();
+  }, []);
+  const mD = props.newsReducer.post;
+  console.log(mD.content);
   return (
     <div>
       <Helmet>
@@ -93,13 +101,16 @@ export function News() {
           mCont={
             <div>
               <TitleCom
-                mCategory="Title"
+                mCategory={mD.title}
                 mCont={
-                  <div>
-                    <p style={{ textAlign: 'right' }}>Ngày đăng: dd/MM/yyyy</p>
-                    <div>Content</div>
-                    <p style={{ textAlign: 'right' }}>
-                      Nguồn: <a href=".">random.org</a>
+                  <div style={{ textAlign: 'right' }}>
+                    <p>Ngày đăng: {mD.publishAt.toLocaleString()}</p>
+                    <div
+                      style={{ textAlign: 'left' }}
+                      dangerouslySetInnerHTML={{ __html: mD.content }}
+                    />
+                    <p>
+                      Nguồn: <a href={mD.source}>{mD.source}</a>
                     </p>
                   </div>
                 }
@@ -142,20 +153,35 @@ export function News() {
               </div>
             </div>
           }
+          mCategories={props.newsReducer.categories}
+          mSubCategories={props.newsReducer.subCategories}
         />
       </div>
     </div>
   );
 }
 
-News.propTypes = {};
+News.propTypes = {
+  newsReducer: PropTypes.any,
+  getPost: PropTypes.func,
+  getCategories: PropTypes.func,
+  getSubCategories: PropTypes.func,
+};
 
 const mapStateToProps = createStructuredSelector({
-  news: makeSelectNews(),
+  newsReducer: makeSelect(),
 });
 
 const mapDispatchToProps = dispatch => ({
-  dispatch,
+  getPost: data => {
+    dispatch(action.getPost(data));
+  },
+  getCategories: data => {
+    dispatch(action.getCategories(data));
+  },
+  getSubCategories: data => {
+    dispatch(action.getSubCategories(data));
+  },
 });
 
 const withConnect = connect(
