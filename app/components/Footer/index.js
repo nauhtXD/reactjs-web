@@ -6,14 +6,14 @@
 
 import React, { memo } from 'react';
 import { Row, Col } from 'antd';
-import { MapContainer, TileLayer, Marker } from 'react-leaflet';
-// import PropTypes from 'prop-types';
+import { MapContainer, TileLayer, Marker, Form } from 'react-leaflet';
+import PropTypes from 'prop-types';
 // import styled from 'styled-components';
 
 // import { FormattedMessage } from 'react-intl';
 // import messages from './messages';
 
-function Footer() {
+function Footer(props) {
   return (
     <div style={{ marginTop: '20px', backgroundColor: '#036921' }}>
       <Row>
@@ -47,17 +47,25 @@ function Footer() {
             color: '#fff',
           }}
         >
-          <h2 style={{ color: '#ffff00' }}>HỘI QUÁN NÔNG DÂN</h2>
-          <p>Địa chỉ: 140 Lê Trọng Tấn, Phường Tây Thạnh, Quận Tân Phú.</p>
-          <p>Điện thoại: 0373185504</p>
-          <p>Fax:</p>
-          <p>Email: thuylovei113@gmail.com</p>
+          <h2 style={{ color: '#ffff00' }}>{props.mTitle}</h2>
+          <p>Địa chỉ: {props.mAddress}</p>
+          <p>Điện thoại: {props.mPhone}</p>
+          <p>Fax: {props.mFax}</p>
+          <p>Email: {props.mEmail}</p>
         </Col>
       </Row>
     </div>
   );
 }
 
-Footer.propTypes = {};
+Footer.propTypes = {
+  mLeft: PropTypes.number,
+  mRight: PropTypes.number,
+  mTitle: PropTypes.string,
+  mAddress: PropTypes.string,
+  mPhone: PropTypes.string,
+  mFax: PropTypes.string,
+  mEmail: PropTypes.string,
+};
 
 export default memo(Footer);

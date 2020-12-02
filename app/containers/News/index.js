@@ -84,12 +84,11 @@ export function News(props) {
   useInjectReducer({ key: 'news', reducer });
   useInjectSaga({ key: 'news', saga });
   useEffect(() => {
-    props.getPost(1);
+    props.getPost(3);
     props.getCategories();
     props.getSubCategories();
   }, []);
   const mD = props.newsReducer.post;
-  console.log(mD.content);
   return (
     <div>
       <Helmet>
@@ -104,7 +103,9 @@ export function News(props) {
                 mCategory={mD.title}
                 mCont={
                   <div style={{ textAlign: 'right' }}>
-                    <p>Ngày đăng: {mD.publishAt.toLocaleString()}</p>
+                    <p>
+                      Ngày đăng: {moment(mD.publishAt).format('DD-MM-YYYY')}
+                    </p>
                     <div
                       style={{ textAlign: 'left' }}
                       dangerouslySetInnerHTML={{ __html: mD.content }}

@@ -58,6 +58,10 @@ export function Post(props) {
   useInjectReducer({ key: 'admin', reducer });
   useInjectSaga({ key: 'admin', saga });
 
+  useEffect(() => {
+    props.getSubCategories();
+  }, []);
+
   // #region useState
   const [form] = Form.useForm();
   const [fileList, setFileList] = useState([
@@ -73,6 +77,9 @@ export function Post(props) {
   const [previewImage, setPreviewImage] = useState(null);
   const [previewTitle, setPreviewTitle] = useState(null);
   // #endregion
+
+  const mSC = props.adminReducer.subCategories;
+
   const onChange = ({ fileList: newFileList }) => {
     setFileList(newFileList);
   };
@@ -87,7 +94,7 @@ export function Post(props) {
       file.name || file.url.substring(file.url.lastIndexOf('/') + 1),
     );
   };
-  
+
   const handleSubmit = () => {
     form.validateFields().then(values => {
       const { url } = fileList[0];
@@ -113,7 +120,15 @@ export function Post(props) {
         >
           Post
         </p>
-        <Form form={form} name="basic">
+        <Form
+          form={form}
+          name="basic"
+          initialValues={{
+            ['content']: '',
+            ['subcategoryId']: 1,
+            ['publishAt']: moment(moment().date, dateFormat),
+          }}
+        >
           <Row>
             <Col span={16}>
               <MyBox>
@@ -137,7 +152,6 @@ export function Post(props) {
               <MyBox>
                 <Form.Item {...layout} label="Ảnh hiển thị">
                   <Upload
-                    // action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
                     listType="picture-card"
                     fileList={fileList}
                     onChange={onChange}
@@ -147,20 +161,21 @@ export function Post(props) {
                   </Upload>
                 </Form.Item>
                 <Form.Item {...layout} label="Danh mục" name="subcategoryId">
-                  <Select defaultValue="lucy">
-                    <Option value="2">Trồng trọt</Option>
-                    <Option value="jack">Jack</Option>
-                    <Option value="windy">Windy</Option>
+                  <Select>
+                    {mSC &&
+                      mSC.length > 0 &&
+                      mSC.map(i => (
+                        <Option value={i.id} key={i.name}>
+                          {i.name}
+                        </Option>
+                      ))}
                   </Select>
                 </Form.Item>
                 <Form.Item {...layout} label="Nguồn" name="source">
                   <Input placeholder="Source" />
                 </Form.Item>
                 <Form.Item {...layout} label="Ngày viết" name="publishAt">
-                  <DatePicker
-                    defaultValue={moment(moment().date, dateFormat)}
-                    format={dateFormat}
-                  />
+                  <DatePicker format={dateFormat} />
                 </Form.Item>
                 <Form.Item {...tailLayout}>
                   <Button type="primary" onClick={handleSubmit}>
@@ -217,6 +232,7 @@ Post.formats = [
 Post.propTypes = {
   adminReducer: PropTypes.any,
   createPost: PropTypes.func,
+  getSubCategories: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -226,6 +242,9 @@ const mapStateToProps = createStructuredSelector({
 const mapDispatchToProps = dispatch => ({
   createPost: data => {
     dispatch(action.createPost(data));
+  },
+  getSubCategories: data => {
+    dispatch(action.getSubCategories(data));
   },
 });
 

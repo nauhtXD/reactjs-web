@@ -6,3 +6,5 @@ export const createPost = data => {
   console.log(data);
   return apiConfig.post(endpoint.API_ENDPOINT_GET_POST, data);
 };
+export const getSubCategories = () =>
+  apiConfig.get(endpoint.API_ENDPOINT_GET_SUB_CATEGORY);
