@@ -118,15 +118,15 @@ export function Post(props) {
             textAlign: 'center',
           }}
         >
-          Post
+          Bài viết mới
         </p>
         <Form
           form={form}
           name="basic"
           initialValues={{
-            ['content']: '',
-            ['subcategoryId']: 1,
-            ['publishAt']: moment(moment().date, dateFormat),
+            content: '',
+            subcategoryId: 1,
+            publishAt: moment(moment().date, dateFormat),
           }}
         >
           <Row>

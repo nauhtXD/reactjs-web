@@ -9,7 +9,7 @@ import PropTypes from 'prop-types';
 // import styled from 'styled-components';
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
-import { Row, Col } from 'antd';
+import { Row, Col, Image } from 'antd';
 import reducer from './reducer';
 import saga from './saga';
 import makeSelect from './selectors';
@@ -30,7 +30,7 @@ for (let i = 0; i < 4; i++) {
         mLink="/News"
         mTitle="Title2"
         mDay="dd/MM/yyyy"
-        mContent="Content"
+        mContent="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean a eleifend lacus. Duis condimentum molestie leo, a scelerisque neque"
       />
     </Col>,
   );
@@ -47,7 +47,7 @@ for (let i = 0; i < 3; i++) {
         mLink="/News"
         mTitle="Title2"
         mDay="dd/MM/yyyy"
-        mContent="Content"
+        mContent="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
       />
     </Col>,
   );
@@ -64,7 +64,7 @@ for (let i = 0; i < 3; i++) {
         mLink="/News"
         mTitle="Title2"
         mDay="dd/MM/yyyy"
-        mContent="Content"
+        mContent="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
       />
     </Col>,
   );
@@ -80,7 +80,7 @@ for (let i = 0; i < 3; i++) {
       mLink="/News"
       mTitle="Title2"
       mDay="dd/MM/yyyy"
-      mContent="Content"
+      mContent="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
     />,
   );
 }
@@ -101,6 +101,8 @@ export function Home(props) {
   useEffect(() => {
     props.getCategories();
     props.getSubCategories();
+    props.getContacts();
+    props.getMarks();
   }, []);
   return (
     <div>
@@ -115,7 +117,28 @@ export function Home(props) {
               mCategory="Tin tức - Sự kiện"
               mCont={
                 <div>
-                  <Row>{row}</Row>
+                  <Row gutter={16} style={{ marginBottom: '15px' }}>
+                    <Col span={16}>
+                      <Image
+                        height={300}
+                        src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
+                      />
+                    </Col>
+                    <Col span={8}>
+                      <a href=".">Title</a>
+                      <p>dd/MM/yyyy</p>
+                      <p>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                        Aenean a eleifend lacus. Duis condimentum molestie leo,
+                        a scelerisque neque eleifend eu. Quisque ullamcorper
+                        mauris dui, scelerisque commodo nisi blandit sit amet.
+                        Pellentesque habitant morbi tristique senectus et netus
+                        et malesuada fames ac turpis egestas. Nullam faucibus
+                        pharetra porta. Pellentesque sollicitudin eget dui
+                        vitae.
+                      </p>
+                    </Col>
+                  </Row>
                   <Row>{row}</Row>
                 </div>
               }
@@ -134,6 +157,8 @@ export function Home(props) {
         }
         mCategories={props.homeReducer.categories}
         mSubCategories={props.homeReducer.subCategories}
+        mMarks={props.homeReducer.marks}
+        mContacts={props.homeReducer.contacts}
       />
     </div>
   );
@@ -143,6 +168,8 @@ Home.propTypes = {
   homeReducer: PropTypes.any,
   getCategories: PropTypes.func,
   getSubCategories: PropTypes.func,
+  getContacts: PropTypes.func,
+  getMarks: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -155,6 +182,12 @@ const mapDispatchToProps = dispatch => ({
   },
   getSubCategories: data => {
     dispatch(action.getSubCategories(data));
+  },
+  getContacts: data => {
+    dispatch(action.getContacts(data));
+  },
+  getMarks: data => {
+    dispatch(action.getMarks(data));
   },
 });
 

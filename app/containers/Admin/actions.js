@@ -13,6 +13,20 @@ export function getUsers(data) {
   };
 }
 
+export function createUser(data) {
+  return {
+    type: types.CREATE_USER,
+    payload: data,
+  };
+}
+
+export function getUserTypes(data) {
+  return {
+    type: types.GET_USER_TYPE,
+    payload: data,
+  };
+}
+
 export function getPosts(data) {
   return {
     type: types.GET_POST,

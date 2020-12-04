@@ -9,6 +9,8 @@ import * as types from './constants';
 export const initialState = {
   loadingUsers: false,
   users: [],
+  loadingUserTypes: false,
+  userTypes: [],
   loadingSubCategories: false,
   subCategories: [],
 };
@@ -27,6 +29,17 @@ const adminReducer = (state = initialState, action) =>
       case types.GET_USER_FAIL:
         draft.users = [];
         draft.loadingUsers = false;
+        break;
+      case types.GET_USER_TYPE:
+        draft.loadingUserTypes = true;
+        break;
+      case types.GET_USER_TYPE_SUCCESS:
+        draft.userTypes = action.userTypes;
+        draft.loadingUserTypes = false;
+        break;
+      case types.GET_USER_TYPE_FAIL:
+        draft.userTypes = [];
+        draft.loadingUserTypes = false;
         break;
       case types.GET_SUB_CATEGORY:
         draft.loadingSubCategories = true;

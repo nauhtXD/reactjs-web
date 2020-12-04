@@ -27,7 +27,7 @@ function ImgCom(props) {
     <Col span={10}>
       <a href={props.mLink}>{props.mTitle}</a>
       <p>{props.mDay}</p>
-      <p>{props.mContent}</p>
+      {props.mContent && <p>{props.mContent}</p>}
     </Col>,
   ];
 
@@ -37,6 +37,7 @@ function ImgCom(props) {
         <div style={{ textAlign: 'center' }}>
           {myImg}
           <a href={props.mLink}>{props.mTitle}</a>
+          {props.mContent && <p>{props.mContent}</p>}
         </div>
       )}
       {myStyle !== 'center' && (

@@ -1,9 +1,3 @@
-/*
- *
- * Home actions
- *
- */
-
 import * as types from './constants';
 
 export function getCategories(data) {

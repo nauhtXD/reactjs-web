@@ -1,8 +1,3 @@
-/*
- *
- * Home reducer
- *
- */
 import produce from 'immer';
 import * as types from './constants';
 
@@ -18,7 +13,7 @@ export const initialState = {
 };
 
 /* eslint-disable default-case, no-param-reassign */
-const homeReducer = (state = initialState, action) =>
+const weatherMapReducer = (state = initialState, action) =>
   produce(state, draft => {
     switch (action.type) {
       case types.GET_CATEGORY:
@@ -67,4 +62,5 @@ const homeReducer = (state = initialState, action) =>
         break;
     }
   });
-export default homeReducer;
+
+export default weatherMapReducer;

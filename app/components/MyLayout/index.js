@@ -32,7 +32,7 @@ function MyLayout(props) {
           </Sider>
         </Layout>
       </div>
-      <Footer />
+      <Footer mMarks={props.mMarks} mContacts={props.mContacts} />
     </div>
   );
 }
@@ -41,6 +41,8 @@ MyLayout.propTypes = {
   mCont: PropTypes.any,
   mCategories: PropTypes.any,
   mSubCategories: PropTypes.any,
+  mMarks: PropTypes.any,
+  mContacts: PropTypes.any,
 };
 
 export default memo(MyLayout);

@@ -4,10 +4,10 @@
  *
  */
 
-import React, { memo } from 'react';
+import React, { memo, useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { Menu } from 'antd';
+import { Menu, Modal, Form, Input, Button } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 
 // import { FormattedMessage } from 'react-intl';
@@ -19,7 +19,7 @@ const mColor = '#fff000';
 const FMenu = styled(Menu)`
   background-color: #009000 !important;
   position: fixed;
-  z-index: 1;
+  z-index: 1024;
   overflow: hidden;
   top: 0;
   width: 90%;
@@ -76,49 +76,102 @@ const MSubLink = styled.a`
   }
 `;
 // #endregion
+const layout = {
+  labelCol: { span: 8 },
+  wrapperCol: { span: 16 },
+};
+const tailLayout = {
+  wrapperCol: { offset: 8, span: 16 },
+};
 
 function MyMenu(props) {
   const items = [];
+  const [isVisible, setIsVisible] = useState(false);
   return (
-    <FMenu mode="horizontal">
-      <NavItem key="home">
-        <MLink href="/">Trang chủ</MLink>
-      </NavItem>
-      {props.mCategories &&
-        props.mCategories.length > 0 &&
-        props.mCategories.map(i => {
-          {
-            items.push(
-              props.mSubCategories.some(j => j.categoryId === i.id) ? (
-                <SubNav key={i.key} title={i.name}>
-                  {props.mSubCategories.map(
-                    j =>
-                      j.categoryId === i.id && (
-                        <SubItem key={j.key}>
-                          <MSubLink href={`/${j.key}`}>{j.name}</MSubLink>
-                        </SubItem>
-                      ),
-                  )}
-                </SubNav>
-              ) : (
-                <NavItem key={i.key}>
-                  <MLink href={`/${i.key}`}>{i.name}</MLink>
-                </NavItem>
-              ),
-            );
-          }
-        })}
-      {items}
-      <NavItem key="login" icon={<UIcon />} style={{ float: 'right' }}>
-        ĐĂNG NHẬP
-      </NavItem>
-    </FMenu>
+    <div>
+      <FMenu mode="horizontal">
+        <NavItem key="home">
+          <MLink href="/">Trang chủ</MLink>
+        </NavItem>
+        {props.mCategories &&
+          props.mCategories.length > 0 &&
+          props.mCategories.map(i => {
+            {
+              items.push(
+                props.mSubCategories.some(j => j.categoryId === i.id) ? (
+                  <SubNav key={i.key} title={i.name}>
+                    {props.mSubCategories.map(
+                      j =>
+                        j.categoryId === i.id && (
+                          <SubItem key={j.key}>
+                            <MSubLink href={`/${j.key}`}>{j.name}</MSubLink>
+                          </SubItem>
+                        ),
+                    )}
+                  </SubNav>
+                ) : (
+                  <NavItem key={i.key}>
+                    <MLink href={`/${i.key}`}>{i.name}</MLink>
+                  </NavItem>
+                ),
+              );
+            }
+          })}
+        {items}
+        <NavItem
+          key="login"
+          icon={<UIcon />}
+          style={{ float: 'right' }}
+          onClick={() => setIsVisible(true)}
+        >
+          ĐĂNG NHẬP
+        </NavItem>
+      </FMenu>
+      <Modal
+        title="Đăng nhập"
+        centered
+        visible={isVisible}
+        onCancel={() => setIsVisible(false)}
+        footer={null}
+      >
+        <Form {...layout} name="basic">
+          <Form.Item
+            label="Tên đăng nhập"
+            name="username"
+            rules={[
+              { required: true, message: 'Vui lòng nhập tên đăng nhập!' },
+            ]}
+          >
+            <Input />
+          </Form.Item>
+
+          <Form.Item
+            label="Mật khẩu"
+            name="password"
+            rules={[{ required: true, message: 'Vui lòng nhập mật khẩu!' }]}
+          >
+            <Input.Password />
+          </Form.Item>
+
+          <Form.Item {...tailLayout}>
+            <Button
+              type="primary"
+              htmlType="submit"
+              onClick={() => setIsVisible(false)}
+            >
+              Đăng nhập
+            </Button>
+          </Form.Item>
+        </Form>
+      </Modal>
+    </div>
   );
 }
 
 MyMenu.propTypes = {
   mCategories: PropTypes.any,
   mSubCategories: PropTypes.any,
+  mUsers: PropTypes.any,
 };
 
 export default memo(MyMenu);

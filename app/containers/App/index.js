@@ -15,6 +15,7 @@ import Home from '../Home/Loadable';
 import News from '../News/Loadable';
 // import Crops from '../Crops/Loadable';
 import Documents from '../Documents/Loadable';
+import WeatherMap from '../WeatherMap/Loadable';
 import Admin from '../Admin/Loadable';
 import Dashboard from '../Admin/pages/dashboard';
 import User from '../Admin/pages/user';
@@ -22,7 +23,6 @@ import Post from '../Admin/pages/post';
 import Report from '../Admin/pages/report';
 
 import GlobalStyle from '../../global-styles';
-
 function App(props) {
   return (
     <>
@@ -38,6 +38,7 @@ function App(props) {
           <Route exact path="/News" component={News} />
           {/* <Route exact path="/Crops" component={Crops} /> */}
           <Route exact path="/Documents" component={Documents} />
+          <Route exact path="/WeatherMap" component={WeatherMap} />
           <Route path="/Admin" component={Admin} />
           <Route exact path="/Admin/Dashboard" component={Dashboard} />
           <Route exact path="/Admin/User" component={User} />

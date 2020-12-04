@@ -4,7 +4,17 @@ import { Helmet } from 'react-helmet';
 import PropTypes from 'prop-types';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
-import { Modal, Button, Table, Row, Col, Select, Input, Form } from 'antd';
+import {
+  Modal,
+  Button,
+  Table,
+  Row,
+  Col,
+  Select,
+  Input,
+  Form,
+  Space,
+} from 'antd';
 // import styled from 'styled-components';
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
@@ -16,11 +26,11 @@ import * as action from '../actions';
 
 const columns = [
   {
-    title: 'UID',
+    title: 'Tên đăng nhập',
     dataIndex: 'id',
   },
   {
-    title: 'Password',
+    title: 'Mật khẩu',
     dataIndex: 'password',
   },
   {
@@ -28,15 +38,15 @@ const columns = [
     dataIndex: 'email',
   },
   {
-    title: 'Phone',
+    title: 'Số điện thoại',
     dataIndex: 'phone',
   },
   {
-    title: 'Status',
+    title: 'Bị khóa',
     dataIndex: 'subcategory_id',
   },
   {
-    title: 'Category',
+    title: 'Loại tài khoản',
     dataIndex: 'user_category_id',
   },
 ];
@@ -46,16 +56,34 @@ const layout = {
   wrapperCol: { span: 16 },
 };
 
+const tailLayout = {
+  wrapperCol: { offset: 8, span: 16 },
+};
+
 const { Option } = Select;
 const { Search } = Input;
 
 export function User(props) {
   useInjectReducer({ key: 'admin', reducer });
   useInjectSaga({ key: 'admin', saga });
-  const [isVisible, setIsVisible] = useState(false);
   useEffect(() => {
     props.getUsers();
+    props.getUserTypes();
   }, []);
+
+  const [form] = Form.useForm();
+  const [isVisible, setIsVisible] = useState(false);
+
+  const handleCancle = () => {
+    setIsVisible(false);
+  };
+  const handleSubmit = () => {
+    form.validateFields().then(values => {
+      console.log(values);
+      //  props.createUser(values);
+    });
+  };
+
   return (
     <div>
       <Helmet>
@@ -65,25 +93,27 @@ export function User(props) {
       <div>
         <div style={{ textAlign: 'center' }}>
           <p style={{ fontSize: '30px', margin: '10px 0 10px 0' }}>
-            List of users
+            Danh sách thành viên
           </p>
           <MyBox>
             <Row>
               <Col span={4}>
-                <Select defaultValue="jack" style={{ width: 120 }}>
-                  {props.adminReducer.users &&
-                    props.adminReducer.users.length > 0 &&
-                    props.adminReducer.users.map(i => (
-                      <Option value={i.id}>{i.id}</Option>
+                <Select defaultValue={1} style={{ width: 120 }}>
+                  {props.adminReducer.userTypes &&
+                    props.adminReducer.userTypes.length > 0 &&
+                    props.adminReducer.userTypes.map(i => (
+                      <Option key={i.id} value={i.id}>
+                        {i.name}
+                      </Option>
                     ))}
                 </Select>
               </Col>
               <Col span={16}>
-                <Search placeholder="input text here" />
+                <Search placeholder="Nhập ký tự cần tìm" />
               </Col>
               <Col span={4}>
                 <Button type="primary" onClick={() => setIsVisible(true)}>
-                  Create new
+                  Tạo mới
                 </Button>
               </Col>
             </Row>
@@ -91,54 +121,84 @@ export function User(props) {
         </div>
         <div style={{ clear: 'both', height: '10px' }} />
         <MyBox>
-          <Table columns={columns} dataSource={props.adminReducer.users} />
+          <Table
+            columns={columns}
+            dataSource={props.adminReducer.users}
+            rowKey="id"
+          />
         </MyBox>
       </div>
       <Modal
-        title="Create new user"
+        title="Thêm thành viên mới"
         centered
         visible={isVisible}
-        onOk={() => setIsVisible(false)}
-        onCancel={() => setIsVisible(false)}
-        footer={[
-          <Button key="back" onClick={() => setIsVisible(false)}>
-            Return
-          </Button>,
-          <Button
-            key="submit"
-            type="primary"
-            onClick={() => setIsVisible(false)}
-          >
-            Submit
-          </Button>,
-        ]}
+        onCancel={handleCancle}
+        footer={null}
       >
-        <Form {...layout}>
-          <Form.Item label="ID" name="id">
-            <Input placeholder="User ID" />
+        <Form
+          form={form}
+          {...layout}
+          initialValues={{
+            userType: 1,
+          }}
+        >
+          <Form.Item
+            label="Tên đăng nhập"
+            name="userName"
+            rules={[
+              { required: true, message: 'Vui lòng nhập tên đăng nhập!' },
+            ]}
+          >
+            <Input placeholder="Nhập tên đăng nhập" />
           </Form.Item>
 
-          <Form.Item label="Password" name="password">
-            <Input placeholder="Password" type="password" />
+          <Form.Item
+            label="Mật khẩu"
+            name="password"
+            rules={[{ required: true, message: 'Vui lòng nhập mật khẩu!' }]}
+          >
+            <Input.Password placeholder="Nhập mật khẩu" />
           </Form.Item>
 
-          <Form.Item label="Retype password" name="retypepw">
-            <Input placeholder="Retype password" />
+          <Form.Item
+            label="Nhập lại mật khẩu"
+            name="retypePW"
+            rules={[{ required: true, message: 'Vui lòng nhập lại mật khẩu!' }]}
+          >
+            <Input.Password placeholder="Nhập lại mật khẩu" />
           </Form.Item>
 
-          <Form.Item label="Phone" name="phone">
-            <Input placeholder="Phone" />
+          <Form.Item
+            label="Email"
+            name="email"
+            rules={[{ required: true, message: 'Vui lòng nhập email!' }]}
+          >
+            <Input placeholder="Nhập email" />
           </Form.Item>
 
-          <Form.Item label="Email" name="email">
-            <Input placeholder="Email" />
+          <Form.Item label="Số điện thoại" name="phone">
+            <Input placeholder="Nhập số điện thoại" />
           </Form.Item>
 
-          <Form.Item label="Account type" name="accounttype">
-            <Select defaultValue="user">
-              <Option value="user">User</Option>
-              <Option value="admin">Admin</Option>
+          <Form.Item label="Loại người dùng" name="userType">
+            <Select>
+              {props.adminReducer.userTypes &&
+                props.adminReducer.userTypes.length > 0 &&
+                props.adminReducer.userTypes.map(i => (
+                  <Option key={i.id} value={i.id}>
+                    {i.name}
+                  </Option>
+                ))}
             </Select>
+          </Form.Item>
+
+          <Form.Item {...tailLayout}>
+            <Space>
+              <Button type="primary" onClick={handleSubmit}>
+                Thêm
+              </Button>
+              <Button onClick={handleCancle}>Hủy</Button>
+            </Space>
           </Form.Item>
         </Form>
       </Modal>
@@ -149,6 +209,8 @@ export function User(props) {
 User.propTypes = {
   adminReducer: PropTypes.any,
   getUsers: PropTypes.func,
+  createUser: PropTypes.func,
+  getUserTypes: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -158,6 +220,12 @@ const mapStateToProps = createStructuredSelector({
 const mapDispatchToProps = dispatch => ({
   getUsers: data => {
     dispatch(action.getUsers(data));
+  },
+  createUser: data => {
+    dispatch(action.createUser(data));
+  },
+  getUserTypes: data => {
+    dispatch(action.getUserTypes(data));
   },
 });
 

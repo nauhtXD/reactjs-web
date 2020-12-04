@@ -6,7 +6,7 @@
 
 import React, { memo } from 'react';
 import { Row, Col } from 'antd';
-import { MapContainer, TileLayer, Marker, Form } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker } from 'react-leaflet';
 import PropTypes from 'prop-types';
 // import styled from 'styled-components';
 
@@ -34,8 +34,11 @@ function Footer(props) {
                 attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               />
-              <Marker position={[10.806812, 106.628666]} />
-              <Marker position={[10.807033, 106.62596]} />
+              {props.mMarks &&
+                props.mMarks.length > 0 &&
+                props.mMarks.map(i => (
+                  <Marker position={[i.latitude, i.longitude]} />
+                ))}
             </MapContainer>
           </Row>
         </Col>
@@ -47,11 +50,11 @@ function Footer(props) {
             color: '#fff',
           }}
         >
-          <h2 style={{ color: '#ffff00' }}>{props.mTitle}</h2>
-          <p>Địa chỉ: {props.mAddress}</p>
-          <p>Điện thoại: {props.mPhone}</p>
-          <p>Fax: {props.mFax}</p>
-          <p>Email: {props.mEmail}</p>
+          <h2 style={{ color: '#ffff00' }}>{props.mContacts.name}</h2>
+          <p>Địa chỉ: {props.mContacts.address}</p>
+          <p>Điện thoại: {props.mContacts.phone}</p>
+          <p>Fax: {props.mContacts.fax}</p>
+          <p>Email: {props.mContacts.email}</p>
         </Col>
       </Row>
     </div>
@@ -59,13 +62,8 @@ function Footer(props) {
 }
 
 Footer.propTypes = {
-  mLeft: PropTypes.number,
-  mRight: PropTypes.number,
-  mTitle: PropTypes.string,
-  mAddress: PropTypes.string,
-  mPhone: PropTypes.string,
-  mFax: PropTypes.string,
-  mEmail: PropTypes.string,
+  mMarks: PropTypes.any,
+  mContacts: PropTypes.any,
 };
 
 export default memo(Footer);

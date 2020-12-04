@@ -8,7 +8,7 @@ import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Carousel, Breadcrumb, Row, Col } from 'antd';
-
+import moment from 'moment';
 // import { FormattedMessage } from 'react-intl';
 // import messages from './messages';
 import MyMenu from '../MyMenu/Loadable';
@@ -24,7 +24,10 @@ const ContentStyle = styled.h3`
 function Header(props) {
   return (
     <div style={{ width: '90%', margin: 'auto' }}>
-      <MyMenu mCategories={props.mCategories} mSubCategories={props.mSubCategories} />
+      <MyMenu
+        mCategories={props.mCategories}
+        mSubCategories={props.mSubCategories}
+      />
       <div style={{ marginTop: '50px ' }}>
         <Carousel autoplay effect="fade">
           <div>
@@ -57,7 +60,7 @@ function Header(props) {
                 marginBottom: '5px',
               }}
             >
-              Thứ sáu, 20/11/2020 (GMT+7)
+              {moment().format('llll')}
             </p>
           </Col>
         </Row>
