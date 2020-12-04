@@ -79,8 +79,8 @@ export function User(props) {
   };
   const handleSubmit = () => {
     form.validateFields().then(values => {
-      console.log(values);
-      //  props.createUser(values);
+      if (values.password === values.retype) props.createUser(values);
+      else console.log(false);
     });
   };
 
@@ -144,7 +144,7 @@ export function User(props) {
         >
           <Form.Item
             label="Tên đăng nhập"
-            name="userName"
+            name="username"
             rules={[
               { required: true, message: 'Vui lòng nhập tên đăng nhập!' },
             ]}
@@ -162,7 +162,7 @@ export function User(props) {
 
           <Form.Item
             label="Nhập lại mật khẩu"
-            name="retypePW"
+            name="retype"
             rules={[{ required: true, message: 'Vui lòng nhập lại mật khẩu!' }]}
           >
             <Input.Password placeholder="Nhập lại mật khẩu" />
@@ -180,7 +180,7 @@ export function User(props) {
             <Input placeholder="Nhập số điện thoại" />
           </Form.Item>
 
-          <Form.Item label="Loại người dùng" name="userType">
+          <Form.Item label="Loại người dùng" name="userTypeId">
             <Select>
               {props.adminReducer.userTypes &&
                 props.adminReducer.userTypes.length > 0 &&
