@@ -13,6 +13,7 @@ import { Map, TileLayer, Marker, Popup } from 'react-leaflet';
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
 
+import kToC from 'kelvin-to-celsius';
 import makeSelect from './selectors';
 import reducer from './reducer';
 import saga from './saga';
@@ -27,6 +28,8 @@ import * as hAction from '../Home/actions';
 import MyLayout from '../../components/MyLayout/Loadable';
 import TempCom from '../../components/TempCom/Loadable';
 
+const API_KEY = 'f9b8a21d57e020513b5c7e50113dd4ea';
+
 export function WeatherMap(props) {
   useInjectReducer({ key: 'weatherMap', reducer });
   useInjectSaga({ key: 'weatherMap', saga });
@@ -38,6 +41,10 @@ export function WeatherMap(props) {
     props.getContacts();
     props.getMarks();
   }, []);
+  const handleClick = (lat, lon) => {
+    const mData = { lat, lon, key: API_KEY };
+    props.getWeather(mData);
+  };
   return (
     <div>
       <Helmet>
@@ -58,34 +65,48 @@ export function WeatherMap(props) {
               attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
-            <TileLayer url="https://tile.openweathermap.org/map/temp_new/{z}/{x}/{y}.png?appid=96dd3ad792ad0bba90c7443339de8e34" />
+            <TileLayer
+              url={`https://tile.openweathermap.org/map/temp_new/{z}/{x}/{y}.png?appid=${API_KEY}`}
+            />
             {props.homeReducer.marks &&
               props.homeReducer.marks.length > 0 &&
               props.homeReducer.marks.map(i => (
-                <Marker key={i.id} position={[i.latitude, i.longitude]}>
+                <Marker
+                  key={i.id}
+                  position={[i.latitude, i.longitude]}
+                  onclick={() => handleClick(i.latitude, i.longitude)}
+                >
                   <Popup>
-                    <div
-                      style={{
-                        width: '220px',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        backgroundImage:
-                          'linear-gradient(to bottom,#feb020,#ffd05c)',
-                      }}
-                    >
-                      <div>
-                        <p>London, GB</p>
-                        <p>fog</p>
+                    {props.weatherMapReducer.weather && (
+                      <div
+                        style={{
+                          width: '220px',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          backgroundImage:
+                            'linear-gradient(to bottom,#feb020,#ffd05c)',
+                        }}
+                      >
+                        <div>
+                          <p>London, GB</p>
+                          <p>{props.weatherMapReducer.weather.description}</p>
+                        </div>
+                        <img
+                          src={`http://openweathermap.org/img/wn/${
+                            props.weatherMapReducer.weather.icon
+                          }@2x.png`}
+                          alt="example"
+                        />
+                        <div>
+                          <p>
+                            {props.weatherMapReducer.weather.temp &&
+                              kToC(props.weatherMapReducer.weather.temp)}
+                            °C
+                          </p>
+                        </div>
                       </div>
-                      <img
-                        src="http://openweathermap.org/img/wn/10d@2x.png"
-                        alt="example"
-                      />
-                      <div>
-                        <p>min|max</p>
-                      </div>
-                    </div>
+                    )}
                     <p>dich benh</p>
                   </Popup>
                 </Marker>
@@ -105,6 +126,7 @@ export function WeatherMap(props) {
 WeatherMap.propTypes = {
   homeReducer: PropTypes.any,
   weatherMapReducer: PropTypes.any,
+  getWeather: PropTypes.func,
   getCategories: PropTypes.func,
   getSubCategories: PropTypes.func,
   getContacts: PropTypes.func,
@@ -117,6 +139,9 @@ const mapStateToProps = createStructuredSelector({
 });
 
 const mapDispatchToProps = dispatch => ({
+  getWeather: data => {
+    dispatch(action.getWeather(data));
+  },
   getCategories: data => {
     dispatch(hAction.getCategories(data));
   },
