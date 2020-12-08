@@ -6,7 +6,7 @@
 
 import React, { memo } from 'react';
 import { Row, Col } from 'antd';
-import { MapContainer, TileLayer, Marker } from 'react-leaflet';
+import { Map, TileLayer, Marker } from 'react-leaflet';
 import PropTypes from 'prop-types';
 // import styled from 'styled-components';
 
@@ -19,7 +19,7 @@ function Footer(props) {
       <Row>
         <Col span={12}>
           <Row>
-            <MapContainer
+            <Map
               style={{
                 height: '300px',
                 width: '80%',
@@ -37,9 +37,9 @@ function Footer(props) {
               {props.mMarks &&
                 props.mMarks.length > 0 &&
                 props.mMarks.map(i => (
-                  <Marker position={[i.latitude, i.longitude]} />
+                  <Marker key={i.id} position={[i.latitude, i.longitude]} />
                 ))}
-            </MapContainer>
+            </Map>
           </Row>
         </Col>
         <Col

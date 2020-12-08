@@ -35,15 +35,15 @@ function App(props) {
       <div>
         <Switch>
           <Route exact path="/" component={Home} />
-          <Route exact path="/News" component={News} />
+          <Route exact path="/news" component={News} />
           {/* <Route exact path="/Crops" component={Crops} /> */}
-          <Route exact path="/Documents" component={Documents} />
-          <Route exact path="/WeatherMap" component={WeatherMap} />
-          <Route path="/Admin" component={Admin} />
-          <Route exact path="/Admin/Dashboard" component={Dashboard} />
-          <Route exact path="/Admin/User" component={User} />
-          <Route exact path="/Admin/Post" component={Post} />
-          <Route exact path="/Admin/Report" component={Report} />
+          <Route exact path="/documents" component={Documents} />
+          <Route exact path="/weathermap" component={WeatherMap} />
+          <Route path="/admin" component={Admin} />
+          <Route exact path="/admin/dashboard" component={Dashboard} />
+          <Route exact path="/admin/user" component={User} />
+          <Route exact path="/admin/post" component={Post} />
+          <Route exact path="/admin/report" component={Report} />
           <Route path="" component={NotFoundPage} />
         </Switch>
       </div>

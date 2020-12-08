@@ -87,10 +87,10 @@ export function Admin() {
               backgroundColor: '#fff',
             }}
           >
-            <Route path="/Admin/Dashboard" component={Dashboard} />
-            <Route path="/Admin/User" component={User} />
-            <Route path="/Admin/Post" component={Post} />
-            <Route path="/Admin/Report" component={Report} />
+            <Route path="/admin/dashboard" component={Dashboard} />
+            <Route path="/admin/user" component={User} />
+            <Route path="/admin/post" component={Post} />
+            <Route path="/admin/report" component={Report} />
           </Content>
         </Layout>
       </Layout>

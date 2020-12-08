@@ -21,13 +21,12 @@ const OSDiv = styled(Card)`
 `;
 
 function TitleCom(props) {
-  const myLink = props.mLink;
   return (
     <OSDiv title={props.mCategory}>
       {props.mCont}
-      {myLink != null && (
+      {props.mLink && (
         <div style={{ textAlign: 'right' }}>
-          <a href={myLink}>Xem thêm</a>
+          <a href={props.mLink}>Xem thêm</a>
         </div>
       )}
     </OSDiv>

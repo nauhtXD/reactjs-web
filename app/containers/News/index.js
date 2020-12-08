@@ -11,15 +11,23 @@ import moment from 'moment';
 
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
+
 import makeSelect from './selectors';
 import reducer from './reducer';
 import saga from './saga';
+
+import makeSelectHome from '../Home/selectors';
+import hReducer from '../Home/reducer';
+import hSaga from '../Home/saga';
+
 // import messages from './messages';
 import * as action from './actions';
+import * as hAction from '../Home/actions';
+
 import MyLayout from '../../components/MyLayout/Loadable';
 import TitleCom from '../../components/TitleCom/Loadable';
 
-const data = [
+const dataa = [
   'Racing car sprays burning fuel into crowd.',
   'Japanese princess to wed commoner.',
   'Australian walks 100km after outback crash.',
@@ -83,12 +91,15 @@ const data1 = [
 export function News(props) {
   useInjectReducer({ key: 'news', reducer });
   useInjectSaga({ key: 'news', saga });
+  useInjectReducer({ key: 'home', reducer: hReducer });
+  useInjectSaga({ key: 'home', saga: hSaga });
   useEffect(() => {
-    props.getPost(3);
+    props.getPost(8);
     props.getCategories();
     props.getSubCategories();
+    props.getContacts();
+    props.getMarks();
   }, []);
-  const mD = props.newsReducer.post;
   return (
     <div>
       <Helmet>
@@ -100,29 +111,41 @@ export function News(props) {
           mCont={
             <div>
               <TitleCom
-                mCategory={mD.title}
+                mCategory={
+                  props.newsReducer.post.subcategory &&
+                  props.newsReducer.post.subcategory.name
+                }
                 mCont={
-                  <div style={{ textAlign: 'right' }}>
-                    <p>
-                      Ngày đăng: {moment(mD.publishAt).format('DD-MM-YYYY')}
+                  <div>
+                    <p style={{ textAlign: 'right' }}>
+                      Ngày đăng:{' '}
+                      {moment(props.newsReducer.post.publishAt).format(
+                        'DD-MM-YYYY',
+                      )}
                     </p>
+                    <h2>{props.newsReducer.post.title}</h2>
                     <div
-                      style={{ textAlign: 'left' }}
-                      dangerouslySetInnerHTML={{ __html: mD.content }}
+                      dangerouslySetInnerHTML={{
+                        __html: props.newsReducer.post.content,
+                      }}
                     />
-                    <p>
-                      Nguồn: <a href={mD.source}>{mD.source}</a>
+                    <p style={{ textAlign: 'right' }}>
+                      Nguồn:{' '}
+                      <a href={props.newsReducer.post.source}>
+                        {props.newsReducer.post.source}
+                      </a>
                     </p>
                   </div>
                 }
               />
+
               <div>
                 <Rate />
                 <div />
               </div>
               <List
                 className="comment-list"
-                header={`${data.length} replies`}
+                header={`${dataa.length} replies`}
                 itemLayout="horizontal"
                 dataSource={data1}
                 renderItem={item => (
@@ -142,7 +165,7 @@ export function News(props) {
                 <div>
                   <List
                     bordered
-                    dataSource={data}
+                    dataSource={dataa}
                     renderItem={item => (
                       <List.Item>
                         <Typography.Text mark>[dd/MM/yyyy]</Typography.Text>
@@ -154,8 +177,10 @@ export function News(props) {
               </div>
             </div>
           }
-          mCategories={props.newsReducer.categories}
-          mSubCategories={props.newsReducer.subCategories}
+          mCategories={props.homeReducer.categories}
+          mSubCategories={props.homeReducer.subCategories}
+          mMarks={props.homeReducer.marks}
+          mContacts={props.homeReducer.contacts}
         />
       </div>
     </div>
@@ -163,13 +188,17 @@ export function News(props) {
 }
 
 News.propTypes = {
+  homeReducer: PropTypes.any,
   newsReducer: PropTypes.any,
   getPost: PropTypes.func,
   getCategories: PropTypes.func,
   getSubCategories: PropTypes.func,
+  getContacts: PropTypes.func,
+  getMarks: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
+  homeReducer: makeSelectHome(),
   newsReducer: makeSelect(),
 });
 
@@ -178,10 +207,16 @@ const mapDispatchToProps = dispatch => ({
     dispatch(action.getPost(data));
   },
   getCategories: data => {
-    dispatch(action.getCategories(data));
+    dispatch(hAction.getCategories(data));
   },
   getSubCategories: data => {
-    dispatch(action.getSubCategories(data));
+    dispatch(hAction.getSubCategories(data));
+  },
+  getContacts: data => {
+    dispatch(hAction.getContacts(data));
+  },
+  getMarks: data => {
+    dispatch(hAction.getMarks(data));
   },
 });
 
