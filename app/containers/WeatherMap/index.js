@@ -12,26 +12,32 @@ import { Map, TileLayer, Marker, Popup } from 'react-leaflet';
 
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
+
 import makeSelect from './selectors';
 import reducer from './reducer';
 import saga from './saga';
+import * as action from './actions';
+
+import makeSelectHome from '../Home/selectors';
+import hReducer from '../Home/reducer';
+import hSaga from '../Home/saga';
+import * as hAction from '../Home/actions';
+
 // import messages from './messages';
 import MyLayout from '../../components/MyLayout/Loadable';
 import TempCom from '../../components/TempCom/Loadable';
-import * as action from './actions';
 
 export function WeatherMap(props) {
   useInjectReducer({ key: 'weatherMap', reducer });
   useInjectSaga({ key: 'weatherMap', saga });
-  useInjectReducer({ key: 'home', reducer });
-  useInjectSaga({ key: 'home', saga });
+  useInjectReducer({ key: 'home', reducer: hReducer });
+  useInjectSaga({ key: 'home', saga: hSaga });
   useEffect(() => {
     props.getCategories();
     props.getSubCategories();
     props.getContacts();
     props.getMarks();
   }, []);
-
   return (
     <div>
       <Helmet>
@@ -53,9 +59,9 @@ export function WeatherMap(props) {
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
             <TileLayer url="https://tile.openweathermap.org/map/temp_new/{z}/{x}/{y}.png?appid=96dd3ad792ad0bba90c7443339de8e34" />
-            {props.weatherMapReducer.marks &&
-              props.weatherMapReducer.marks.length > 0 &&
-              props.weatherMapReducer.marks.map(i => (
+            {props.homeReducer.marks &&
+              props.homeReducer.marks.length > 0 &&
+              props.homeReducer.marks.map(i => (
                 <Marker key={i.id} position={[i.latitude, i.longitude]}>
                   <Popup>
                     <div
@@ -87,16 +93,17 @@ export function WeatherMap(props) {
             <TempCom />
           </Map>
         }
-        mCategories={props.weatherMapReducer.categories}
-        mSubCategories={props.weatherMapReducer.subCategories}
-        mMarks={props.weatherMapReducer.marks}
-        mContacts={props.weatherMapReducer.contacts}
+        mCategories={props.homeReducer.categories}
+        mSubCategories={props.homeReducer.subCategories}
+        mMarks={props.homeReducer.marks}
+        mContacts={props.homeReducer.contacts}
       />
     </div>
   );
 }
 
 WeatherMap.propTypes = {
+  homeReducer: PropTypes.any,
   weatherMapReducer: PropTypes.any,
   getCategories: PropTypes.func,
   getSubCategories: PropTypes.func,
@@ -105,21 +112,22 @@ WeatherMap.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
+  homeReducer: makeSelectHome(),
   weatherMapReducer: makeSelect(),
 });
 
 const mapDispatchToProps = dispatch => ({
   getCategories: data => {
-    dispatch(action.getCategories(data));
+    dispatch(hAction.getCategories(data));
   },
   getSubCategories: data => {
-    dispatch(action.getSubCategories(data));
+    dispatch(hAction.getSubCategories(data));
   },
   getContacts: data => {
-    dispatch(action.getContacts(data));
+    dispatch(hAction.getContacts(data));
   },
   getMarks: data => {
-    dispatch(action.getMarks(data));
+    dispatch(hAction.getMarks(data));
   },
 });
 

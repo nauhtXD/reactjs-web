@@ -1,9 +1,10 @@
-/* eslint-disable no-console */
 import env from '../env';
 
 const config = {
   develop: {
     apiUrl: 'http://localhost:8080/api/',
+    apiUrlWeather:
+      'http://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid=96dd3ad792ad0bba90c7443339de8e34',
     envTag: 'd',
   },
   staging: {
@@ -18,6 +19,7 @@ const config = {
     envTag: 'p',
   },
 };
+
 const configEnv = () => {
   switch (env) {
     case 'develop':
@@ -32,5 +34,5 @@ const configEnv = () => {
       return config.develop;
   }
 };
-console.log(env);
+
 export default configEnv();
