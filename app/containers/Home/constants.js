@@ -19,3 +19,7 @@ export const GET_CONTACT_FAIL = 'GET_CONTACT_FAIL';
 export const GET_MARK = 'GET_MARK';
 export const GET_MARK_SUCCESS = 'GET_MARK_SUCCESS';
 export const GET_MARK_FAIL = 'GET_MARK_FAIL';
+// post
+export const GET_POST = 'GET_POST';
+export const GET_POST_SUCCESS = 'GET_POST_SUCCESS';
+export const GET_POST_FAIL = 'GET_POST_FAIL';

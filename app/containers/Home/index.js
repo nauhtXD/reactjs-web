@@ -7,11 +7,11 @@ import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import PropTypes from 'prop-types';
 // import styled from 'styled-components';
-import { useInjectSaga } from 'utils/injectSaga';
-import { useInjectReducer } from 'utils/injectReducer';
+// import { useInjectSaga } from 'utils/injectSaga';
+// import { useInjectReducer } from 'utils/injectReducer';
 import { Row, Col, Image } from 'antd';
-import reducer from './reducer';
-import saga from './saga';
+// import reducer from './reducer';
+// import saga from './saga';
 import makeSelect from './selectors';
 import MyLayout from '../../components/MyLayout/Loadable';
 import ImgCom from '../../components/ImgCom/Loadable';
@@ -27,7 +27,7 @@ for (let i = 0; i < 4; i++) {
         mStyle="center"
         mWidth="150px"
         mSrc="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
-        mLink="/News"
+        mLink="/news/1"
         mTitle="Title2"
         mDay="dd/MM/yyyy"
         mContent="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean a eleifend lacus. Duis condimentum molestie leo, a scelerisque neque"
@@ -96,8 +96,6 @@ for (let i = 0; i < 3; i++) {
 // #endregion
 
 export function Home(props) {
-  useInjectReducer({ key: 'home', reducer });
-  useInjectSaga({ key: 'home', saga });
   useEffect(() => {
     props.getCategories();
     props.getSubCategories();
@@ -170,6 +168,7 @@ Home.propTypes = {
   getSubCategories: PropTypes.func,
   getContacts: PropTypes.func,
   getMarks: PropTypes.func,
+  getPosts: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -188,6 +187,9 @@ const mapDispatchToProps = dispatch => ({
   },
   getMarks: data => {
     dispatch(action.getMarks(data));
+  },
+  getPosts: data => {
+    dispatch(action.getPosts(data));
   },
 });
 

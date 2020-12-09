@@ -33,3 +33,10 @@ export function getMarks(data) {
     payload: data,
   };
 }
+
+export function getPosts(data) {
+  return {
+    type: types.GET_POST,
+    payload: data,
+  };
+}

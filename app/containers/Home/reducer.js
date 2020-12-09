@@ -15,6 +15,8 @@ export const initialState = {
   contacts: [],
   loadingMarks: false,
   marks: [],
+  loadingPosts: false,
+  posts: [],
 };
 
 /* eslint-disable default-case, no-param-reassign */
@@ -64,6 +66,17 @@ const homeReducer = (state = initialState, action) =>
       case types.GET_MARK_FAIL:
         draft.marks = [];
         draft.loadingMarks = false;
+        break;
+      case types.GET_POST:
+        draft.loadingPosts = true;
+        break;
+      case types.GET_POST_SUCCESS:
+        draft.posts = action.posts;
+        draft.loadingPosts = false;
+        break;
+      case types.GET_POST_FAIL:
+        draft.posts = [];
+        draft.loadingPosts = false;
         break;
     }
   });

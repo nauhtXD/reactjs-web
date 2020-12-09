@@ -1,21 +1,30 @@
 /* eslint-disable no-unused-vars */
-import React, { memo, useEffect } from 'react';
+import React, { memo } from 'react';
 import { Helmet } from 'react-helmet';
 import { connect } from 'react-redux';
 
-import { Switch, Route, Redirect } from 'react-router-dom';
-import { Layout } from 'antd';
+import { Switch, Route } from 'react-router-dom';
+// import { Layout } from 'antd';
 import 'antd/dist/antd.css';
 
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 
+import { useInjectSaga } from 'utils/injectSaga';
+import { useInjectReducer } from 'utils/injectReducer';
+
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
+
+import reducer from '../Home/reducer';
+import saga from '../Home/saga';
+
 import Home from '../Home/Loadable';
 import News from '../News/Loadable';
 // import Crops from '../Crops/Loadable';
 import Documents from '../Documents/Loadable';
 import WeatherMap from '../WeatherMap/Loadable';
+import MangoWiki from '../MangoWiki/Loadable';
+import MyList from '../MangoWiki/pages/list';
 import Admin from '../Admin/Loadable';
 import Dashboard from '../Admin/pages/dashboard';
 import User from '../Admin/pages/user';
@@ -24,6 +33,8 @@ import Report from '../Admin/pages/report';
 
 import GlobalStyle from '../../global-styles';
 function App(props) {
+  useInjectReducer({ key: 'home', reducer });
+  useInjectSaga({ key: 'home', saga });
   return (
     <>
       <Helmet
@@ -35,10 +46,13 @@ function App(props) {
       <div>
         <Switch>
           <Route exact path="/" component={Home} />
-          <Route exact path="/news" component={News} />
+          <Route exact path="/news/:id" component={News} />
           {/* <Route exact path="/Crops" component={Crops} /> */}
           <Route exact path="/documents" component={Documents} />
           <Route exact path="/weathermap" component={WeatherMap} />
+          <Route path="/mangowiki" component={MangoWiki} />
+          <Route exact path="/mangowiki/news" component={News} />
+          <Route exact path="/mangowiki/list" component={MyList} />
           <Route path="/admin" component={Admin} />
           <Route exact path="/admin/dashboard" component={Dashboard} />
           <Route exact path="/admin/user" component={User} />

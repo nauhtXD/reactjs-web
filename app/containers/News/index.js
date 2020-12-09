@@ -17,8 +17,6 @@ import reducer from './reducer';
 import saga from './saga';
 
 import makeSelectHome from '../Home/selectors';
-import hReducer from '../Home/reducer';
-import hSaga from '../Home/saga';
 
 // import messages from './messages';
 import * as action from './actions';
@@ -89,12 +87,12 @@ const data1 = [
 ];
 
 export function News(props) {
+  // eslint-disable-next-line react/prop-types
+  const { match } = props;
   useInjectReducer({ key: 'news', reducer });
   useInjectSaga({ key: 'news', saga });
-  useInjectReducer({ key: 'home', reducer: hReducer });
-  useInjectSaga({ key: 'home', saga: hSaga });
   useEffect(() => {
-    props.getPost(8);
+    props.getPost(match.params.id);
     props.getCategories();
     props.getSubCategories();
     props.getContacts();
@@ -125,6 +123,7 @@ export function News(props) {
                     </p>
                     <h2>{props.newsReducer.post.title}</h2>
                     <div
+                      // eslint-disable-next-line react/no-danger
                       dangerouslySetInnerHTML={{
                         __html: props.newsReducer.post.content,
                       }}

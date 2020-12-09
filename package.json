@@ -80,6 +80,7 @@
     "leaflet": "^1.7.1",
     "lodash": "^4.17.20",
     "minimist": "^1.2.5",
+    "minio": "^7.0.17",
     "moment": "^2.29.1",
     "prop-types": "15.7.2",
     "react": "17.0.1",

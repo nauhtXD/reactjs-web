@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import React, { memo, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -26,6 +27,7 @@ import saga from '../saga';
 import makeSelect from '../selectors';
 import * as action from '../actions';
 import MyBox from '../../../components/MyBox/index';
+// import minioClient from '../../../components/MyStorage/Loadable';
 
 const dateFormat = 'DD/MM/YYYY';
 const { Option } = Select;
@@ -95,12 +97,15 @@ export function Post(props) {
     );
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     form.validateFields().then(values => {
       const { url } = fileList[0];
+      // const metaData = { 'Content-Type': 'application/octet-stream' };
+      // minioClient.fPutObject('photos', 'icon.png', url, metaData);
       values.img = url;
       values.publishAt = values.publishAt.format();
-      props.createPost(values);
+      console.log(values);
+      // props.createPost(values);
     });
   };
 

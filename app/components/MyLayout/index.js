@@ -27,9 +27,11 @@ function MyLayout(props) {
       <div style={{ width: '90%', margin: 'auto' }}>
         <Layout style={{ backgroundColor: '#fff' }}>
           <Content style={{ marginRight: '10px' }}>{props.mCont}</Content>
-          <Sider style={{ backgroundColor: '#fff' }}>
-            <Sidebar />
-          </Sider>
+          {!props.mCheck && (
+            <Sider style={{ backgroundColor: '#fff' }}>
+              <Sidebar />
+            </Sider>
+          )}
         </Layout>
       </div>
       <Footer mMarks={props.mMarks} mContacts={props.mContacts} />
@@ -43,6 +45,7 @@ MyLayout.propTypes = {
   mSubCategories: PropTypes.any,
   mMarks: PropTypes.any,
   mContacts: PropTypes.any,
+  mCheck: PropTypes.bool,
 };
 
 export default memo(MyLayout);

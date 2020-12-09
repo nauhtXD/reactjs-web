@@ -127,11 +127,43 @@ export function* getMarkSaga({ payload }) {
   }
 }
 
+export function* getPostSaga({ payload }) {
+  try {
+    const response = yield call(api.getPosts, payload);
+    if (response && response.status === 200) {
+      yield put({
+        type: types.GET_POST_SUCCESS,
+        posts: response.data.data,
+      });
+    } else {
+      yield put({
+        type: types.GET_POST_FAIL,
+        error: response && response.data ? response.data.messages : 'API Error',
+      });
+      notification.error({
+        message: 'Error',
+        description:
+          response && response.data ? response.data.messages : 'API Error',
+      });
+    }
+  } catch (err) {
+    yield put({
+      type: types.GET_POST_FAIL,
+      error: err,
+    });
+    notification.error({
+      message: 'Error',
+      description: err,
+    });
+  }
+}
+
 export default function* rootSaga() {
   yield all([
     takeLatest(types.GET_CATEGORY, getCategorySaga),
     takeLatest(types.GET_SUB_CATEGORY, getSubCategorySaga),
     takeLatest(types.GET_CONTACT, getContactSaga),
     takeLatest(types.GET_MARK, getMarkSaga),
+    takeLatest(types.GET_POST, getPostSaga),
   ]);
 }

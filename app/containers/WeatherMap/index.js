@@ -20,8 +20,6 @@ import saga from './saga';
 import * as action from './actions';
 
 import makeSelectHome from '../Home/selectors';
-import hReducer from '../Home/reducer';
-import hSaga from '../Home/saga';
 import * as hAction from '../Home/actions';
 
 // import messages from './messages';
@@ -33,8 +31,6 @@ const API_KEY = 'f9b8a21d57e020513b5c7e50113dd4ea';
 export function WeatherMap(props) {
   useInjectReducer({ key: 'weatherMap', reducer });
   useInjectSaga({ key: 'weatherMap', saga });
-  useInjectReducer({ key: 'home', reducer: hReducer });
-  useInjectSaga({ key: 'home', saga: hSaga });
   useEffect(() => {
     props.getCategories();
     props.getSubCategories();
