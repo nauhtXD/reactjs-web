@@ -23,8 +23,11 @@ import News from '../News/Loadable';
 // import Crops from '../Crops/Loadable';
 import Documents from '../Documents/Loadable';
 import WeatherMap from '../WeatherMap/Loadable';
+
 import MangoWiki from '../MangoWiki/Loadable';
-import MyList from '../MangoWiki/pages/list';
+import WikiList from '../MangoWiki/pages/list';
+import WikiNews from '../MangoWiki/pages/news';
+
 import Admin from '../Admin/Loadable';
 import Dashboard from '../Admin/pages/dashboard';
 import User from '../Admin/pages/user';
@@ -50,14 +53,28 @@ function App(props) {
           {/* <Route exact path="/Crops" component={Crops} /> */}
           <Route exact path="/documents" component={Documents} />
           <Route exact path="/weathermap" component={WeatherMap} />
+
           <Route path="/mangowiki" component={MangoWiki} />
-          <Route exact path="/mangowiki/news" component={News} />
-          <Route exact path="/mangowiki/list" component={MyList} />
+          <Route exact path="/mangowiki/news/new/:id" component={WikiNews} />
+          <Route exact path="/mangowiki/news/:familyId" component={WikiNews} />
+          <Route
+            exact
+            path="/mangowiki/news/:familyId/:genusId"
+            component={WikiNews}
+          />
+          <Route
+            exact
+            path="/mangowiki/news/:familyId/:genusId/:genusFeatureId"
+            component={WikiNews}
+          />
+          <Route exact path="/mangowiki/list/" component={WikiList} />
+
           <Route path="/admin" component={Admin} />
           <Route exact path="/admin/dashboard" component={Dashboard} />
           <Route exact path="/admin/user" component={User} />
           <Route exact path="/admin/post" component={Post} />
           <Route exact path="/admin/report" component={Report} />
+
           <Route path="" component={NotFoundPage} />
         </Switch>
       </div>

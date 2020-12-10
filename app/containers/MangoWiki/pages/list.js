@@ -8,7 +8,7 @@ import { compose } from 'redux';
 
 import ListImgCom from '../../../components/ListImgCom';
 
-function MyList() {
+function WikiList() {
   return (
     <div>
       <Helmet>
@@ -17,7 +17,7 @@ function MyList() {
       </Helmet>
       <div>
         <ListImgCom
-          mWidth="150px"
+          mWidth="180px"
           mSrc="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
           mLink="/news/1"
           mTitle="Title2"
@@ -30,15 +30,11 @@ function MyList() {
   );
 }
 
-MyList.propTypes = {};
+WikiList.propTypes = {};
 
 const mapStateToProps = createStructuredSelector({});
 
-function mapDispatchToProps(dispatch) {
-  return {
-    dispatch,
-  };
-}
+const mapDispatchToProps = dispatch => ({});
 
 const withConnect = connect(
   mapStateToProps,
@@ -48,4 +44,4 @@ const withConnect = connect(
 export default compose(
   withConnect,
   memo,
-)(MyList);
+)(WikiList);

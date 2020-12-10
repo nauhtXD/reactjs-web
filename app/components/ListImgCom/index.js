@@ -16,14 +16,10 @@ function ListImgCom(props) {
   return (
     <div style={{ marginBottom: '15px' }}>
       <Row>
-        <Col span={14}>
-          <Image
-            width={props.mWidth}
-            src={props.mSrc}
-            style={{ display: 'block', margin: '2px auto', width: '50%' }}
-          />
+        <Col span={5}>
+          <Image width={props.mWidth} src={props.mSrc} />
         </Col>
-        <Col span={10}>
+        <Col span={19}>
           <a href={props.mLink}>{props.mTitle}</a>
           {props.mContent && <p>{props.mContent}</p>}
           <Button type="primary">Xem chi tiết</Button>

@@ -20,16 +20,41 @@ const OSDiv = styled(Card)`
   }
 `;
 
+const OSDivNoPadding = styled(Card)`
+  margin-bottom: 10px !important;
+  .ant-card-head {
+    color: #22b14c !important;
+    background-color: #deffc0 !important;
+  }
+  .ant-card-body {
+    padding: 0 !important;
+  }
+`;
+
 function TitleCom(props) {
   return (
-    <OSDiv title={props.mCategory}>
-      {props.mCont}
-      {props.mLink && (
-        <div style={{ textAlign: 'right' }}>
-          <a href={props.mLink}>Xem thêm</a>
-        </div>
+    <div>
+      {!props.mCheck && (
+        <OSDiv title={props.mCategory}>
+          {props.mCont}
+          {props.mLink && (
+            <div style={{ textAlign: 'right' }}>
+              <a href={props.mLink}>Xem thêm</a>
+            </div>
+          )}
+        </OSDiv>
       )}
-    </OSDiv>
+      {props.mCheck && (
+        <OSDivNoPadding title={props.mCategory}>
+          {props.mCont}
+          {props.mLink && (
+            <div style={{ textAlign: 'right' }}>
+              <a href={props.mLink}>Xem thêm</a>
+            </div>
+          )}
+        </OSDivNoPadding>
+      )}
+    </div>
   );
 }
 
@@ -37,6 +62,7 @@ TitleCom.propTypes = {
   mCategory: PropTypes.string,
   mCont: PropTypes.any,
   mLink: PropTypes.string,
+  mCheck: PropTypes.bool,
 };
 
 export default memo(TitleCom);

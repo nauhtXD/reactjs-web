@@ -6,8 +6,8 @@ import { Helmet } from 'react-helmet';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import { Route, Link } from 'react-router-dom';
-// import styled from 'styled-component';
-import { Layout } from 'antd';
+import styled from 'styled-components';
+import { Layout, Menu, Row, Col } from 'antd';
 
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
@@ -19,12 +19,20 @@ import makeSelectHome from '../Home/selectors';
 import * as action from './actions';
 import * as hAction from '../Home/actions';
 
-import MyList from './pages/list';
-import News from '../News/Loadable';
+import WikiList from './pages/list';
+import WikiNews from './pages/news';
 import MyLayout from '../../components/MyLayout/Loadable';
 import TitleCom from '../../components/TitleCom/Loadable';
 
 const { Sider, Content } = Layout;
+const { SubMenu } = Menu;
+
+const MyLink = styled(Link)``;
+const MyMI = styled(Menu.Item)`
+  :active {
+    background-color: #fff !important;
+  }
+`;
 
 export function MangoWiki(props) {
   useInjectReducer({ key: 'mangoWiki', reducer });
@@ -34,6 +42,9 @@ export function MangoWiki(props) {
     props.getSubCategories();
     props.getContacts();
     props.getMarks();
+    props.getFamilies();
+    props.getGenera();
+    props.getGenusFeatures();
   }, []);
   return (
     <div>
@@ -44,36 +55,83 @@ export function MangoWiki(props) {
       <MyLayout
         mCont={
           <div>
-            <Layout>
-              <Sider
-                breakpoint="lg"
-                collapsedWidth="0"
-                style={{ backgroundColor: '#fff' }}
-              >
+            <Row gutter={16}>
+              <Col span={5}>
                 <TitleCom
                   mCont={
                     <div>
-                      <ul>
-                        <li>
-                          <Link to="/mangowiki/news/1">Xoài cát Hòa Lộc</Link>
-                        </li>
-                      </ul>
+                      <Menu style={{ width: 230 }} mode="inline">
+                        {props.mangoWikiReducer.families &&
+                          props.mangoWikiReducer.families.map(i => (
+                            <SubMenu
+                              key={`family${i.id}`}
+                              title={
+                                <MyLink to={`/mangowiki/news/${i.id}`}>
+                                  {i.name}
+                                </MyLink>
+                              }
+                            >
+                              {props.mangoWikiReducer.genera &&
+                                props.mangoWikiReducer.genera.map(j => (
+                                  <SubMenu
+                                    key={`genus${j.id}`}
+                                    title={
+                                      <MyLink
+                                        to={`/mangowiki/news/${i.id}/${j.id}`}
+                                      >
+                                        {j.name}
+                                      </MyLink>
+                                    }
+                                  >
+                                    {props.mangoWikiReducer.genusFeatures &&
+                                      props.mangoWikiReducer.genusFeatures.map(
+                                        k => (
+                                          <MyMI key={`genusFeature${k.id}`}>
+                                            <MyLink
+                                              to={`/mangowiki/news/${i.id}/${
+                                                j.id
+                                              }/${k.id}`}
+                                            >
+                                              {k.name}
+                                            </MyLink>
+                                          </MyMI>
+                                        ),
+                                      )}
+                                  </SubMenu>
+                                ))}
+                            </SubMenu>
+                          ))}
+                      </Menu>
                     </div>
                   }
-                  mCategory="Test"
+                  mCategory="Mục lục"
+                  mCheck
                 />
-              </Sider>
-              <Content
-                style={{
-                  paddingLeft: 12,
-                  minHeight: 280,
-                  backgroundColor: '#fff',
-                }}
-              >
-                <Route path="/mangowiki/news" component={News} />
-                <Route path="/mangowiki/list" component={MyList} />
-              </Content>
-            </Layout>
+              </Col>
+              <Col span={19}>
+                <Route
+                  exact
+                  path="/mangowiki/news/new/:id"
+                  component={WikiNews}
+                />
+                <Route
+                  exact
+                  path="/mangowiki/news/:familyId"
+                  component={WikiNews}
+                />
+                <Route
+                  exact
+                  path="/mangowiki/news/:familyId/:genusId"
+                  component={WikiNews}
+                />
+                <Route
+                  exact
+                  path="/mangowiki/news/:familyId/:genusId/:genusFeatureId"
+                  component={WikiNews}
+                />
+                <Route exact path="/mangowiki/list" component={WikiList} />
+              </Col>
+            </Row>
           </div>
         }
         mCategories={props.homeReducer.categories}
@@ -93,6 +151,9 @@ MangoWiki.propTypes = {
   getSubCategories: PropTypes.func,
   getContacts: PropTypes.func,
   getMarks: PropTypes.func,
+  getFamilies: PropTypes.func,
+  getGenera: PropTypes.func,
+  getGenusFeatures: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -112,6 +173,15 @@ const mapDispatchToProps = dispatch => ({
   },
   getMarks: data => {
     dispatch(hAction.getMarks(data));
+  },
+  getFamilies: data => {
+    dispatch(action.getFamilies(data));
+  },
+  getGenera: data => {
+    dispatch(action.getGenera(data));
+  },
+  getGenusFeatures: data => {
+    dispatch(action.getGenusFeatures(data));
   },
 });
 

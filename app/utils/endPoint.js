@@ -16,3 +16,9 @@ export const API_ENDPOINT_GET_CONTACT = 'contacts';
 export const API_ENDPOINT_GET_HEADQUARTERS_CONTACT = 'contacts/headquarters';
 // mark
 export const API_ENDPOINT_GET_MARK = 'marks';
+// family
+export const API_ENDPOINT_GET_FAMILY = 'families';
+// genus
+export const API_ENDPOINT_GET_GENUS = 'genera';
+// genusFeature
+export const API_ENDPOINT_GET_GENUS_FEATURE = 'genusFeatures';
