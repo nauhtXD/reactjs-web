@@ -6,7 +6,6 @@ import { Helmet } from 'react-helmet';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 // import styled from 'styled-components';
-// import { Row, Col } from 'antd';
 
 import { Map, TileLayer, Marker, Popup } from 'react-leaflet';
 
@@ -27,6 +26,24 @@ import MyLayout from '../../components/MyLayout/Loadable';
 import TempCom from '../../components/TempCom/Loadable';
 
 const API_KEY = 'f9b8a21d57e020513b5c7e50113dd4ea';
+const bcrData = [
+  {
+    name: 'Nhà nông cần biết',
+    menu: [
+      {
+        link: '/Crops',
+        name: 'Kỹ thuật trồng trọt',
+      },
+      {
+        link: '/Crops',
+        name: 'Phòng trừ sâu bệnh',
+      },
+    ],
+  },
+  {
+    name: 'Thông tin thời tiết',
+  },
+];
 
 export function WeatherMap(props) {
   useInjectReducer({ key: 'weatherMap', reducer });
@@ -114,6 +131,7 @@ export function WeatherMap(props) {
         mSubCategories={props.homeReducer.subCategories}
         mMarks={props.homeReducer.marks}
         mContacts={props.homeReducer.contacts}
+        mBreadcrumbs={bcrData}
       />
     </div>
   );

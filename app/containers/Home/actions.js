@@ -34,9 +34,16 @@ export function getMarks(data) {
   };
 }
 
-export function getPosts(data) {
+export function getLastestPosts(data) {
   return {
-    type: types.GET_POST,
+    type: types.GET_LASTEST_POST,
+    payload: data,
+  };
+}
+
+export function getLastestPostsBSC(data) {
+  return {
+    type: types.GET_LASTEST_POST_BSC,
     payload: data,
   };
 }

@@ -7,3 +7,5 @@ export const getSubCategories = () =>
 export const getContacts = () =>
   apiConfig.get(endpoint.API_ENDPOINT_GET_HEADQUARTERS_CONTACT);
 export const getMarks = () => apiConfig.get(endpoint.API_ENDPOINT_GET_MARK);
+export const getLastestPosts = data =>
+  apiConfig.get(`${endpoint.API_ENDPOINT_GET_LASTEST_POST}/${data}`);

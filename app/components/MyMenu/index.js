@@ -85,7 +85,6 @@ const tailLayout = {
 };
 
 function MyMenu(props) {
-  const items = [];
   const [isVisible, setIsVisible] = useState(false);
   return (
     <div>
@@ -95,29 +94,24 @@ function MyMenu(props) {
         </NavItem>
         {props.mCategories &&
           props.mCategories.length > 0 &&
-          props.mCategories.map(i => {
-            {
-              items.push(
-                props.mSubCategories.some(j => j.categoryId === i.id) ? (
-                  <SubNav key={i.key} title={i.name}>
-                    {props.mSubCategories.map(
-                      j =>
-                        j.categoryId === i.id && (
-                          <SubItem key={j.key}>
-                            <MSubLink href={`/${j.key}`}>{j.name}</MSubLink>
-                          </SubItem>
-                        ),
-                    )}
-                  </SubNav>
-                ) : (
-                  <NavItem key={i.key}>
-                    <MLink href={`/${i.key}`}>{i.name}</MLink>
-                  </NavItem>
-                ),
-              );
-            }
-          })}
-        {items}
+          props.mCategories.map(i =>
+            props.mSubCategories.some(j => j.categoryId === i.id) ? (
+              <SubNav key={i.key} title={i.name}>
+                {props.mSubCategories.map(
+                  j =>
+                    j.categoryId === i.id && (
+                      <SubItem key={j.key}>
+                        <MSubLink href={`/${j.key}`}>{j.name}</MSubLink>
+                      </SubItem>
+                    ),
+                )}
+              </SubNav>
+            ) : (
+              <NavItem key={i.key}>
+                <MLink href={`/${i.key}`}>{i.name}</MLink>
+              </NavItem>
+            ),
+          )}
         <NavItem
           key="login"
           icon={<UIcon />}

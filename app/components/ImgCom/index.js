@@ -37,6 +37,7 @@ function ImgCom(props) {
         <div style={{ textAlign: 'center' }}>
           {myImg}
           <a href={props.mLink}>{props.mTitle}</a>
+          {props.mDay && <p>{props.mDay}</p>}
           {props.mContent && <p>{props.mContent}</p>}
         </div>
       )}

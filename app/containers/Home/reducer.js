@@ -15,8 +15,8 @@ export const initialState = {
   contacts: [],
   loadingMarks: false,
   marks: [],
-  loadingPosts: false,
-  posts: [],
+  loadingLastestPosts: false,
+  lastestPosts: [],
 };
 
 /* eslint-disable default-case, no-param-reassign */
@@ -67,16 +67,16 @@ const homeReducer = (state = initialState, action) =>
         draft.marks = [];
         draft.loadingMarks = false;
         break;
-      case types.GET_POST:
-        draft.loadingPosts = true;
+      case types.GET_LASTEST_POST:
+        draft.loadingLastestPosts = true;
         break;
-      case types.GET_POST_SUCCESS:
-        draft.posts = action.posts;
-        draft.loadingPosts = false;
+      case types.GET_LASTEST_POST_SUCCESS:
+        draft.lastestPosts = action.lastestPosts;
+        draft.loadingLastestPosts = false;
         break;
-      case types.GET_POST_FAIL:
-        draft.posts = [];
-        draft.loadingPosts = false;
+      case types.GET_LASTEST_POST_FAIL:
+        draft.lastestPosts = [];
+        draft.loadingLastestPosts = false;
         break;
     }
   });

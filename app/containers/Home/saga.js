@@ -127,17 +127,17 @@ export function* getMarkSaga({ payload }) {
   }
 }
 
-export function* getPostSaga({ payload }) {
+export function* getLastestPostSaga({ payload }) {
   try {
-    const response = yield call(api.getPosts, payload);
+    const response = yield call(api.getLastestPosts, payload);
     if (response && response.status === 200) {
       yield put({
-        type: types.GET_POST_SUCCESS,
-        posts: response.data.data,
+        type: types.GET_LASTEST_POST_SUCCESS,
+        lastestPosts: response.data.data,
       });
     } else {
       yield put({
-        type: types.GET_POST_FAIL,
+        type: types.GET_LASTEST_POST_FAIL,
         error: response && response.data ? response.data.messages : 'API Error',
       });
       notification.error({
@@ -148,7 +148,7 @@ export function* getPostSaga({ payload }) {
     }
   } catch (err) {
     yield put({
-      type: types.GET_POST_FAIL,
+      type: types.GET_LASTEST_POST_FAIL,
       error: err,
     });
     notification.error({
@@ -164,6 +164,6 @@ export default function* rootSaga() {
     takeLatest(types.GET_SUB_CATEGORY, getSubCategorySaga),
     takeLatest(types.GET_CONTACT, getContactSaga),
     takeLatest(types.GET_MARK, getMarkSaga),
-    takeLatest(types.GET_POST, getPostSaga),
+    takeLatest(types.GET_LASTEST_POST, getLastestPostSaga),
   ]);
 }

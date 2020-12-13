@@ -23,6 +23,7 @@ function MyLayout(props) {
       <Header
         mCategories={props.mCategories}
         mSubCategories={props.mSubCategories}
+        mBreadcrumbs={props.mBreadcrumbs}
       />
       <div style={{ width: '90%', margin: 'auto' }}>
         <Layout style={{ backgroundColor: '#fff' }}>
@@ -46,6 +47,7 @@ MyLayout.propTypes = {
   mMarks: PropTypes.any,
   mContacts: PropTypes.any,
   mCheck: PropTypes.bool,
+  mBreadcrumbs: PropTypes.any,
 };
 
 export default memo(MyLayout);

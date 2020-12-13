@@ -7,8 +7,10 @@
 import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { Carousel, Breadcrumb, Row, Col } from 'antd';
+import { Carousel, Breadcrumb, Row, Col, Menu } from 'antd';
 import moment from 'moment';
+import 'moment/locale/vi';
+import { HomeOutlined } from '@ant-design/icons';
 // import { FormattedMessage } from 'react-intl';
 // import messages from './messages';
 import MyMenu from '../MyMenu/Loadable';
@@ -20,7 +22,13 @@ const ContentStyle = styled.h3`
   textalign: center;
   background: #364d79;
 `;
+const MyBreadcrumb = styled(Breadcrumb)`
+  .anticon svg {
+    vertical-align: baseline !important;
+  }
+`;
 
+moment().locale('vi');
 function Header(props) {
   return (
     <div style={{ width: '90%', margin: 'auto' }}>
@@ -45,11 +53,37 @@ function Header(props) {
         </Carousel>
         <Row>
           <Col span={20}>
-            <Breadcrumb>
-              <Breadcrumb.Item href="">Home</Breadcrumb.Item>
-              <Breadcrumb.Item href="">Application List</Breadcrumb.Item>
-              <Breadcrumb.Item>Application</Breadcrumb.Item>
-            </Breadcrumb>
+            <MyBreadcrumb separator=">">
+              <Breadcrumb.Item href="/">
+                <HomeOutlined />
+              </Breadcrumb.Item>
+              {props.mBreadcrumbs &&
+                props.mBreadcrumbs.map(i => [
+                  i.menu && (
+                    <Breadcrumb.Item
+                      overlay={
+                        <Menu>
+                          {i.menu.map(j => (
+                            <Menu.Item>
+                              <a href={j.link}>{j.name}</a>
+                            </Menu.Item>
+                          ))}
+                        </Menu>
+                      }
+                    >
+                      {i.name}
+                    </Breadcrumb.Item>
+                  ),
+                  !i.menu && !i.link && (
+                    <Breadcrumb.Item>{i.name}</Breadcrumb.Item>
+                  ),
+                  !i.menu && i.link && (
+                    <Breadcrumb.Item>
+                      <a href={i.link}>{i.name}</a>
+                    </Breadcrumb.Item>
+                  ),
+                ])}
+            </MyBreadcrumb>
           </Col>
           <Col span={4} style={{ textAlign: 'center' }}>
             <p
@@ -72,6 +106,7 @@ function Header(props) {
 Header.propTypes = {
   mCategories: PropTypes.any,
   mSubCategories: PropTypes.any,
+  mBreadcrumbs: PropTypes.any,
 };
 
 export default memo(Header);

@@ -6,7 +6,7 @@ import { Helmet } from 'react-helmet';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import PropTypes from 'prop-types';
-// import styled from 'styled-components';
+import styled from 'styled-components';
 // import { useInjectSaga } from 'utils/injectSaga';
 // import { useInjectReducer } from 'utils/injectReducer';
 import { Row, Col, Image } from 'antd';
@@ -17,6 +17,14 @@ import MyLayout from '../../components/MyLayout/Loadable';
 import ImgCom from '../../components/ImgCom/Loadable';
 import TitleCom from '../../components/TitleCom/Loadable';
 import * as action from './actions';
+
+const MyDiv = styled.div`
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`;
 
 // #region  row
 const row = [];
@@ -95,12 +103,17 @@ for (let i = 0; i < 3; i++) {
 }
 // #endregion
 
+function formatDate(string) {
+  return new Date(string).toLocaleDateString();
+}
+
 export function Home(props) {
   useEffect(() => {
     props.getCategories();
     props.getSubCategories();
     props.getContacts();
     props.getMarks();
+    props.getLastestPosts(5);
   }, []);
   return (
     <div>
@@ -115,29 +128,60 @@ export function Home(props) {
               mCategory="Tin tức - Sự kiện"
               mCont={
                 <div>
-                  <Row gutter={16} style={{ marginBottom: '15px' }}>
-                    <Col span={16}>
-                      <Image
-                        height={300}
-                        src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
-                      />
-                    </Col>
-                    <Col span={8}>
-                      <a href=".">Title</a>
-                      <p>dd/MM/yyyy</p>
-                      <p>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                        Aenean a eleifend lacus. Duis condimentum molestie leo,
-                        a scelerisque neque eleifend eu. Quisque ullamcorper
-                        mauris dui, scelerisque commodo nisi blandit sit amet.
-                        Pellentesque habitant morbi tristique senectus et netus
-                        et malesuada fames ac turpis egestas. Nullam faucibus
-                        pharetra porta. Pellentesque sollicitudin eget dui
-                        vitae.
-                      </p>
-                    </Col>
+                  {props.homeReducer.lastestPosts[0] && (
+                    <Row gutter={16} style={{ marginBottom: '15px' }}>
+                      <Col span={16}>
+                        <Image
+                          height={300}
+                          src={props.homeReducer.lastestPosts[0].img}
+                        />
+                      </Col>
+                      <Col span={8}>
+                        <a
+                          href={`/news/${props.homeReducer.lastestPosts[0].id}`}
+                        >
+                          {props.homeReducer.lastestPosts[0].title}
+                        </a>
+                        <p>
+                          {formatDate(
+                            props.homeReducer.lastestPosts[0].publishAt,
+                          )}
+                        </p>
+                        <MyDiv
+                          // eslint-disable-next-line react/no-danger
+                          dangerouslySetInnerHTML={{
+                            __html: props.homeReducer.lastestPosts[0].content,
+                          }}
+                        />
+                      </Col>
+                    </Row>
+                  )}
+                  <Row>
+                    {props.homeReducer.lastestPosts &&
+                      props.homeReducer.lastestPosts.map(
+                        (i, index) =>
+                          index !== 0 && (
+                            <Col key={i.id} span={6}>
+                              <ImgCom
+                                mStyle="center"
+                                mWidth="150px"
+                                mSrc={i.img}
+                                mLink={`/news/${i.id}`}
+                                mTitle={i.title}
+                                mDay={formatDate(i.publishAt)}
+                                mContent={
+                                  <MyDiv
+                                    // eslint-disable-next-line react/no-danger
+                                    dangerouslySetInnerHTML={{
+                                      __html: i.content,
+                                    }}
+                                  />
+                                }
+                              />
+                            </Col>
+                          ),
+                      )}
                   </Row>
-                  <Row>{row}</Row>
                 </div>
               }
             />
@@ -168,7 +212,7 @@ Home.propTypes = {
   getSubCategories: PropTypes.func,
   getContacts: PropTypes.func,
   getMarks: PropTypes.func,
-  getPosts: PropTypes.func,
+  getLastestPosts: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -188,8 +232,8 @@ const mapDispatchToProps = dispatch => ({
   getMarks: data => {
     dispatch(action.getMarks(data));
   },
-  getPosts: data => {
-    dispatch(action.getPosts(data));
+  getLastestPosts: data => {
+    dispatch(action.getLastestPosts(data));
   },
 });
 

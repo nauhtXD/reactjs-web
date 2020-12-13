@@ -7,6 +7,7 @@ export const API_ENDPOINT_GET_CATEGORY = 'categories';
 export const API_ENDPOINT_GET_SUB_CATEGORY = 'subcategories';
 // new, post
 export const API_ENDPOINT_GET_POST = 'posts';
+export const API_ENDPOINT_GET_LASTEST_POST = 'posts/lastest-posts';
 // document
 export const API_ENDPOINT_GET_DOCUMENT = 'documents';
 // crop
