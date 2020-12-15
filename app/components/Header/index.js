@@ -64,7 +64,7 @@ function Header(props) {
                       overlay={
                         <Menu>
                           {i.menu.map(j => (
-                            <Menu.Item>
+                            <Menu.Item key={i.name}>
                               <a href={j.link}>{j.name}</a>
                             </Menu.Item>
                           ))}
@@ -75,10 +75,10 @@ function Header(props) {
                     </Breadcrumb.Item>
                   ),
                   !i.menu && !i.link && (
-                    <Breadcrumb.Item>{i.name}</Breadcrumb.Item>
+                    <Breadcrumb.Item key={i.name}>{i.name}</Breadcrumb.Item>
                   ),
                   !i.menu && i.link && (
-                    <Breadcrumb.Item>
+                    <Breadcrumb.Item key={i.name}>
                       <a href={i.link}>{i.name}</a>
                     </Breadcrumb.Item>
                   ),
