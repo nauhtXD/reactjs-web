@@ -9,6 +9,4 @@ export const getContacts = () =>
   apiConfig.get(endpoint.API_ENDPOINT_GET_HEADQUARTERS_CONTACT);
 export const getMarks = () => apiConfig.get(endpoint.API_ENDPOINT_GET_MARK);
 export const getWeather = data =>
-  apiConfig2.get(
-    `weather?lat=${data.lat}&lon=${data.lon}&lang=vi&appid=${data.key}`,
-  );
+  apiConfig2.get(`group?id=${data.citiesId}&lang=vi&appid=${data.key}`);

@@ -10,18 +10,16 @@ import { compose } from 'redux';
 import {
   Map,
   TileLayer,
-  Marker,
-  Popup,
+  LayerGroup,
   GeoJSON,
   LayersControl,
-  Rectangle,
-  Pane,
 } from 'react-leaflet';
+
+import Marker from 'react-leaflet-enhanced-marker';
 
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
 
-import kToC from 'kelvin-to-celsius';
 import makeSelect from './selectors';
 import reducer from './reducer';
 import saga from './saga';
@@ -33,8 +31,10 @@ import * as hAction from '../Home/actions';
 // import messages from './messages';
 import MyLayout from '../../components/MyLayout/Loadable';
 import TempCom from '../../components/TempCom/Loadable';
+import EnhancedMarker from '../../components/EnhancedMarker/index';
 
 const API_KEY = 'f9b8a21d57e020513b5c7e50113dd4ea';
+
 const bcrData = [
   {
     name: 'Nhà nông cần biết',
@@ -53,6 +53,7 @@ const bcrData = [
     name: 'Thông tin thời tiết',
   },
 ];
+
 const mData = [
   {
     type: 'FeatureCollection',
@@ -127,30 +128,54 @@ const mData = [
     ],
   },
 ];
-const bounds = [
-  [10.898227673656336, 105.06098693406797],
-  [10.830793895755564, 105.1227850291048],
-];
+
+const cityList = [];
+const dB = [];
 
 export function WeatherMap(props) {
   useInjectReducer({ key: 'weatherMap', reducer });
   useInjectSaga({ key: 'weatherMap', saga });
-  const myData = {
-    lat: 10.898227673656336,
-    lon: 105.06098693406797,
-    key: API_KEY,
-  };
   useEffect(() => {
     props.getCategories();
     props.getSubCategories();
     props.getContacts();
     props.getMarks();
-    props.getWeather(myData);
   }, []);
-  const handleClick = (lat, lon) => {
-    const mData = { lat, lon, key: API_KEY };
-    props.getWeather(mData);
-  };
+  if (props.homeReducer.contacts && props.homeReducer.contacts.province) {
+    props.homeReducer.contacts.map(i =>
+      cityList.push([
+        i.province.weatherId,
+        i.province.latitude,
+        i.province.longitude,
+      ]),
+    );
+    const { weatherId } = cityList;
+    console.log(weatherId);
+    // const wD = {
+    //   weatherId,
+    //   key: API_KEY,
+    // };
+    // props.getWeather(wD);
+  }
+  // if (props.homeReducer.marks && props.homeReducer.marks.length > 0) {
+  //   props.homeReducer.marks.map(i =>
+  //     dB.push(
+  //       <Marker
+  //         key={i.id}
+  //         icon={
+  //           <EnhancedMarker
+  //             mName={i.contact && i.contact.name}
+  //             mDescription={i.description}
+  //             mIcon={i.icon}
+  //             mTemp={i.temp}
+  //           />
+  //         }
+  //         position={[i.latitude, i.longitude]}
+  //       />,
+  //     ),
+  //   );
+  // }
+
   return (
     <div>
       <Helmet>
@@ -172,7 +197,7 @@ export function WeatherMap(props) {
                 attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               />
-              {props.homeReducer.marks &&
+              {/* {props.homeReducer.marks &&
                 props.homeReducer.marks.length > 0 &&
                 props.homeReducer.marks.map(i => (
                   <Marker
@@ -214,21 +239,14 @@ export function WeatherMap(props) {
                       <p>dich benh</p>
                     </Popup>
                   </Marker>
-                ))}
+                ))} */}
               <LayersControl.BaseLayer checked name="Thời tiết">
                 <TileLayer
                   url={`https://tile.openweathermap.org/map/temp_new/{z}/{x}/{y}.png?appid=${API_KEY}`}
                 />
               </LayersControl.BaseLayer>
               <LayersControl.BaseLayer name="Dịch bệnh">
-                {props.weatherMapReducer.weather && (
-                  <Pane>
-                    <Rectangle
-                      bounds={bounds}
-                      pathOptions={{ color: 'yellow' }}
-                    />
-                  </Pane>
-                )}
+                <LayerGroup>{dB}</LayerGroup>
               </LayersControl.BaseLayer>
               <TempCom />
               <GeoJSON data={mData} />

@@ -7,10 +7,9 @@ export function* getWeatherSaga({ payload }) {
   try {
     const response = yield call(api.getWeather, payload);
     if (response && response.status === 200) {
-      const mData = { ...response.data.weather[0], ...response.data.main };
       yield put({
         type: types.GET_WEATHER_SUCCESS,
-        weather: mData,
+        weather: response.data.list,
       });
     } else {
       yield put({
