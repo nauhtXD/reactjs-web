@@ -95,7 +95,7 @@ export function News(props) {
     props.getPost(match.params.id);
     props.getCategories();
     props.getSubCategories();
-    props.getContacts();
+    props.getHeadquarters();
     props.getMarks();
   }, []);
   return (
@@ -179,7 +179,7 @@ export function News(props) {
           mCategories={props.homeReducer.categories}
           mSubCategories={props.homeReducer.subCategories}
           mMarks={props.homeReducer.marks}
-          mContacts={props.homeReducer.contacts}
+          mContacts={props.homeReducer.headquarters}
         />
       </div>
     </div>
@@ -192,7 +192,7 @@ News.propTypes = {
   getPost: PropTypes.func,
   getCategories: PropTypes.func,
   getSubCategories: PropTypes.func,
-  getContacts: PropTypes.func,
+  getHeadquarters: PropTypes.func,
   getMarks: PropTypes.func,
 };
 
@@ -211,8 +211,8 @@ const mapDispatchToProps = dispatch => ({
   getSubCategories: data => {
     dispatch(hAction.getSubCategories(data));
   },
-  getContacts: data => {
-    dispatch(hAction.getContacts(data));
+  getHeadquarters: data => {
+    dispatch(hAction.getHeadquarters(data));
   },
   getMarks: data => {
     dispatch(hAction.getMarks(data));

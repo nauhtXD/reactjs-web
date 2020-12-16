@@ -65,17 +65,17 @@ export function* getSubCategorySaga({ payload }) {
   }
 }
 
-export function* getContactSaga({ payload }) {
+export function* getHeadquartersContactSaga({ payload }) {
   try {
-    const response = yield call(api.getContacts, payload);
+    const response = yield call(api.getHeadquarters, payload);
     if (response && response.status === 200) {
       yield put({
-        type: types.GET_CONTACT_SUCCESS,
-        contacts: response.data.data,
+        type: types.GET_HEADQUARTERS_CONTACT_SUCCESS,
+        headquarters: response.data.data,
       });
     } else {
       yield put({
-        type: types.GET_CONTACT_FAIL,
+        type: types.GET_HEADQUARTERS_CONTACT_FAIL,
         error: response && response.data ? response.data.messages : 'API Error',
       });
       notification.error({
@@ -86,7 +86,7 @@ export function* getContactSaga({ payload }) {
     }
   } catch (err) {
     yield put({
-      type: types.GET_CONTACT_FAIL,
+      type: types.GET_HEADQUARTERS_CONTACT_FAIL,
       error: err,
     });
     notification.error({
@@ -162,7 +162,7 @@ export default function* rootSaga() {
   yield all([
     takeLatest(types.GET_CATEGORY, getCategorySaga),
     takeLatest(types.GET_SUB_CATEGORY, getSubCategorySaga),
-    takeLatest(types.GET_CONTACT, getContactSaga),
+    takeLatest(types.GET_HEADQUARTERS_CONTACT, getHeadquartersContactSaga),
     takeLatest(types.GET_MARK, getMarkSaga),
     takeLatest(types.GET_LASTEST_POST, getLastestPostSaga),
   ]);

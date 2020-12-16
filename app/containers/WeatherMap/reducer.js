@@ -2,8 +2,10 @@ import produce from 'immer';
 import * as types from './constants';
 
 export const initialState = {
-  loadingWeather: false,
-  weather: [],
+  loadingWeathers: false,
+  weathers: [],
+  loadingContacts: false,
+  contacts: [],
 };
 
 /* eslint-disable default-case, no-param-reassign */
@@ -11,15 +13,26 @@ const weatherMapReducer = (state = initialState, action) =>
   produce(state, draft => {
     switch (action.type) {
       case types.GET_WEATHER:
-        draft.loadingWeather = true;
+        draft.loadingWeathers = true;
         break;
       case types.GET_WEATHER_SUCCESS:
-        draft.loadingWeather = false;
-        draft.weather = action.weather;
+        draft.loadingWeathers = false;
+        draft.weathers = action.weathers;
         break;
       case types.GET_WEATHER_FAIL:
-        draft.loadingWeather = false;
-        draft.weather = [];
+        draft.loadingWeathers = false;
+        draft.weathers = [];
+        break;
+      case types.GET_CONTACT:
+        draft.loadingContacts = true;
+        break;
+      case types.GET_CONTACT_SUCCESS:
+        draft.loadingContacts = false;
+        draft.contacts = action.contacts;
+        break;
+      case types.GET_CONTACT_FAIL:
+        draft.loadingContacts = false;
+        draft.contacts = [];
         break;
     }
   });

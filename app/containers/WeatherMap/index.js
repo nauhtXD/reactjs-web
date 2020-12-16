@@ -5,6 +5,7 @@ import { Helmet } from 'react-helmet';
 // import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
+import axios from 'axios';
 // import styled from 'styled-components';
 
 import {
@@ -19,6 +20,7 @@ import Marker from 'react-leaflet-enhanced-marker';
 
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
+import * as endpoint from 'utils/endPoint';
 
 import makeSelect from './selectors';
 import reducer from './reducer';
@@ -54,82 +56,9 @@ const bcrData = [
   },
 ];
 
-const mData = [
-  {
-    type: 'FeatureCollection',
-    features: [
-      {
-        type: 'Feature',
-        geometry: {
-          type: 'Polygon',
-          coordinates: [
-            [
-              [105.0883255, 10.76043224],
-              [105.09790039, 10.76532078],
-              [105.10116577, 10.74414539],
-              [105.11474609, 10.71973896],
-              [105.12457275, 10.70978546],
-              [105.12782288, 10.72404003],
-              [105.13466644, 10.74418354],
-              [105.13716125, 10.75536728],
-              [105.13541412, 10.76647568],
-              [105.13954926, 10.77124882],
-              [105.16007233, 10.7814436],
-              [105.15827942, 10.8093214],
-              [105.15106201, 10.89872456],
-              [105.12864685, 10.90541458],
-              [105.13304138, 10.91682816],
-              [105.13226318, 10.92151546],
-              [105.10920715, 10.9176178],
-              [105.10006714, 10.9216032],
-              [105.11470032, 10.94008255],
-              [105.11812592, 10.94891644],
-              [105.11765289, 10.96028233],
-              [105.1131897, 10.9620676],
-              [105.1036911, 10.95687008],
-              [105.09247589, 10.95463848],
-              [105.08377838, 10.9560957],
-              [105.08013916, 10.95305061],
-              [105.07835388, 10.93482494],
-              [105.06811523, 10.937397],
-              [105.05272675, 10.92765522],
-              [105.05577087, 10.9158535],
-              [105.04315948, 10.9105978],
-              [105.04736328, 10.90187263],
-              [105.04132843, 10.8968277],
-              [105.02843475, 10.89156055],
-              [105.03429413, 10.8696146],
-              [105.05445862, 10.82912254],
-              [105.05817413, 10.82019138],
-              [105.05581665, 10.80400276],
-              [105.06224823, 10.79805946],
-              [105.06388092, 10.78098106],
-              [105.07551575, 10.77719688],
-              [105.0883255, 10.76043224],
-            ],
-          ],
-        },
-        properties: {
-          GID_0: 'VNM',
-          NAME_0: 'Vietnam',
-          GID_1: 'VNM.1_1',
-          NAME_1: 'An Giang',
-          NL_NAME_1: '',
-          GID_2: 'VNM.1.1_1',
-          NAME_2: 'An Phú',
-          VARNAME_2: 'An Phu',
-          NL_NAME_2: '',
-          TYPE_2: 'Huyện',
-          ENGTYPE_2: 'District',
-          CC_2: '',
-          HASC_2: 'VN.TT.AL',
-        },
-      },
-    ],
-  },
-];
-
-const cityList = [];
+let cityList = [];
+let llCityList = [];
+let geoCityList = [];
 const dB = [];
 
 export function WeatherMap(props) {
@@ -138,44 +67,32 @@ export function WeatherMap(props) {
   useEffect(() => {
     props.getCategories();
     props.getSubCategories();
-    props.getContacts();
+    props.getHeadquarters();
     props.getMarks();
+    axios
+      .get(`http://localhost:8080/api/${endpoint.API_ENDPOINT_GET_CITY_LIST}`)
+      .then(res => {
+        const wData = res.data.data;
+        cityList = [];
+        llCityList = [];
+        geoCityList = [];
+        wData.map(
+          i =>
+            cityList.indexOf(i.province.weatherId) === -1 &&
+            cityList.push(i.province.weatherId) &&
+            llCityList.push({
+              latitude: i.province.latitude,
+              longitude: i.province.longitude,
+            }) &&
+            geoCityList.push(i.province.geo),
+        );
+        props.getWeathers({
+          data: cityList,
+          key: API_KEY,
+        });
+      });
   }, []);
-  if (props.homeReducer.contacts && props.homeReducer.contacts.province) {
-    props.homeReducer.contacts.map(i =>
-      cityList.push([
-        i.province.weatherId,
-        i.province.latitude,
-        i.province.longitude,
-      ]),
-    );
-    const { weatherId } = cityList;
-    console.log(weatherId);
-    // const wD = {
-    //   weatherId,
-    //   key: API_KEY,
-    // };
-    // props.getWeather(wD);
-  }
-  // if (props.homeReducer.marks && props.homeReducer.marks.length > 0) {
-  //   props.homeReducer.marks.map(i =>
-  //     dB.push(
-  //       <Marker
-  //         key={i.id}
-  //         icon={
-  //           <EnhancedMarker
-  //             mName={i.contact && i.contact.name}
-  //             mDescription={i.description}
-  //             mIcon={i.icon}
-  //             mTemp={i.temp}
-  //           />
-  //         }
-  //         position={[i.latitude, i.longitude]}
-  //       />,
-  //     ),
-  //   );
-  // }
-
+  console.log(geoCityList);
   return (
     <div>
       <Helmet>
@@ -246,17 +163,34 @@ export function WeatherMap(props) {
                 />
               </LayersControl.BaseLayer>
               <LayersControl.BaseLayer name="Dịch bệnh">
-                <LayerGroup>{dB}</LayerGroup>
+                <LayerGroup>
+                  {props.weatherMapReducer.weathers[0] &&
+                    props.weatherMapReducer.weathers.map((i, index) => (
+                      <Marker
+                        key={i.id}
+                        icon={
+                          <EnhancedMarker
+                            mDescription={i.weather[0].description}
+                            mIcon={i.weather[0].icon}
+                            mTemp={i.main.temp}
+                          />
+                        }
+                        position={[
+                          llCityList[index].latitude,
+                          llCityList[index].longitude,
+                        ]}
+                      />
+                    ))}
+                </LayerGroup>
               </LayersControl.BaseLayer>
-              <TempCom />
-              <GeoJSON data={mData} />
+              {geoCityList.length > 0 && <GeoJSON data={geoCityList} />}
             </LayersControl>
           </Map>
         }
         mCategories={props.homeReducer.categories}
         mSubCategories={props.homeReducer.subCategories}
         mMarks={props.homeReducer.marks}
-        mContacts={props.homeReducer.contacts}
+        mContacts={props.homeReducer.headquarters}
         mBreadcrumbs={bcrData}
       />
     </div>
@@ -266,10 +200,11 @@ export function WeatherMap(props) {
 WeatherMap.propTypes = {
   homeReducer: PropTypes.any,
   weatherMapReducer: PropTypes.any,
-  getWeather: PropTypes.func,
+  getWeathers: PropTypes.func,
+  getContacts: PropTypes.func,
   getCategories: PropTypes.func,
   getSubCategories: PropTypes.func,
-  getContacts: PropTypes.func,
+  getHeadquarters: PropTypes.func,
   getMarks: PropTypes.func,
 };
 
@@ -279,8 +214,11 @@ const mapStateToProps = createStructuredSelector({
 });
 
 const mapDispatchToProps = dispatch => ({
-  getWeather: data => {
-    dispatch(action.getWeather(data));
+  getWeathers: data => {
+    dispatch(action.getWeathers(data));
+  },
+  getContacts: data => {
+    dispatch(action.getContacts(data));
   },
   getCategories: data => {
     dispatch(hAction.getCategories(data));
@@ -288,8 +226,8 @@ const mapDispatchToProps = dispatch => ({
   getSubCategories: data => {
     dispatch(hAction.getSubCategories(data));
   },
-  getContacts: data => {
-    dispatch(hAction.getContacts(data));
+  getHeadquarters: data => {
+    dispatch(hAction.getHeadquarters(data));
   },
   getMarks: data => {
     dispatch(hAction.getMarks(data));

@@ -15,6 +15,7 @@ export const API_ENDPOINT_GET_CROP = 'crops';
 // contact
 export const API_ENDPOINT_GET_CONTACT = 'contacts';
 export const API_ENDPOINT_GET_HEADQUARTERS_CONTACT = 'contacts/headquarters';
+export const API_ENDPOINT_GET_CITY_LIST = 'contacts/city-list';
 // mark
 export const API_ENDPOINT_GET_MARK = 'marks';
 // family

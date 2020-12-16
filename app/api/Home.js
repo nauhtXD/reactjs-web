@@ -4,7 +4,7 @@ export const getCategories = () =>
   apiConfig.get(endpoint.API_ENDPOINT_GET_CATEGORY);
 export const getSubCategories = () =>
   apiConfig.get(endpoint.API_ENDPOINT_GET_SUB_CATEGORY);
-export const getContacts = () =>
+export const getHeadquarters = () =>
   apiConfig.get(endpoint.API_ENDPOINT_GET_HEADQUARTERS_CONTACT);
 export const getMarks = () => apiConfig.get(endpoint.API_ENDPOINT_GET_MARK);
 export const getLastestPosts = data =>

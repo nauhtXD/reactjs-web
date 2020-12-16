@@ -8,6 +8,7 @@ import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import kToC from 'kelvin-to-celsius';
+import moment from 'moment';
 
 // import { FormattedMessage } from 'react-intl';
 // import messages from './messages';
@@ -21,6 +22,12 @@ const MyStyle = styled.div`
   background-image: linear-gradient(to bottom, #feb020, #ffd05c);
 `;
 
+const MyP = styled.p`
+  font-size: 10px;
+  margin: 0;
+  padding: 0;
+`;
+
 function EnhancedMarker(props) {
   return (
     <MyStyle>
@@ -29,14 +36,15 @@ function EnhancedMarker(props) {
         <p>{props.mDescription}</p>
       </div>
       <img
-        src={`http://openweathermap.org/img/wn/${props.mIcon}@2x.png`}
+        src={`http://openweathermap.org/img/wn/${props.mIcon}.png`}
         alt="example"
       />
       <div>
-        <p>
+        <MyP>
           {props.mTemp && kToC(props.mTemp)}
           °C
-        </p>
+        </MyP>
+        <MyP>{moment().format('DD/MM/YYYY')}</MyP>
       </div>
     </MyStyle>
   );
