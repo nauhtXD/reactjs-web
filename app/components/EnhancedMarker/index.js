@@ -32,8 +32,8 @@ function EnhancedMarker(props) {
   return (
     <MyStyle>
       <div>
-        <p>{props.mName}</p>
-        <p>{props.mDescription}</p>
+        <MyP>{props.mName}</MyP>
+        <MyP>{props.mDescription}</MyP>
       </div>
       <img
         src={`http://openweathermap.org/img/wn/${props.mIcon}.png`}

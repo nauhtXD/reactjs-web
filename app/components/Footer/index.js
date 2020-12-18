@@ -13,6 +13,7 @@ import PropTypes from 'prop-types';
 // import { FormattedMessage } from 'react-intl';
 // import messages from './messages';
 
+const mZoom = 15;
 function Footer(props) {
   return (
     <div style={{ marginTop: '20px', backgroundColor: '#036921' }}>
@@ -26,8 +27,13 @@ function Footer(props) {
                 float: 'right',
                 margin: '10px auto',
               }}
-              center={[10.806812, 106.628666]}
-              zoom={15}
+              center={
+                props.mContacts.province && [
+                  props.mContacts.province.latitude,
+                  props.mContacts.province.longitude,
+                ]
+              }
+              zoom={mZoom}
               scrollWheelZoom={false}
             >
               <TileLayer

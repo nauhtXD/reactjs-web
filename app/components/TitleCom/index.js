@@ -34,7 +34,7 @@ const OSDivNoPadding = styled(Card)`
 function TitleCom(props) {
   return (
     <div>
-      {!props.mCheck && (
+      {!props.mCheck ? (
         <OSDiv title={props.mCategory}>
           {props.mCont}
           {props.mLink && (
@@ -43,8 +43,7 @@ function TitleCom(props) {
             </div>
           )}
         </OSDiv>
-      )}
-      {props.mCheck && (
+      ) : (
         <OSDivNoPadding title={props.mCategory}>
           {props.mCont}
           {props.mLink && (

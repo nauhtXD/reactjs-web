@@ -1,4 +1,4 @@
-import React, { memo, useEffect } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
@@ -14,9 +14,12 @@ import {
   LayerGroup,
   GeoJSON,
   LayersControl,
+  Marker,
+  Popup,
 } from 'react-leaflet';
 
-import Marker from 'react-leaflet-enhanced-marker';
+import moment from 'moment';
+import EMarker from 'react-leaflet-enhanced-marker';
 
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
@@ -34,8 +37,10 @@ import * as hAction from '../Home/actions';
 import MyLayout from '../../components/MyLayout/Loadable';
 import TempCom from '../../components/TempCom/Loadable';
 import EnhancedMarker from '../../components/EnhancedMarker/index';
+import WeatherHistory from '../../components/WeatherHistory/index';
 
 const API_KEY = 'f9b8a21d57e020513b5c7e50113dd4ea';
+const mZoom = 10;
 
 const bcrData = [
   {
@@ -56,26 +61,26 @@ const bcrData = [
   },
 ];
 
-let cityList = [];
-let llCityList = [];
-let geoCityList = [];
+const cityList = [];
+const llCityList = [];
+const geoCityList = [];
+
 const dB = [];
 
 export function WeatherMap(props) {
   useInjectReducer({ key: 'weatherMap', reducer });
   useInjectSaga({ key: 'weatherMap', saga });
+  const [history5D, setHis] = useState([]);
   useEffect(() => {
     props.getCategories();
     props.getSubCategories();
     props.getHeadquarters();
     props.getMarks();
+    props.getContacts();
     axios
       .get(`http://localhost:8080/api/${endpoint.API_ENDPOINT_GET_CITY_LIST}`)
       .then(res => {
         const wData = res.data.data;
-        cityList = [];
-        llCityList = [];
-        geoCityList = [];
         wData.map(
           i =>
             cityList.indexOf(i.province.weatherId) === -1 &&
@@ -92,7 +97,22 @@ export function WeatherMap(props) {
         });
       });
   }, []);
-  console.log(geoCityList);
+
+  const handleClick = (lat, lon) => {
+    setHis([]);
+    for (let i = 5; i > 0; i -= 1) {
+      axios
+        .get(
+          `https://api.openweathermap.org/data/2.5/onecall/timemachine?lat=${lat}&lon=${lon}&dt=${moment()
+            .subtract(i, 'days')
+            .unix()}&lang=vi&appid=${API_KEY}`,
+        )
+        .then(res => {
+          setHis(j => [...j, res.data.current]);
+        });
+    }
+  };
+
   return (
     <div>
       <Helmet>
@@ -101,91 +121,83 @@ export function WeatherMap(props) {
       </Helmet>
       <MyLayout
         mCont={
-          <Map
-            style={{
-              height: '600px',
-              width: '100%',
-            }}
-            center={[10.806812, 106.628666]}
-            zoom={10}
-          >
-            <LayersControl position="topright">
-              <TileLayer
-                attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-              />
-              {/* {props.homeReducer.marks &&
-                props.homeReducer.marks.length > 0 &&
-                props.homeReducer.marks.map(i => (
-                  <Marker
-                    key={i.id}
-                    position={[i.latitude, i.longitude]}
-                    onclick={() => handleClick(i.latitude, i.longitude)}
-                  >
-                    <Popup>
-                      {props.weatherMapReducer.weather && (
-                        <div
-                          style={{
-                            width: '220px',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            backgroundImage:
-                              'linear-gradient(to bottom,#feb020,#ffd05c)',
-                          }}
-                        >
-                          <div>
-                            <p>London, GB</p>
-                            <p>{props.weatherMapReducer.weather.description}</p>
-                          </div>
-                          <img
-                            src={`http://openweathermap.org/img/wn/${
-                              props.weatherMapReducer.weather.icon
-                            }@2x.png`}
-                            alt="example"
-                          />
-                          <div>
-                            <p>
-                              {props.weatherMapReducer.weather.temp &&
-                                kToC(props.weatherMapReducer.weather.temp)}
-                              °C
-                            </p>
-                          </div>
-                        </div>
-                      )}
-                      <p>dich benh</p>
-                    </Popup>
-                  </Marker>
-                ))} */}
-              <LayersControl.BaseLayer checked name="Thời tiết">
+          <div>
+            <Map
+              style={{
+                height: '400px',
+                width: '100%',
+              }}
+              center={
+                props.homeReducer.headquarters.province && [
+                  props.homeReducer.headquarters.province.latitude,
+                  props.homeReducer.headquarters.province.longitude,
+                ]
+              }
+              zoom={mZoom}
+            >
+              <LayersControl position="topright">
                 <TileLayer
-                  url={`https://tile.openweathermap.org/map/temp_new/{z}/{x}/{y}.png?appid=${API_KEY}`}
+                  attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
-              </LayersControl.BaseLayer>
-              <LayersControl.BaseLayer name="Dịch bệnh">
-                <LayerGroup>
-                  {props.weatherMapReducer.weathers[0] &&
-                    props.weatherMapReducer.weathers.map((i, index) => (
-                      <Marker
-                        key={i.id}
-                        icon={
-                          <EnhancedMarker
-                            mDescription={i.weather[0].description}
-                            mIcon={i.weather[0].icon}
-                            mTemp={i.main.temp}
-                          />
-                        }
-                        position={[
-                          llCityList[index].latitude,
-                          llCityList[index].longitude,
-                        ]}
-                      />
-                    ))}
-                </LayerGroup>
-              </LayersControl.BaseLayer>
-              {geoCityList.length > 0 && <GeoJSON data={geoCityList} />}
-            </LayersControl>
-          </Map>
+                {props.weatherMapReducer.contacts &&
+                  props.weatherMapReducer.contacts.map(i => (
+                    <Marker
+                      key={i.id}
+                      position={[i.province.latitude, i.province.longitude]}
+                    >
+                      <Popup>{i.name}</Popup>
+                    </Marker>
+                  ))}
+                <LayersControl.BaseLayer checked name="Thời tiết">
+                  <LayerGroup>
+                    <TileLayer
+                      url={`https://tile.openweathermap.org/map/temp_new/{z}/{x}/{y}.png?appid=${API_KEY}`}
+                    />
+                    {props.weatherMapReducer.weathers[0] &&
+                      props.weatherMapReducer.weathers.map((i, index) => (
+                        <EMarker
+                          key={i.id}
+                          icon={
+                            <EnhancedMarker
+                              mName={i.name}
+                              mDescription={i.weather[0].description}
+                              mIcon={i.weather[0].icon}
+                              mTemp={i.main.temp}
+                            />
+                          }
+                          position={[
+                            llCityList[index].latitude,
+                            llCityList[index].longitude,
+                          ]}
+                          onClick={() =>
+                            handleClick(
+                              llCityList[index].latitude,
+                              llCityList[index].longitude,
+                            )
+                          }
+                        />
+                      ))}
+                  </LayerGroup>
+                </LayersControl.BaseLayer>
+                <LayersControl.BaseLayer name="Dịch bệnh">
+                  <LayerGroup>
+                    {llCityList.length > 0 &&
+                      llCityList.map(i => (
+                        <EMarker
+                          key={i.latitude}
+                          icon="dich benh"
+                          position={[i.latitude, i.longitude]}
+                          onClick={() => handleClick(i.latitude, i.longitude)}
+                        />
+                      ))}
+                  </LayerGroup>
+                </LayersControl.BaseLayer>
+                {geoCityList.length > 0 && <GeoJSON data={geoCityList} />}
+              </LayersControl>
+            </Map>
+            {history5D.length > 0 && <WeatherHistory mHistory={history5D} />}
+          </div>
         }
         mCategories={props.homeReducer.categories}
         mSubCategories={props.homeReducer.subCategories}

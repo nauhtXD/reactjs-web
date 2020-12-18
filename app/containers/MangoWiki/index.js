@@ -7,7 +7,7 @@ import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import { Route, Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { Layout, Menu, Row, Col } from 'antd';
+import { Menu, Row, Col } from 'antd';
 
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
@@ -24,7 +24,6 @@ import WikiNews from './pages/news';
 import MyLayout from '../../components/MyLayout/Loadable';
 import TitleCom from '../../components/TitleCom/Loadable';
 
-const { Sider, Content } = Layout;
 const { SubMenu } = Menu;
 
 const MyLink = styled(Link)``;
@@ -168,7 +167,7 @@ const mapDispatchToProps = dispatch => ({
   getSubCategories: data => {
     dispatch(hAction.getSubCategories(data));
   },
-  getCongetHeadquarterstacts: data => {
+  getHeadquarters: data => {
     dispatch(hAction.getHeadquarters(data));
   },
   getMarks: data => {

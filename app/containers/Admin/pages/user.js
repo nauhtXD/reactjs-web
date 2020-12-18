@@ -14,6 +14,7 @@ import {
   Input,
   Form,
   Space,
+  notification,
 } from 'antd';
 // import styled from 'styled-components';
 import { useInjectSaga } from 'utils/injectSaga';
@@ -21,35 +22,9 @@ import { useInjectReducer } from 'utils/injectReducer';
 import reducer from '../reducer';
 import saga from '../saga';
 import MyBox from '../../../components/MyBox/index';
+import MyTable from '../../../components/MyTable/index';
 import makeSelect from '../selectors';
 import * as action from '../actions';
-
-const columns = [
-  {
-    title: 'Tên đăng nhập',
-    dataIndex: 'id',
-  },
-  {
-    title: 'Mật khẩu',
-    dataIndex: 'password',
-  },
-  {
-    title: 'Email',
-    dataIndex: 'email',
-  },
-  {
-    title: 'Số điện thoại',
-    dataIndex: 'phone',
-  },
-  {
-    title: 'Bị khóa',
-    dataIndex: 'subcategory_id',
-  },
-  {
-    title: 'Loại tài khoản',
-    dataIndex: 'user_category_id',
-  },
-];
 
 const layout = {
   labelCol: { span: 8 },
@@ -63,6 +38,13 @@ const tailLayout = {
 const { Option } = Select;
 const { Search } = Input;
 
+const openNotiWIcon = (type, message, description) => {
+  notification[type]({
+    message,
+    description,
+  });
+};
+
 export function User(props) {
   useInjectReducer({ key: 'admin', reducer });
   useInjectSaga({ key: 'admin', saga });
@@ -71,16 +53,70 @@ export function User(props) {
     props.getUserTypes();
   }, []);
 
+  const columns = [
+    {
+      title: 'Tên đăng nhập',
+      dataIndex: 'username',
+      key: 'username',
+    },
+    {
+      title: 'Mật khẩu',
+      dataIndex: 'password',
+      key: 'password',
+    },
+    {
+      title: 'Email',
+      dataIndex: 'email',
+      key: 'email',
+    },
+    {
+      title: 'Số điện thoại',
+      dataIndex: 'phone',
+      key: 'phone',
+    },
+    {
+      title: 'Trạng thái',
+      dataIndex: 'status',
+      key: 'status',
+    },
+    {
+      title: 'Loại tài khoản',
+      dataIndex: 'userType.name',
+    },
+    {
+      title: '',
+      key: 'action',
+      render: record => (
+        <Space size="middle">
+          <Button type="primary" onClick={() => handleUpdate(record)}>
+            Chỉnh sửa
+          </Button>
+          <Button type="danger" onClick={() => handleDelete(record.id)}>
+            Xóa
+          </Button>
+        </Space>
+      ),
+    },
+  ];
   const [form] = Form.useForm();
   const [isVisible, setIsVisible] = useState(false);
+
+  const handleUpdate = record => {
+    console.log(Object.getOwnPropertyNames(record));
+  };
+
+  const handleDelete = id => {
+    console.log(id);
+  };
 
   const handleCancle = () => {
     setIsVisible(false);
   };
+
   const handleSubmit = () => {
     form.validateFields().then(values => {
       if (values.password === values.retype) props.createUser(values);
-      else console.log(false);
+      else openNotiWIcon('error', 'Lỗi', 'Mật khẩu nhập lại không trùng khớp');
     });
   };
 
@@ -139,7 +175,7 @@ export function User(props) {
           form={form}
           {...layout}
           initialValues={{
-            userType: 1,
+            userTypeId: 1,
           }}
         >
           <Form.Item

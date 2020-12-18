@@ -131,7 +131,7 @@ export function Post(props) {
           initialValues={{
             content: '',
             subcategoryId: 1,
-            publishAt: moment(moment().date, dateFormat),
+            publishAt: moment().format(dateFormat),
           }}
         >
           <Row>
