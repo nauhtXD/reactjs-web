@@ -66,7 +66,7 @@ export function MangoWiki(props) {
                               key={`family${i.id}`}
                               title={
                                 <MyLink to={`/mangowiki/news/${i.id}`}>
-                                  {i.name}
+                                  Họ: {i.name}
                                 </MyLink>
                               }
                             >
@@ -78,7 +78,7 @@ export function MangoWiki(props) {
                                       <MyLink
                                         to={`/mangowiki/news/${i.id}/${j.id}`}
                                       >
-                                        {j.name}
+                                        Chi: {j.name}
                                       </MyLink>
                                     }
                                   >
