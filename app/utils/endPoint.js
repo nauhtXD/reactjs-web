@@ -1,5 +1,7 @@
 // user
 export const API_ENDPOINT_GET_USER = 'users';
+export const API_ENDPOINT_UPDATE_USER = 'users/update';
+export const API_ENDPOINT_DELETE_USER = 'users/delete';
 export const API_ENDPOINT_GET_USER_TYPE = 'userTypes';
 // category
 export const API_ENDPOINT_GET_CATEGORY = 'categories';

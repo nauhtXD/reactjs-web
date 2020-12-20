@@ -7,7 +7,6 @@ import { compose } from 'redux';
 import {
   Modal,
   Button,
-  Table,
   Row,
   Col,
   Select,
@@ -52,71 +51,44 @@ export function User(props) {
     props.getUsers();
     props.getUserTypes();
   }, []);
-
-  const columns = [
+  const propertyNames = [
     {
       title: 'Tên đăng nhập',
-      dataIndex: 'username',
-      key: 'username',
+      data: 'username',
     },
     {
       title: 'Mật khẩu',
-      dataIndex: 'password',
-      key: 'password',
+      data: 'password',
     },
     {
       title: 'Email',
-      dataIndex: 'email',
-      key: 'email',
+      data: 'email',
     },
     {
       title: 'Số điện thoại',
-      dataIndex: 'phone',
-      key: 'phone',
+      data: 'phone',
     },
     {
       title: 'Trạng thái',
-      dataIndex: 'status',
-      key: 'status',
+      data: 'isActive',
     },
     {
-      title: 'Loại tài khoản',
-      dataIndex: 'userType.name',
-    },
-    {
-      title: '',
-      key: 'action',
-      render: record => (
-        <Space size="middle">
-          <Button type="primary" onClick={() => handleUpdate(record)}>
-            Chỉnh sửa
-          </Button>
-          <Button type="danger" onClick={() => handleDelete(record.id)}>
-            Xóa
-          </Button>
-        </Space>
-      ),
+      title: 'Loại',
+      data: ['userType', 'name'],
     },
   ];
   const [form] = Form.useForm();
   const [isVisible, setIsVisible] = useState(false);
 
-  const handleUpdate = record => {
-    console.log(Object.getOwnPropertyNames(record));
-  };
-
-  const handleDelete = id => {
-    console.log(id);
-  };
-
   const handleCancle = () => {
     setIsVisible(false);
   };
 
-  const handleSubmit = () => {
+  const handleCreate = () => {
     form.validateFields().then(values => {
       if (values.password === values.retype) props.createUser(values);
-      else openNotiWIcon('error', 'Lỗi', 'Mật khẩu nhập lại không trùng khớp');
+      else
+        openNotiWIcon('error', 'Error', 'Mật khẩu nhập lại không trùng khớp');
     });
   };
 
@@ -157,11 +129,14 @@ export function User(props) {
         </div>
         <div style={{ clear: 'both', height: '10px' }} />
         <MyBox>
-          <Table
-            columns={columns}
-            dataSource={props.adminReducer.users}
-            rowKey="id"
-          />
+          {props.adminReducer.users && (
+            <MyTable
+              mData={props.adminReducer.users}
+              mPropertyNames={propertyNames}
+              mDelete={props.deleteUser}
+              mUpdate={props.updateUser}
+            />
+          )}
         </MyBox>
       </div>
       <Modal
@@ -230,7 +205,7 @@ export function User(props) {
 
           <Form.Item {...tailLayout}>
             <Space>
-              <Button type="primary" onClick={handleSubmit}>
+              <Button type="primary" onClick={handleCreate}>
                 Thêm
               </Button>
               <Button onClick={handleCancle}>Hủy</Button>
@@ -246,6 +221,8 @@ User.propTypes = {
   adminReducer: PropTypes.any,
   getUsers: PropTypes.func,
   createUser: PropTypes.func,
+  updateUser: PropTypes.func,
+  deleteUser: PropTypes.func,
   getUserTypes: PropTypes.func,
 };
 
@@ -259,6 +236,12 @@ const mapDispatchToProps = dispatch => ({
   },
   createUser: data => {
     dispatch(action.createUser(data));
+  },
+  updateUser: data => {
+    dispatch(action.updateUser(data));
+  },
+  deleteUser: data => {
+    dispatch(action.deleteUser(data));
   },
   getUserTypes: data => {
     dispatch(action.getUserTypes(data));

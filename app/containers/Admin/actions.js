@@ -20,6 +20,20 @@ export function createUser(data) {
   };
 }
 
+export function updateUser(data) {
+  return {
+    type: types.UPDATE_USER,
+    payload: data,
+  };
+}
+
+export function deleteUser(data) {
+  return {
+    type: types.DELETE_USER,
+    payload: data,
+  };
+}
+
 export function getUserTypes(data) {
   return {
     type: types.GET_USER_TYPE,
