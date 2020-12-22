@@ -5,15 +5,17 @@ import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
+import { Row, Col, Card } from 'antd';
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
-import moment from 'moment';
 import reducer from '../reducer';
 import saga from '../saga';
 import makeSelect from '../selectors';
 import * as action from '../actions';
 
 import TitleCom from '../../../components/TitleCom';
+
+const { Meta } = Card;
 
 function WikiNews(props) {
   // eslint-disable-next-line react/prop-types
@@ -31,7 +33,7 @@ function WikiNews(props) {
     }
     props.getNew(mD);
   }, []);
-  console.log(props.mangoWikiReducer.new);
+  console.log(props.mangoWikiReducer.new.scienceName);
   return (
     <div>
       <Helmet>
@@ -39,32 +41,35 @@ function WikiNews(props) {
         <meta name="description" content="News of MangoWiki" />
       </Helmet>
       <div>
-        <TitleCom
-          mCategory={
-            props.mangoWikiReducer.new && props.mangoWikiReducer.new.name
-          }
-          // mCont={
-          //   <div>
-          //     <p style={{ textAlign: 'right' }}>
-          //       Ngày đăng:{' '}
-          //       {moment(props.newsReducer.post.publishAt).format('DD-MM-YYYY')}
-          //     </p>
-          //     <h2>{props.newsReducer.post.title}</h2>
-          //     <div
-          //       // eslint-disable-next-line react/no-danger
-          //       dangerouslySetInnerHTML={{
-          //         __html: props.newsReducer.post.content,
-          //       }}
-          //     />
-          //     <p style={{ textAlign: 'right' }}>
-          //       Nguồn:{' '}
-          //       <a href={props.newsReducer.post.source}>
-          //         {props.newsReducer.post.source}
-          //       </a>
-          //     </p>
-          //   </div>
-          // }
-        />
+        {props.mangoWikiReducer.new && (
+          <TitleCom
+            mCategory={props.mangoWikiReducer.new.name}
+            mCont={
+              <div>
+                <Row gutter={16}>
+                  <Col span={16}>{props.mangoWikiReducer.new.define}</Col>
+                  <Col span={8}>
+                    <Card
+                      hoverable
+                      style={{ width: '280px' }}
+                      cover={
+                        <img
+                          alt="example"
+                          src={props.mangoWikiReducer.new.img}
+                        />
+                      }
+                    >
+                      <Meta
+                        title={props.mangoWikiReducer.new.scienceName}
+                        description={props.mangoWikiReducer.new.name}
+                      />
+                    </Card>
+                  </Col>
+                </Row>
+              </div>
+            }
+          />
+        )}
       </div>
       <div />
     </div>

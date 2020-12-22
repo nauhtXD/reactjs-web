@@ -4,10 +4,10 @@
  *
  */
 
-import React, { memo, useState } from 'react';
+import React, { memo, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { Table, Space, Button, Modal, Form, Input, Select } from 'antd';
+import { Table, Space, Button, Modal, Form } from 'antd';
 import { CheckSquareTwoTone, CloseSquareTwoTone } from '@ant-design/icons';
 
 // import { FormattedMessage } from 'react-intl';
@@ -32,39 +32,63 @@ const layout = {
   wrapperCol: { span: 16 },
 };
 
-const tailLayout = {
-  wrapperCol: { offset: 8, span: 16 },
-};
-
 const green = '#52c41a';
 const red = '#ff4c4c';
 
 function MyTable(props) {
+  const [tableData, setTableData] = useState(props.mData);
   const [isUpdate, setIsUpdate] = useState(false);
+  const [defValue, setDefValue] = useState([]);
+  const [recordValue, setRecordValue] = useState([]);
+
+  useEffect(() => {
+    form.setFieldsValue(defValue);
+  }, [form, defValue]);
+
+  useEffect(() => {
+    setTableData(props.mData);
+  }, [props.mData]);
+
   const [form] = Form.useForm();
 
-  const handleClick = (record, key) => {
-    if (key === 0) setIsUpdate(true);
-    else props.mDelete(record.id);
-  };
-
-  const handleCancle = () => {
-    setIsUpdate(false);
-  };
-
-  const handleUpdate = record => {
-    form.validateFields.then(values => {
-      values.push({ id: record.id });
-      console.log(values);
-      // props.mUpdate(values);
+  const confirm = id => {
+    Modal.confirm({
+      title: 'Xóa',
+      content: 'Bạn vẫn chắc chắn muốn xóa?',
+      okText: 'Xác nhận',
+      cancelText: 'Hủy',
+      onOk() {
+        props.mDelete(id, 1);
+      },
     });
   };
 
+  const handleClick = (record, key) => {
+    setRecordValue(record);
+    if (key === 0) {
+      setDefValue(record);
+      setIsUpdate(!isUpdate);
+    } else {
+      confirm(record.id);
+    }
+  };
+
+  const handleCancle = () => {
+    setIsUpdate(!isUpdate);
+  };
+
+  const handleUpdate = () => {
+    form.validateFields().then(values => {
+      const input = { ...values, id: recordValue.id };
+      props.mUpdate(input, 0);
+      handleCancle();
+    });
+  };
   return (
     <div>
-      <Table dataSource={props.mData} rowKey="id">
+      <Table key={props.mData} dataSource={props.mData} rowKey="id">
         {props.mPropertyNames.map(i =>
-          i.data !== 'isActive' ? (
+          i.data !== 'status' ? (
             <Column
               align="center"
               title={i.title}
@@ -102,26 +126,16 @@ function MyTable(props) {
         />
       </Table>
       <Modal
-        title="Chỉnh sửa thành viên"
+        title="Chỉnh sửa"
         centered
         visible={isUpdate}
         onCancel={handleCancle}
-        footer={null}
+        onOk={handleUpdate}
+        okText="Cập nhật"
+        cancelText="Hủy"
       >
         <Form form={form} {...layout}>
-          {props.mPropertyNames.map(i => (
-            <Form.Item label={i.title} name={i.data}>
-              <Input />
-            </Form.Item>
-          ))}
-          <Form.Item {...tailLayout}>
-            <Space>
-              <Button type="primary" onClick={handleUpdate}>
-                Cập nhật
-              </Button>
-              <Button onClick={handleCancle}>Hủy</Button>
-            </Space>
-          </Form.Item>
+          {props.mModal}
         </Form>
       </Modal>
     </div>
@@ -131,8 +145,10 @@ function MyTable(props) {
 MyTable.propTypes = {
   mData: PropTypes.array,
   mPropertyNames: PropTypes.array,
+  mModal: PropTypes.any,
   mUpdate: PropTypes.func,
   mDelete: PropTypes.func,
+  mGet: PropTypes.func,
 };
 
 export default memo(MyTable);
