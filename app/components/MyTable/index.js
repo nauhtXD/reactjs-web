@@ -36,7 +36,6 @@ const green = '#52c41a';
 const red = '#ff4c4c';
 
 function MyTable(props) {
-  const [tableData, setTableData] = useState(props.mData);
   const [isUpdate, setIsUpdate] = useState(false);
   const [defValue, setDefValue] = useState([]);
   const [recordValue, setRecordValue] = useState([]);
@@ -44,10 +43,6 @@ function MyTable(props) {
   useEffect(() => {
     form.setFieldsValue(defValue);
   }, [form, defValue]);
-
-  useEffect(() => {
-    setTableData(props.mData);
-  }, [props.mData]);
 
   const [form] = Form.useForm();
 
@@ -84,9 +79,10 @@ function MyTable(props) {
       handleCancle();
     });
   };
+
   return (
     <div>
-      <Table key={props.mData} dataSource={props.mData} rowKey="id">
+      <Table dataSource={props.mData} rowKey="id">
         {props.mPropertyNames.map(i =>
           i.data !== 'status' ? (
             <Column
@@ -148,7 +144,6 @@ MyTable.propTypes = {
   mModal: PropTypes.any,
   mUpdate: PropTypes.func,
   mDelete: PropTypes.func,
-  mGet: PropTypes.func,
 };
 
 export default memo(MyTable);
