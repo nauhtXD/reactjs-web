@@ -2,7 +2,6 @@
   "name": "reactjs-web",
   "version": "1.0.0",
   "description": "Hội quán nông dân",
-  "homepage": "https://nauhtxd.github.io/reactjs-web/app/",
   "repository": {
     "type": "git",
     "url": "git://github.com/nauhtXD/reactjs-web.git"
@@ -40,9 +39,7 @@
     "test": "cross-env NODE_ENV=test jest --coverage",
     "test:watch": "cross-env NODE_ENV=test jest --watchAll",
     "coveralls": "cat ./coverage/lcov.info | coveralls",
-    "prettify": "prettier --write",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "prettify": "prettier --write"
   },
   "browserslist": [
     "last 2 versions",
