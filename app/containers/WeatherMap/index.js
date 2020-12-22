@@ -35,6 +35,7 @@ import * as hAction from '../Home/actions';
 
 // import messages from './messages';
 import MyLayout from '../../components/MyLayout/Loadable';
+import TempCom from '../../components/TempCom/Loadable';
 import EnhancedMarker from '../../components/EnhancedMarker/index';
 import WeatherHistory from '../../components/WeatherHistory/index';
 
@@ -63,6 +64,8 @@ const bcrData = [
 const cityList = [];
 const llCityList = [];
 const geoCityList = [];
+
+const dB = [];
 
 export function WeatherMap(props) {
   useInjectReducer({ key: 'weatherMap', reducer });
@@ -94,8 +97,6 @@ export function WeatherMap(props) {
         });
       });
   }, []);
-
-  useEffect(() => {}, []);
 
   const handleClick = (lat, lon) => {
     setHis([]);
