@@ -85,13 +85,7 @@ function App(props) {
 App.propTypes = {};
 const mapStateToProps = createStructuredSelector({});
 
-const mapDispatchToProps = dispatch => ({});
+const mapDispatchToProps = (dispatch) => ({});
 
-const withConnect = connect(
-  mapStateToProps,
-  mapDispatchToProps,
-);
-export default compose(
-  withConnect,
-  memo,
-)(App);
+const withConnect = connect(mapStateToProps, mapDispatchToProps);
+export default compose(withConnect, memo)(App);
