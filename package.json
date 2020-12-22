@@ -1,16 +1,16 @@
 {
-  "name": "react-boilerplate",
-  "version": "4.0.0",
-  "description": "A highly scalable, offline-first foundation with the best DX and a focus on performance and best practices",
+  "name": "reactjs-web",
+  "version": "1.0.0",
+  "description": "Hội quán nông dân",
   "repository": {
     "type": "git",
-    "url": "git://github.com/react-boilerplate/react-boilerplate.git"
+    "url": "git://github.com/nauhtXD/reactjs-web.git"
   },
   "engines": {
     "npm": ">=5",
     "node": ">=8.15.1"
   },
-  "author": "Max Stoiber",
+  "author": "nauhtXD",
   "license": "MIT",
   "scripts": {
     "analyze:clean": "rimraf stats.json",
@@ -73,6 +73,7 @@
     "express": "4.16.4",
     "firebase": "^7.16.0",
     "fontfaceobserver": "2.1.0",
+    "gh-pages": "^3.1.0",
     "history": "4.9.0",
     "hoist-non-react-statics": "3.3.0",
     "immer": "3.0.0",
