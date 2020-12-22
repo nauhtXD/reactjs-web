@@ -131,7 +131,7 @@ export function Post(props) {
           initialValues={{
             content: '',
             subcategoryId: 1,
-            publishAt: moment().format(dateFormat),
+            publishAt: moment(),
           }}
         >
           <Row>
@@ -179,7 +179,7 @@ export function Post(props) {
                 <Form.Item {...layout} label="Nguồn" name="source">
                   <Input placeholder="Source" />
                 </Form.Item>
-                <Form.Item {...layout} label="Ngày viết" name="publishAt">
+                <Form.Item {...layout} label="Ngày đăng" name="publishAt">
                   <DatePicker format={dateFormat} />
                 </Form.Item>
                 <Form.Item {...tailLayout}>

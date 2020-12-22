@@ -12,7 +12,6 @@ import {
   Select,
   Input,
   Form,
-  Space,
   notification,
 } from 'antd';
 // import styled from 'styled-components';
@@ -30,10 +29,6 @@ const layout = {
   wrapperCol: { span: 16 },
 };
 
-const tailLayout = {
-  wrapperCol: { offset: 8, span: 16 },
-};
-
 const { Option } = Select;
 const { Search } = Input;
 
@@ -47,10 +42,19 @@ const openNotiWIcon = (type, message, description) => {
 export function User(props) {
   useInjectReducer({ key: 'admin', reducer });
   useInjectSaga({ key: 'admin', saga });
+
+  const [isReRender, setIsRerender] = useState(false);
+  const [tableData, setTableData] = useState();
+
   useEffect(() => {
     props.getUsers();
     props.getUserTypes();
-  }, []);
+  }, [isReRender]);
+
+  useEffect(() => {
+    setTableData(props.adminReducer.users);
+  }, [props.adminReducer.users]);
+
   const propertyNames = [
     {
       title: 'Tên đăng nhập',
@@ -70,14 +74,16 @@ export function User(props) {
     },
     {
       title: 'Trạng thái',
-      data: 'isActive',
+      data: 'status',
     },
     {
       title: 'Loại',
       data: ['userType', 'name'],
     },
   ];
+
   const [form] = Form.useForm();
+
   const [isVisible, setIsVisible] = useState(false);
 
   const handleCancle = () => {
@@ -86,10 +92,18 @@ export function User(props) {
 
   const handleCreate = () => {
     form.validateFields().then(values => {
-      if (values.password === values.retype) props.createUser(values);
-      else
+      if (values.password === values.retype) {
+        props.createUser(values);
+        setIsVisible(!isVisible);
+      } else
         openNotiWIcon('error', 'Error', 'Mật khẩu nhập lại không trùng khớp');
     });
+  };
+
+  const handleClick = (record, key) => {
+    if (key === 0) props.updateUser(record);
+    else props.deleteUser(record);
+    setIsRerender(!isReRender);
   };
 
   return (
@@ -129,14 +143,47 @@ export function User(props) {
         </div>
         <div style={{ clear: 'both', height: '10px' }} />
         <MyBox>
-          {props.adminReducer.users && (
-            <MyTable
-              mData={props.adminReducer.users}
-              mPropertyNames={propertyNames}
-              mDelete={props.deleteUser}
-              mUpdate={props.updateUser}
-            />
-          )}
+          <MyTable
+            mData={tableData}
+            mPropertyNames={propertyNames}
+            mDelete={handleClick}
+            mUpdate={handleClick}
+            mModal={
+              <div>
+                <Form.Item label="Tên đăng nhập" name="username">
+                  <Input disabled />
+                </Form.Item>
+                <Form.Item
+                  label="Mật khẩu"
+                  name="password"
+                  rules={[
+                    { required: true, message: 'Mật khẩu không được trống!' },
+                  ]}
+                >
+                  <Input.Password />
+                </Form.Item>
+                <Form.Item
+                  label="Email"
+                  name="email"
+                  rules={[
+                    { required: true, message: 'Email không được trống!' },
+                  ]}
+                >
+                  <Input />
+                </Form.Item>
+                <Form.Item label="Số điện thoại" name="phone">
+                  <Input />
+                </Form.Item>
+                <Form.Item label="Trạng thái" name="status">
+                  <Select>
+                    <Option value={false}>Khóa</Option>
+                    <Option value>Mở Khóa</Option>
+                  </Select>
+                </Form.Item>
+              </div>
+            }
+            mGet={props.getUsers}
+          />
         </MyBox>
       </div>
       <Modal
@@ -144,7 +191,9 @@ export function User(props) {
         centered
         visible={isVisible}
         onCancel={handleCancle}
-        footer={null}
+        onOk={handleCreate}
+        okText="Thêm"
+        cancelText="Hủy"
       >
         <Form
           form={form}
@@ -201,15 +250,6 @@ export function User(props) {
                   </Option>
                 ))}
             </Select>
-          </Form.Item>
-
-          <Form.Item {...tailLayout}>
-            <Space>
-              <Button type="primary" onClick={handleCreate}>
-                Thêm
-              </Button>
-              <Button onClick={handleCancle}>Hủy</Button>
-            </Space>
           </Form.Item>
         </Form>
       </Modal>
