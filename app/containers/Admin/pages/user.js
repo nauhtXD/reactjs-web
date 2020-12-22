@@ -33,7 +33,10 @@ export function User(props) {
   useEffect(() => {
     props.getUsers();
     props.getUserTypes();
-    console.log('111');
+  });
+
+  useEffect(() => {
+    props.getUsers();
   }, [isReRender]);
 
   const propertyNames = [
@@ -82,12 +85,6 @@ export function User(props) {
         <title>User</title>
         <meta name="description" content="Description of user" />
       </Helmet>
-      <div>
-        <p>
-          {props.adminReducer.users[0] &&
-            props.adminReducer.users[0].status.toString()}
-        </p>
-      </div>
       <AdminTable
         mTitle="Danh sách thành viên"
         mCreate={handleCreate}
