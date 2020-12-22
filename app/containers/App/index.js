@@ -48,7 +48,7 @@ function App(props) {
       </Helmet>
       <div>
         <Switch>
-          <Route exact path="/app/" component={Home} />
+          <Route exact path={`${process.env.PUBLIC_URL}/`} component={Home} />
           <Route exact path="/news/:id" component={News} />
           {/* <Route exact path="/Crops" component={Crops} /> */}
           <Route exact path="/documents" component={Documents} />
