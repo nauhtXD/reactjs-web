@@ -137,8 +137,6 @@ export function* deleteUserSaga({ payload }) {
   }
 }
 
-// #endregion
-
 export function* getUserTypeSaga({ payload }) {
   try {
     const response = yield call(api.getUserTypes, payload);
@@ -169,6 +167,8 @@ export function* getUserTypeSaga({ payload }) {
     });
   }
 }
+
+// #endregion
 
 export function* createPostSaga({ payload }) {
   try {
@@ -235,6 +235,138 @@ export function* getSubCategorySaga({ payload }) {
   }
 }
 
+export function* getStatusSaga({ payload }) {
+  try {
+    const response = yield call(api.getStatuses, payload);
+    if (response && response.status === 200) {
+      yield put({
+        type: types.GET_STATUS_SUCCESS,
+        statuses: response.data.data,
+      });
+    } else {
+      yield put({
+        type: types.GET_STATUS_FAIL,
+        error: response && response.data ? response.data.messages : 'API Error',
+      });
+      notification.error({
+        message: 'Error',
+        description:
+          response && response.data ? response.data.messages : 'API Error',
+      });
+    }
+  } catch (err) {
+    yield put({
+      type: types.GET_STATUS_FAIL,
+      error: err,
+    });
+    notification.error({
+      message: 'Error',
+      description: err,
+    });
+  }
+}
+
+// #region problem
+export function* getProblemSaga({ payload }) {
+  try {
+    const response = yield call(api.getProblems, payload);
+    if (response && response.status === 200) {
+      yield put({
+        type: types.GET_PROBLEM_SUCCESS,
+        problems: response.data.data,
+      });
+    } else {
+      yield put({
+        type: types.GET_PROBLEM_FAIL,
+        error: response && response.data ? response.data.messages : 'API Error',
+      });
+      notification.error({
+        message: 'Error',
+        description:
+          response && response.data ? response.data.messages : 'API Error',
+      });
+    }
+  } catch (err) {
+    yield put({
+      type: types.GET_PROBLEM_FAIL,
+      error: err,
+    });
+    notification.error({
+      message: 'Error',
+      description: err,
+    });
+  }
+}
+
+export function* updateProblemSaga({ payload }) {
+  try {
+    const response = yield call(api.updateProblem, payload);
+    if (response && response.status === 200) {
+      yield put({
+        type: types.UPDATE_PROBLEM_SUCCESS,
+      });
+      notification.success({
+        message: 'Success',
+        description: 'Chỉnh sửa thành công',
+      });
+    } else {
+      yield put({
+        type: types.UPDATE_PROBLEM_FAIL,
+        error: response && response.data ? response.data.messages : 'API Error',
+      });
+      notification.error({
+        message: 'Error',
+        description:
+          response && response.data ? response.data.messages : 'API Error',
+      });
+    }
+  } catch (err) {
+    yield put({
+      type: types.UPDATE_PROBLEM_FAIL,
+      error: err,
+    });
+    notification.error({
+      message: 'Error',
+      description: err,
+    });
+  }
+}
+
+export function* deleteProblemSaga({ payload }) {
+  try {
+    const response = yield call(api.deleteProblem, payload);
+    if (response && response.status === 200) {
+      yield put({
+        type: types.DELETE_PROBLEM_SUCCESS,
+      });
+      notification.success({
+        message: 'Success',
+        description: 'Xóa thành công',
+      });
+    } else {
+      yield put({
+        type: types.DELETE_PROBLEM_FAIL,
+        error: response && response.data ? response.data.messages : 'API Error',
+      });
+      notification.error({
+        message: 'Error',
+        description:
+          response && response.data ? response.data.messages : 'API Error',
+      });
+    }
+  } catch (err) {
+    yield put({
+      type: types.DELETE_PROBLEM_FAIL,
+      error: err,
+    });
+    notification.error({
+      message: 'Error',
+      description: err,
+    });
+  }
+}
+// #endregion
+
 export default function* rootSaga() {
   yield all([
     takeLatest(types.GET_USER, getUserSaga),
@@ -244,5 +376,9 @@ export default function* rootSaga() {
     takeLatest(types.GET_USER_TYPE, getUserTypeSaga),
     takeLatest(types.CREATE_POST, createPostSaga),
     takeLatest(types.GET_SUB_CATEGORY, getSubCategorySaga),
+    takeLatest(types.GET_STATUS, getStatusSaga),
+    takeLatest(types.GET_PROBLEM, getProblemSaga),
+    takeLatest(types.UPDATE_PROBLEM, updateProblemSaga),
+    takeLatest(types.DELETE_PROBLEM, deleteProblemSaga),
   ]);
 }

@@ -61,3 +61,31 @@ export function getSubCategories(data) {
     payload: data,
   };
 }
+
+export function getStatuses(data) {
+  return {
+    type: types.GET_STATUS,
+    payload: data,
+  };
+}
+
+export function getProblems(data) {
+  return {
+    type: types.GET_PROBLEM,
+    payload: data,
+  };
+}
+
+export function updateProblem(data) {
+  return {
+    type: types.UPDATE_PROBLEM,
+    payload: data,
+  };
+}
+
+export function deleteProblem(data) {
+  return {
+    type: types.DELETE_PROBLEM,
+    payload: data,
+  };
+}

@@ -33,7 +33,7 @@ export function User(props) {
   useEffect(() => {
     props.getUsers();
     props.getUserTypes();
-  });
+  }, [isReRender]);
 
   useEffect(() => {
     props.getUsers();
@@ -60,10 +60,6 @@ export function User(props) {
       title: 'Trạng thái',
       data: 'status',
     },
-    {
-      title: 'Loại',
-      data: ['userType', 'name'],
-    },
   ];
 
   const handleClick = (record, key) => {
@@ -74,7 +70,10 @@ export function User(props) {
 
   const handleCreate = values => {
     if (values.password === values.retype) {
-      props.createUser(values);
+      const userTypeId = 1;
+      const input = { ...values, userTypeId };
+      props.createUser(input);
+      setIsRerender(!isReRender);
     } else
       openNotiWIcon('error', 'Error', 'Mật khẩu nhập lại không trùng khớp');
   };
@@ -128,18 +127,6 @@ export function User(props) {
 
             <Form.Item label="Số điện thoại" name="phone">
               <Input placeholder="Nhập số điện thoại" />
-            </Form.Item>
-
-            <Form.Item label="Loại người dùng" name="userTypeId">
-              <Select>
-                {props.adminReducer.userTypes &&
-                  props.adminReducer.userTypes.length > 0 &&
-                  props.adminReducer.userTypes.map(i => (
-                    <Option key={i.id} value={i.id}>
-                      {i.name}
-                    </Option>
-                  ))}
-              </Select>
             </Form.Item>
           </div>
         }

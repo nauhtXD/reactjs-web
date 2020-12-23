@@ -16,3 +16,13 @@ export const createPost = data =>
 // subcategory
 export const getSubCategories = () =>
   apiConfig.get(endpoint.API_ENDPOINT_GET_SUB_CATEGORY);
+// status
+export const getStatuses = () =>
+  apiConfig.get(endpoint.API_ENDPOINT_GET_STATUS);
+// problem
+export const getProblems = () =>
+  apiConfig.get(endpoint.API_ENDPOINT_GET_PROBLEM);
+export const updateProblem = data =>
+  apiConfig.put(`${endpoint.API_ENDPOINT_UPDATE_PROBLEM}/${data.id}`, data);
+export const deleteProblem = data =>
+  apiConfig.put(`${endpoint.API_ENDPOINT_DELETE_PROBLEM}/${data}`, data);

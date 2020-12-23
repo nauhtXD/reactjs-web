@@ -49,9 +49,11 @@ function AdminTable(props) {
               <Search placeholder="Nhập ký tự cần tìm" />
             </Col>
             <Col span={4}>
-              <Button type="primary" onClick={showModal}>
-                Tạo mới
-              </Button>
+              {props.mCreate && (
+                <Button type="primary" onClick={showModal}>
+                  Tạo mới
+                </Button>
+              )}
             </Col>
           </Row>
         </MyBox>

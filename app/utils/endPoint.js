@@ -26,3 +26,9 @@ export const API_ENDPOINT_GET_FAMILY = 'families';
 export const API_ENDPOINT_GET_GENUS = 'genera';
 // genusFeature
 export const API_ENDPOINT_GET_GENUS_FEATURE = 'genusFeatures';
+// status
+export const API_ENDPOINT_GET_STATUS = 'statuses';
+// problem
+export const API_ENDPOINT_GET_PROBLEM = 'problems';
+export const API_ENDPOINT_UPDATE_PROBLEM = 'problems/update';
+export const API_ENDPOINT_DELETE_PROBLEM = 'problems/delete';

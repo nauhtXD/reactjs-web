@@ -13,6 +13,10 @@ export const initialState = {
   userTypes: [],
   loadingSubCategories: false,
   subCategories: [],
+  loadingStatuses: false,
+  statuses: [],
+  loadingProblems: false,
+  problems: [],
 };
 
 /* eslint-disable default-case, no-param-reassign */
@@ -51,6 +55,28 @@ const adminReducer = (state = initialState, action) =>
       case types.GET_SUB_CATEGORY_FAIL:
         draft.subCategories = [];
         draft.loadingSubCategories = false;
+        break;
+      case types.GET_STATUS:
+        draft.loadingStatuses = true;
+        break;
+      case types.GET_STATUS_SUCCESS:
+        draft.statuses = action.statuses;
+        draft.loadingStatuses = false;
+        break;
+      case types.GET_STATUS_FAIL:
+        draft.statuses = [];
+        draft.loadingStatuses = false;
+        break;
+      case types.GET_PROBLEM:
+        draft.loadingProblems = true;
+        break;
+      case types.GET_PROBLEM_SUCCESS:
+        draft.problems = action.problems;
+        draft.loadingProblems = false;
+        break;
+      case types.GET_PROBLEM_FAIL:
+        draft.problems = [];
+        draft.loadingProblems = false;
         break;
     }
   });
