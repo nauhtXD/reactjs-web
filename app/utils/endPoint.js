@@ -10,6 +10,8 @@ export const API_ENDPOINT_GET_SUB_CATEGORY = 'subcategories';
 // new, post
 export const API_ENDPOINT_GET_POST = 'posts';
 export const API_ENDPOINT_GET_LASTEST_POST = 'posts/lastest-posts';
+export const API_ENDPOINT_UPDATE_POST = 'posts/update';
+export const API_ENDPOINT_DELETE_POST = 'posts/delete';
 // document
 export const API_ENDPOINT_GET_DOCUMENT = 'documents';
 // crop

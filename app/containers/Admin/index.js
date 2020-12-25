@@ -51,31 +51,22 @@ export function Admin() {
               <a href="/">Đăng xuất</a>
             </Menu.Item>
             <Menu.Item key="dashboard">
-              <Link to="/Admin/Dashboard">Dashboard</Link>
+              <Link to="/admin/dashboard">Dashboard</Link>
             </Menu.Item>
             <SubMenu key="households" title="Hộ dân">
               <Menu.Item key="hh1">
-                <Link to="/Admin/User">Tài khoản</Link>
+                <Link to="/admin/user">Tài khoản</Link>
               </Menu.Item>
               <Menu.Item key="hh2">
-                <Link to="/Admin/Households">Thông tin hộ</Link>
+                <Link to="/admin/households">Thông tin hộ</Link>
               </Menu.Item>
             </SubMenu>
-            <SubMenu key="report" title="Báo cáo">
-              <Menu.Item key="reportlist">
-                <Link to="/Admin/Report">Danh sách sự cố</Link>
-              </Menu.Item>
-            </SubMenu>
-            <SubMenu key="post" title="Bài viết">
-              <Menu.Item key="newpost">
-                <Link to="/Admin/Post">Bài viết mới</Link>
-              </Menu.Item>
-            </SubMenu>
-            <SubMenu key="news" title="Quản lý tin tức">
-              <Menu.Item key="newslist">
-                <Link to="/">Danh sách tin tức</Link>
-              </Menu.Item>
-            </SubMenu>
+            <Menu.Item key="reports">
+              <Link to="/admin/report">Sự cố</Link>
+            </Menu.Item>
+            <Menu.Item key="posts">
+              <Link to="/admin/post">Bài viết</Link>
+            </Menu.Item>
           </Menu>
         </Sider>
         <Layout>

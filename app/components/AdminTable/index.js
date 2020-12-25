@@ -7,7 +7,7 @@
 import React, { memo, useState } from 'react';
 import PropTypes from 'prop-types';
 // import styled from 'styled-components';
-import { Row, Col, Input, Button, Modal, Form, notification } from 'antd';
+import { Row, Col, Input, Button, Modal, Form } from 'antd';
 
 // import { FormattedMessage } from 'react-intl';
 // import messages from './messages';

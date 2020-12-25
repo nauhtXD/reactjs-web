@@ -63,6 +63,8 @@ function getBase64(file) {
 
 const init = { content: '', subcategoryId: 1, publishAt: moment() };
 
+let k = -1;
+
 export function Post(props) {
   useInjectReducer({ key: 'admin', reducer });
   useInjectSaga({ key: 'admin', saga });
@@ -87,6 +89,14 @@ export function Post(props) {
   useEffect(() => {
     props.getSubCategories();
     props.getPosts();
+  }, [isRerender]);
+
+  useEffect(() => {
+    props.getPosts();
+    if (k === -1) {
+      console.log(k);
+      k = 0;
+    }
   }, [isRerender]);
 
   useEffect(() => {
@@ -156,6 +166,68 @@ export function Post(props) {
     });
   };
 
+  const handleClick = (record, key) => {
+    if (key === 0) props.updatePost(record);
+    else props.deletePost(record);
+    setIsRerender(!isRerender);
+  };
+
+  const myModal = [
+    <div>
+      <Row>
+        <Col span={16}>
+          <MyBox>
+            <Form.Item {...layout} name="title" label="Tiêu đề">
+              <Input placeholder="Tiêu đề" />
+            </Form.Item>
+          </MyBox>
+          <MyBox>
+            <Form.Item name="content">
+              <Mrq
+                theme="snow"
+                modules={Post.modules}
+                formats={Post.formats}
+                bounds=".app"
+                style={{ height: '300px', width: '600px' }}
+              />
+            </Form.Item>
+          </MyBox>
+        </Col>
+        <Col span={8}>
+          <MyBox>
+            <Form.Item label="Ảnh hiển thị">
+              <Upload
+                listType="picture-card"
+                fileList={fileList}
+                onChange={onChange}
+                onPreview={onPreview}
+              >
+                {fileList.length < 1 && '+ Upload'}
+              </Upload>
+            </Form.Item>
+            <Form.Item label="Danh mục" name="subcategoryId">
+              <Select>
+                {mSC &&
+                  mSC.length > 0 &&
+                  mSC.map(i => (
+                    <Option value={i.id} key={i.name}>
+                      {i.name}
+                    </Option>
+                  ))}
+              </Select>
+            </Form.Item>
+            <Form.Item label="Nguồn" name="source">
+              <Input placeholder="Nguồn" />
+            </Form.Item>
+            <Form.Item label="Ngày đăng" name="publishAt">
+              <DatePicker format={dateFormat} />
+            </Form.Item>
+          </MyBox>
+        </Col>
+      </Row>
+    </div>,
+  ];
+
   return (
     <div>
       <Helmet>
@@ -163,67 +235,17 @@ export function Post(props) {
         <meta name="description" content="Description of posts" />
       </Helmet>
       <AdminTable
-        mTitle="Danh mục bài viết"
+        mTitle="Danh sách bài viết"
         mCreate={handleCreate}
-        mModal={
-          <div>
-            <Row>
-              <Col span={16}>
-                <MyBox>
-                  <Form.Item {...layout} name="title" label="Tiêu đề">
-                    <Input placeholder="Tiêu đề" />
-                  </Form.Item>
-                </MyBox>
-                <MyBox>
-                  <Form.Item name="content">
-                    <Mrq
-                      theme="snow"
-                      modules={Post.modules}
-                      formats={Post.formats}
-                      bounds=".app"
-                      style={{ height: '300px', width: '600px' }}
-                    />
-                  </Form.Item>
-                </MyBox>
-              </Col>
-              <Col span={8}>
-                <MyBox>
-                  <Form.Item label="Ảnh hiển thị">
-                    <Upload
-                      listType="picture-card"
-                      fileList={fileList}
-                      onChange={onChange}
-                      onPreview={onPreview}
-                    >
-                      {fileList.length < 1 && '+ Upload'}
-                    </Upload>
-                  </Form.Item>
-                  <Form.Item label="Danh mục" name="subcategoryId">
-                    <Select>
-                      {mSC &&
-                        mSC.length > 0 &&
-                        mSC.map(i => (
-                          <Option value={i.id} key={i.name}>
-                            {i.name}
-                          </Option>
-                        ))}
-                    </Select>
-                  </Form.Item>
-                  <Form.Item label="Nguồn" name="source">
-                    <Input placeholder="Nguồn" />
-                  </Form.Item>
-                  <Form.Item label="Ngày đăng" name="publishAt">
-                    <DatePicker format={dateFormat} />
-                  </Form.Item>
-                </MyBox>
-              </Col>
-            </Row>
-          </div>
-        }
+        mModal={myModal}
         mTable={
           <MyTable
             mData={props.adminReducer.posts}
             mPropertyNames={propertyNames}
+            mUpdate={handleClick}
+            mDelete={handleClick}
+            mModal={myModal}
+            mWidth={1000}
           />
         }
         mInitialValues={init}
@@ -275,6 +297,8 @@ Post.propTypes = {
   adminReducer: PropTypes.any,
   createPost: PropTypes.func,
   getPosts: PropTypes.func,
+  updatePost: PropTypes.func,
+  deletePost: PropTypes.func,
   getSubCategories: PropTypes.func,
 };
 
@@ -288,6 +312,12 @@ const mapDispatchToProps = dispatch => ({
   },
   getPosts: data => {
     dispatch(action.getPosts(data));
+  },
+  updatePost: data => {
+    dispatch(action.updatePost(data));
+  },
+  deletePost: data => {
+    dispatch(action.deletePost(data));
   },
   getSubCategories: data => {
     dispatch(action.getSubCategories(data));

@@ -25,21 +25,21 @@ export function Report(props) {
   useInjectReducer({ key: 'admin', reducer });
   useInjectSaga({ key: 'admin', saga });
 
-  const [isReRender, setIsRerender] = useState(false);
+  const [isRerender, setIsRerender] = useState(false);
 
   useEffect(() => {
     props.getStatuses();
     props.getProblems();
-  }, [isReRender]);
-
-  useEffect(() => {
-    props.getProblems();
-  }, [isReRender, k]);
+  }, [isRerender]);
 
   useEffect(() => {
     props.getProblems();
     if (k === -1) k = 0;
-  }, [isReRender]);
+  }, [isRerender]);
+
+  useEffect(() => {
+    props.getProblems();
+  }, [isRerender, k]);
 
   const propertyNames = [
     {
@@ -63,7 +63,7 @@ export function Report(props) {
   const handleClick = (record, key) => {
     if (key === 0) props.updateProblem(record);
     else props.deleteProblem(record);
-    setIsRerender(!isReRender);
+    setIsRerender(!isRerender);
   };
 
   return (

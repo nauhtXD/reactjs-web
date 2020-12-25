@@ -14,6 +14,10 @@ export const getUserTypes = () =>
 export const getPosts = () => apiConfig.get(endpoint.API_ENDPOINT_GET_POST);
 export const createPost = data =>
   apiConfig.post(endpoint.API_ENDPOINT_GET_POST, data);
+export const updatePost = data =>
+  apiConfig.put(`${endpoint.API_ENDPOINT_UPDATE_POST}/${data.id}`, data);
+export const deletePost = data =>
+  apiConfig.put(`${endpoint.API_ENDPOINT_DELETE_POST}/${data}`, data);
 // subcategory
 export const getSubCategories = () =>
   apiConfig.get(endpoint.API_ENDPOINT_GET_SUB_CATEGORY);

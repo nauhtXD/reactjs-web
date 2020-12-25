@@ -6,6 +6,7 @@
 
 import * as types from './constants';
 
+// #region user
 export function getUsers(data) {
   return {
     type: types.GET_USER,
@@ -40,7 +41,9 @@ export function getUserTypes(data) {
     payload: data,
   };
 }
+// #endregion
 
+// #region post
 export function getPosts(data) {
   return {
     type: types.GET_POST,
@@ -54,6 +57,21 @@ export function createPost(data) {
     payload: data,
   };
 }
+
+export function updatePost(data) {
+  return {
+    type: types.UPDATE_POST,
+    payload: data,
+  };
+}
+
+export function deletePost(data) {
+  return {
+    type: types.DELETE_POST,
+    payload: data,
+  };
+}
+// #endregion
 
 export function getSubCategories(data) {
   return {
@@ -69,6 +87,7 @@ export function getStatuses(data) {
   };
 }
 
+// #region problem
 export function getProblems(data) {
   return {
     type: types.GET_PROBLEM,
@@ -89,3 +108,4 @@ export function deleteProblem(data) {
     payload: data,
   };
 }
+// #endregion

@@ -9,6 +9,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Table, Space, Button, Modal, Form } from 'antd';
 import { CheckSquareTwoTone, CloseSquareTwoTone } from '@ant-design/icons';
+import moment from 'moment';
 
 // import { FormattedMessage } from 'react-intl';
 // import messages from './messages';
@@ -59,12 +60,16 @@ function MyTable(props) {
   };
 
   const handleClick = (record, key) => {
-    setRecordValue(record);
+    const input = record;
+    if (record.publishAt) {
+      input.publishAt = moment(record.publishAt);
+    }
+    setRecordValue(input);
     if (key === 0) {
-      setDefValue(record);
+      setDefValue(input);
       setIsUpdate(!isUpdate);
     } else {
-      confirm(record.id);
+      confirm(input.id);
     }
   };
 
@@ -130,6 +135,7 @@ function MyTable(props) {
         onOk={handleUpdate}
         okText="Cập nhật"
         cancelText="Hủy"
+        width={props.mWidth}
       >
         <Form form={form} {...layout}>
           {props.mModal}
@@ -145,6 +151,7 @@ MyTable.propTypes = {
   mModal: PropTypes.any,
   mUpdate: PropTypes.func,
   mDelete: PropTypes.func,
+  mWidth: PropTypes.number,
 };
 
 export default memo(MyTable);

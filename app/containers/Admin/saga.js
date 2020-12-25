@@ -170,6 +170,7 @@ export function* getUserTypeSaga({ payload }) {
 
 // #endregion
 
+// #region post
 export function* createPostSaga({ payload }) {
   try {
     const response = yield call(api.createPost, payload);
@@ -234,6 +235,75 @@ export function* getPostSaga({ payload }) {
     });
   }
 }
+
+export function* updatePostSaga({ payload }) {
+  try {
+    const response = yield call(api.updatePost, payload);
+    if (response && response.status === 200) {
+      yield put({
+        type: types.UPDATE_POST_SUCCESS,
+      });
+      notification.success({
+        message: 'Success',
+        description: 'Chỉnh sửa thành công',
+      });
+    } else {
+      yield put({
+        type: types.UPDATE_POST_FAIL,
+        error: response && response.data ? response.data.messages : 'API Error',
+      });
+      notification.error({
+        message: 'Error',
+        description:
+          response && response.data ? response.data.messages : 'API Error',
+      });
+    }
+  } catch (err) {
+    yield put({
+      type: types.UPDATE_POST_FAIL,
+      error: err,
+    });
+    notification.error({
+      message: 'Error',
+      description: err,
+    });
+  }
+}
+
+export function* deletePostSaga({ payload }) {
+  try {
+    const response = yield call(api.deletePost, payload);
+    if (response && response.status === 200) {
+      yield put({
+        type: types.DELETE_POST_SUCCESS,
+      });
+      notification.success({
+        message: 'Success',
+        description: 'Xóa thành công',
+      });
+    } else {
+      yield put({
+        type: types.DELETE_POST_FAIL,
+        error: response && response.data ? response.data.messages : 'API Error',
+      });
+      notification.error({
+        message: 'Error',
+        description:
+          response && response.data ? response.data.messages : 'API Error',
+      });
+    }
+  } catch (err) {
+    yield put({
+      type: types.DELETE_POST_FAIL,
+      error: err,
+    });
+    notification.error({
+      message: 'Error',
+      description: err,
+    });
+  }
+}
+// #endregion
 
 export function* getSubCategorySaga({ payload }) {
   try {
@@ -407,6 +477,8 @@ export default function* rootSaga() {
     takeLatest(types.GET_USER_TYPE, getUserTypeSaga),
     takeLatest(types.CREATE_POST, createPostSaga),
     takeLatest(types.GET_POST, getPostSaga),
+    takeLatest(types.UPDATE_POST, updatePostSaga),
+    takeLatest(types.DELETE_POST, deletePostSaga),
     takeLatest(types.GET_SUB_CATEGORY, getSubCategorySaga),
     takeLatest(types.GET_STATUS, getStatusSaga),
     takeLatest(types.GET_PROBLEM, getProblemSaga),
