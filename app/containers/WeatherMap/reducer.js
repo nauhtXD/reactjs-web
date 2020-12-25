@@ -6,6 +6,8 @@ export const initialState = {
   weathers: [],
   loadingContacts: false,
   contacts: [],
+  loadingCityList: false,
+  cityList: [],
 };
 
 /* eslint-disable default-case, no-param-reassign */
@@ -33,6 +35,17 @@ const weatherMapReducer = (state = initialState, action) =>
       case types.GET_CONTACT_FAIL:
         draft.loadingContacts = false;
         draft.contacts = [];
+        break;
+      case types.GET_CITY_LIST:
+        draft.loadingCityList = true;
+        break;
+      case types.GET_CITY_LIST_SUCCESS:
+        draft.loadingCityList = false;
+        draft.cityList = action.cityList;
+        break;
+      case types.GET_CITY_LIST_FAIL:
+        draft.loadingCityList = false;
+        draft.cityList = [];
         break;
     }
   });

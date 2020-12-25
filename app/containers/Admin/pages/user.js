@@ -24,6 +24,8 @@ const openNotiWIcon = (type, message, description) => {
   });
 };
 
+let k = -1;
+
 export function User(props) {
   useInjectReducer({ key: 'admin', reducer });
   useInjectSaga({ key: 'admin', saga });
@@ -37,6 +39,11 @@ export function User(props) {
 
   useEffect(() => {
     props.getUsers();
+  }, [isReRender, k]);
+
+  useEffect(() => {
+    props.getUsers();
+    if (k === -1) k = 0;
   }, [isReRender]);
 
   const propertyNames = [
@@ -74,8 +81,10 @@ export function User(props) {
       const input = { ...values, userTypeId };
       props.createUser(input);
       setIsRerender(!isReRender);
-    } else
-      openNotiWIcon('error', 'Error', 'Mật khẩu nhập lại không trùng khớp');
+      return 0;
+    }
+    openNotiWIcon('error', 'Error', 'Mật khẩu nhập lại không trùng khớp');
+    return 1;
   };
 
   return (

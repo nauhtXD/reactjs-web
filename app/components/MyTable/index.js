@@ -90,6 +90,7 @@ function MyTable(props) {
               title={i.title}
               dataIndex={i.data}
               key={i.data}
+              render={i.render && i.render}
             />
           ) : (
             <Column

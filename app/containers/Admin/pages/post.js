@@ -11,7 +11,7 @@ import {
   DatePicker,
   Select,
   Input,
-  Button,
+  Image,
   Form,
   Upload,
   Modal,
@@ -27,10 +27,17 @@ import saga from '../saga';
 import makeSelect from '../selectors';
 import * as action from '../actions';
 import MyBox from '../../../components/MyBox/index';
+import AdminTable from '../../../components/AdminTable/index';
+import MyTable from '../../../components/MyTable/index';
 // import minioClient from '../../../components/MyStorage/Loadable';
 
 const dateFormat = 'DD/MM/YYYY';
 const { Option } = Select;
+
+const layout = {
+  labelCol: { span: 4 },
+  wrapperCol: { span: 18 },
+};
 
 const Mrq = styled(ReactQuill)`
   .ql-container {
@@ -38,14 +45,12 @@ const Mrq = styled(ReactQuill)`
   }
 `;
 
-const layout = {
-  labelCol: { span: 8 },
-  wrapperCol: { span: 16 },
-};
-
-const tailLayout = {
-  wrapperCol: { offset: 8, span: 16 },
-};
+const MyContentDiv = styled.div`
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 300px;
+  max-height: 100px;
+`;
 
 function getBase64(file) {
   return new Promise((resolve, reject) => {
@@ -56,16 +61,14 @@ function getBase64(file) {
   });
 }
 
+const init = { content: '', subcategoryId: 1, publishAt: moment() };
+
 export function Post(props) {
   useInjectReducer({ key: 'admin', reducer });
   useInjectSaga({ key: 'admin', saga });
 
-  useEffect(() => {
-    props.getSubCategories();
-  }, []);
-
-  // #region useState
   const [form] = Form.useForm();
+  // #region useState
   const [fileList, setFileList] = useState([
     {
       uid: '-1',
@@ -78,9 +81,52 @@ export function Post(props) {
   const [previewVisible, setPreviewVisible] = useState(false);
   const [previewImage, setPreviewImage] = useState(null);
   const [previewTitle, setPreviewTitle] = useState(null);
+  const [isRerender, setIsRerender] = useState(null);
   // #endregion
 
+  useEffect(() => {
+    props.getSubCategories();
+    props.getPosts();
+  }, [isRerender]);
+
+  useEffect(() => {
+    props.getPosts();
+  }, [isRerender]);
+
   const mSC = props.adminReducer.subCategories;
+
+  const propertyNames = [
+    {
+      title: 'Tiêu đề',
+      data: 'title',
+      render: record => <p style={{ maxWidth: '100px' }}>{record}</p>,
+    },
+    {
+      title: 'Nội dung',
+      data: 'content',
+      render: record => (
+        <MyContentDiv
+          // eslint-disable-next-line react/no-danger
+          dangerouslySetInnerHTML={{
+            __html: record,
+          }}
+        />
+      ),
+    },
+    {
+      title: 'Danh mục',
+      data: ['subcategory', 'name'],
+    },
+    {
+      title: 'Ảnh',
+      data: 'img',
+      render: record => <Image width="50px" src={record} />,
+    },
+    {
+      title: 'Lượt xem',
+      data: 'view',
+    },
+  ];
 
   const onChange = ({ fileList: newFileList }) => {
     setFileList(newFileList);
@@ -97,7 +143,7 @@ export function Post(props) {
     );
   };
 
-  const handleSubmit = async () => {
+  const handleCreate = async () => {
     form.validateFields().then(values => {
       const { url } = fileList[0];
       // const metaData = { 'Content-Type': 'application/octet-stream' };
@@ -106,6 +152,7 @@ export function Post(props) {
       values.publishAt = values.publishAt.format();
       console.log(values);
       // props.createPost(values);
+      return 0;
     });
   };
 
@@ -115,83 +162,73 @@ export function Post(props) {
         <title>Posts</title>
         <meta name="description" content="Description of posts" />
       </Helmet>
-      <div>
-        <p
-          style={{
-            fontSize: '30px',
-            margin: '10px 10px 0 10px',
-            textAlign: 'center',
-          }}
-        >
-          Bài viết mới
-        </p>
-        <Form
-          form={form}
-          name="basic"
-          initialValues={{
-            content: '',
-            subcategoryId: 1,
-            publishAt: moment(),
-          }}
-        >
-          <Row>
-            <Col span={16}>
-              <MyBox>
-                <Form.Item name="title" label="Title">
-                  <Input placeholder="Title" />
-                </Form.Item>
-              </MyBox>
-              <MyBox>
-                <Form.Item name="content">
-                  <Mrq
-                    theme="snow"
-                    modules={Post.modules}
-                    formats={Post.formats}
-                    bounds=".app"
-                    style={{ height: '400px' }}
-                  />
-                </Form.Item>
-              </MyBox>
-            </Col>
-            <Col span={8}>
-              <MyBox>
-                <Form.Item {...layout} label="Ảnh hiển thị">
-                  <Upload
-                    listType="picture-card"
-                    fileList={fileList}
-                    onChange={onChange}
-                    onPreview={onPreview}
-                  >
-                    {fileList.length < 1 && '+ Upload'}
-                  </Upload>
-                </Form.Item>
-                <Form.Item {...layout} label="Danh mục" name="subcategoryId">
-                  <Select>
-                    {mSC &&
-                      mSC.length > 0 &&
-                      mSC.map(i => (
-                        <Option value={i.id} key={i.name}>
-                          {i.name}
-                        </Option>
-                      ))}
-                  </Select>
-                </Form.Item>
-                <Form.Item {...layout} label="Nguồn" name="source">
-                  <Input placeholder="Source" />
-                </Form.Item>
-                <Form.Item {...layout} label="Ngày đăng" name="publishAt">
-                  <DatePicker format={dateFormat} />
-                </Form.Item>
-                <Form.Item {...tailLayout}>
-                  <Button type="primary" onClick={handleSubmit}>
-                    Đăng
-                  </Button>
-                </Form.Item>
-              </MyBox>
-            </Col>
-          </Row>
-        </Form>
-      </div>
+      <AdminTable
+        mTitle="Danh mục bài viết"
+        mCreate={handleCreate}
+        mModal={
+          <div>
+            <Row>
+              <Col span={16}>
+                <MyBox>
+                  <Form.Item {...layout} name="title" label="Tiêu đề">
+                    <Input placeholder="Tiêu đề" />
+                  </Form.Item>
+                </MyBox>
+                <MyBox>
+                  <Form.Item name="content">
+                    <Mrq
+                      theme="snow"
+                      modules={Post.modules}
+                      formats={Post.formats}
+                      bounds=".app"
+                      style={{ height: '300px', width: '600px' }}
+                    />
+                  </Form.Item>
+                </MyBox>
+              </Col>
+              <Col span={8}>
+                <MyBox>
+                  <Form.Item label="Ảnh hiển thị">
+                    <Upload
+                      listType="picture-card"
+                      fileList={fileList}
+                      onChange={onChange}
+                      onPreview={onPreview}
+                    >
+                      {fileList.length < 1 && '+ Upload'}
+                    </Upload>
+                  </Form.Item>
+                  <Form.Item label="Danh mục" name="subcategoryId">
+                    <Select>
+                      {mSC &&
+                        mSC.length > 0 &&
+                        mSC.map(i => (
+                          <Option value={i.id} key={i.name}>
+                            {i.name}
+                          </Option>
+                        ))}
+                    </Select>
+                  </Form.Item>
+                  <Form.Item label="Nguồn" name="source">
+                    <Input placeholder="Nguồn" />
+                  </Form.Item>
+                  <Form.Item label="Ngày đăng" name="publishAt">
+                    <DatePicker format={dateFormat} />
+                  </Form.Item>
+                </MyBox>
+              </Col>
+            </Row>
+          </div>
+        }
+        mTable={
+          <MyTable
+            mData={props.adminReducer.posts}
+            mPropertyNames={propertyNames}
+          />
+        }
+        mInitialValues={init}
+        mWidth={1000}
+      />
       <Modal
         centered
         visible={previewVisible}
@@ -237,6 +274,7 @@ Post.formats = [
 Post.propTypes = {
   adminReducer: PropTypes.any,
   createPost: PropTypes.func,
+  getPosts: PropTypes.func,
   getSubCategories: PropTypes.func,
 };
 
@@ -247,6 +285,9 @@ const mapStateToProps = createStructuredSelector({
 const mapDispatchToProps = dispatch => ({
   createPost: data => {
     dispatch(action.createPost(data));
+  },
+  getPosts: data => {
+    dispatch(action.getPosts(data));
   },
   getSubCategories: data => {
     dispatch(action.getSubCategories(data));

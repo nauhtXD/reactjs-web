@@ -65,9 +65,41 @@ export function* getContactSaga({ payload }) {
   }
 }
 
+export function* getCityListSaga({ payload }) {
+  try {
+    const response = yield call(api.getCityList, payload);
+    if (response && response.status === 200) {
+      yield put({
+        type: types.GET_CITY_LIST_SUCCESS,
+        cityList: response.data.data,
+      });
+    } else {
+      yield put({
+        type: types.GET_CITY_LIST_FAIL,
+        error: response && response.data ? response.data.messages : 'API Error',
+      });
+      notification.error({
+        message: 'Error',
+        description:
+          response && response.data ? response.data.messages : 'API Error',
+      });
+    }
+  } catch (err) {
+    yield put({
+      type: types.GET_CITY_LIST_FAIL,
+      error: err,
+    });
+    notification.error({
+      message: 'Error',
+      description: err,
+    });
+  }
+}
+
 export default function* rootSaga() {
   yield all([
     takeLatest(types.GET_WEATHER, getWeatherSaga),
     takeLatest(types.GET_CONTACT, getContactSaga),
+    takeLatest(types.GET_CITY_LIST, getCityListSaga),
   ]);
 }

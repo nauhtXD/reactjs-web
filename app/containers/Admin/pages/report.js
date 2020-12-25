@@ -19,6 +19,8 @@ import * as action from '../actions';
 const { Option } = Select;
 const { TextArea } = Input;
 
+let k = -1;
+
 export function Report(props) {
   useInjectReducer({ key: 'admin', reducer });
   useInjectSaga({ key: 'admin', saga });
@@ -32,6 +34,11 @@ export function Report(props) {
 
   useEffect(() => {
     props.getProblems();
+  }, [isReRender, k]);
+
+  useEffect(() => {
+    props.getProblems();
+    if (k === -1) k = 0;
   }, [isReRender]);
 
   const propertyNames = [

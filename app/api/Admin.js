@@ -11,6 +11,7 @@ export const deleteUser = data =>
 export const getUserTypes = () =>
   apiConfig.get(endpoint.API_ENDPOINT_GET_USER_TYPE);
 // post
+export const getPosts = () => apiConfig.get(endpoint.API_ENDPOINT_GET_POST);
 export const createPost = data =>
   apiConfig.post(endpoint.API_ENDPOINT_GET_POST, data);
 // subcategory

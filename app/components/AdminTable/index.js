@@ -32,7 +32,8 @@ function AdminTable(props) {
 
   const handleCreate = () => {
     form.validateFields().then(values => {
-      props.mCreate(values);
+      const check = props.mCreate(values);
+      if (check === 0) showModal();
     });
   };
 
@@ -68,8 +69,9 @@ function AdminTable(props) {
         onOk={handleCreate}
         okText="Thêm"
         cancelText="Hủy"
+        width={props.mWidth && props.mWidth}
       >
-        <Form form={form} {...layout}>
+        <Form form={form} {...layout} initialValues={props.mInitialValues}>
           {props.mModal}
         </Form>
       </Modal>
@@ -82,6 +84,8 @@ AdminTable.propTypes = {
   mCreate: PropTypes.func,
   mModal: PropTypes.any,
   mTable: PropTypes.any,
+  mInitialValues: PropTypes.any,
+  mWidth: PropTypes.number,
 };
 
 export default memo(AdminTable);

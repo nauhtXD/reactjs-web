@@ -13,3 +13,10 @@ export function getContacts(data) {
     payload: data,
   };
 }
+
+export function getCityList(data) {
+  return {
+    type: types.GET_CITY_LIST,
+    payload: data,
+  };
+}

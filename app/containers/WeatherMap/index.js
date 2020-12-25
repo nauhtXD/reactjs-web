@@ -23,7 +23,6 @@ import EMarker from 'react-leaflet-enhanced-marker';
 
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
-import * as endpoint from 'utils/endPoint';
 
 import makeSelect from './selectors';
 import reducer from './reducer';
@@ -37,6 +36,7 @@ import * as hAction from '../Home/actions';
 import MyLayout from '../../components/MyLayout/Loadable';
 import EnhancedMarker from '../../components/EnhancedMarker/index';
 import WeatherHistory from '../../components/WeatherHistory/index';
+import Epidemic from '../../components/Epidemic/index';
 
 const API_KEY = 'f9b8a21d57e020513b5c7e50113dd4ea';
 const mZoom = 10;
@@ -68,34 +68,36 @@ export function WeatherMap(props) {
   useInjectReducer({ key: 'weatherMap', reducer });
   useInjectSaga({ key: 'weatherMap', saga });
   const [history5D, setHis] = useState([]);
+
   useEffect(() => {
+    props.getCityList();
     props.getCategories();
     props.getSubCategories();
     props.getHeadquarters();
     props.getMarks();
     props.getContacts();
-    axios
-      .get(`http://localhost:8080/api/${endpoint.API_ENDPOINT_GET_CITY_LIST}`)
-      .then(res => {
-        const wData = res.data.data;
-        wData.map(
-          i =>
-            cityList.indexOf(i.province.weatherId) === -1 &&
-            cityList.push(i.province.weatherId) &&
-            llCityList.push({
-              latitude: i.province.latitude,
-              longitude: i.province.longitude,
-            }) &&
-            geoCityList.push(i.province.geo),
-        );
-        props.getWeathers({
-          data: cityList,
-          key: API_KEY,
-        });
-      });
   }, []);
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    props.weatherMapReducer.cityList.map(
+      i =>
+        cityList.indexOf(i.province.weatherId) === -1 &&
+        cityList.push(i.province.weatherId) &&
+        llCityList.push({
+          latitude: i.province.latitude,
+          longitude: i.province.longitude,
+        }) &&
+        geoCityList.push(i.province.geo),
+    );
+  }, [props.weatherMapReducer.cityList]);
+
+  useEffect(() => {
+    console.log(cityList);
+    // props.getWeathers({
+    //   data: cityList,
+    //   key: API_KEY,
+    // });
+  }, [cityList]);
 
   const handleClick = (lat, lon) => {
     setHis([]);
@@ -185,7 +187,7 @@ export function WeatherMap(props) {
                       llCityList.map(i => (
                         <EMarker
                           key={i.latitude}
-                          icon="dich benh"
+                          icon={<Epidemic />}
                           position={[i.latitude, i.longitude]}
                           onClick={() => handleClick(i.latitude, i.longitude)}
                         />
@@ -203,6 +205,7 @@ export function WeatherMap(props) {
         mMarks={props.homeReducer.marks}
         mContacts={props.homeReducer.headquarters}
         mBreadcrumbs={bcrData}
+        mWeathers={props.weatherMapReducer.weathers}
       />
     </div>
   );
@@ -217,6 +220,7 @@ WeatherMap.propTypes = {
   getSubCategories: PropTypes.func,
   getHeadquarters: PropTypes.func,
   getMarks: PropTypes.func,
+  getCityList: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -230,6 +234,9 @@ const mapDispatchToProps = dispatch => ({
   },
   getContacts: data => {
     dispatch(action.getContacts(data));
+  },
+  getCityList: data => {
+    dispatch(action.getCityList(data));
   },
   getCategories: data => {
     dispatch(hAction.getCategories(data));

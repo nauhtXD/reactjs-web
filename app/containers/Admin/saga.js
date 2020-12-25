@@ -204,6 +204,37 @@ export function* createPostSaga({ payload }) {
   }
 }
 
+export function* getPostSaga({ payload }) {
+  try {
+    const response = yield call(api.getPosts, payload);
+    if (response && response.status === 200) {
+      yield put({
+        type: types.GET_POST_SUCCESS,
+        posts: response.data.data,
+      });
+    } else {
+      yield put({
+        type: types.GET_POST_FAIL,
+        error: response && response.data ? response.data.messages : 'API Error',
+      });
+      notification.error({
+        message: 'Error',
+        description:
+          response && response.data ? response.data.messages : 'API Error',
+      });
+    }
+  } catch (err) {
+    yield put({
+      type: types.GET_POST_FAIL,
+      error: err,
+    });
+    notification.error({
+      message: 'Error',
+      description: err,
+    });
+  }
+}
+
 export function* getSubCategorySaga({ payload }) {
   try {
     const response = yield call(api.getSubCategories, payload);
@@ -375,6 +406,7 @@ export default function* rootSaga() {
     takeLatest(types.DELETE_USER, deleteUserSaga),
     takeLatest(types.GET_USER_TYPE, getUserTypeSaga),
     takeLatest(types.CREATE_POST, createPostSaga),
+    takeLatest(types.GET_POST, getPostSaga),
     takeLatest(types.GET_SUB_CATEGORY, getSubCategorySaga),
     takeLatest(types.GET_STATUS, getStatusSaga),
     takeLatest(types.GET_PROBLEM, getProblemSaga),
