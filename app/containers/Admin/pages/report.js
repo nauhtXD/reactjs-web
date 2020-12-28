@@ -11,7 +11,6 @@ import { Form, Input, Select } from 'antd';
 import reducer from '../reducer';
 import saga from '../saga';
 
-import MyTable from '../../../components/MyTable/index';
 import AdminTable from '../../../components/AdminTable/Loadable';
 import makeSelect from '../selectors';
 import * as action from '../actions';
@@ -74,34 +73,30 @@ export function Report(props) {
       </Helmet>
       <AdminTable
         mTitle="Danh sách sự cố"
-        mTable={
-          <MyTable
-            mData={props.adminReducer.problems}
-            mPropertyNames={propertyNames}
-            mDelete={handleClick}
-            mUpdate={handleClick}
-            mModal={
-              <div>
-                <Form.Item label="Tiêu đề" name="title">
-                  <Input disabled />
-                </Form.Item>
-                <Form.Item label="Nội dung" name="content">
-                  <TextArea disabled />
-                </Form.Item>
-                <Form.Item label="Trạng thái" name="statusId">
-                  <Select>
-                    {props.adminReducer.statuses &&
-                      props.adminReducer.statuses.length > 0 &&
-                      props.adminReducer.statuses.map(i => (
-                        <Option key={i.id} value={i.id}>
-                          {i.name}
-                        </Option>
-                      ))}
-                  </Select>
-                </Form.Item>
-              </div>
-            }
-          />
+        mData={props.adminReducer.problems}
+        mPropertyNames={propertyNames}
+        mDelete={handleClick}
+        mUpdate={handleClick}
+        mTableModal={
+          <div>
+            <Form.Item label="Tiêu đề" name="title">
+              <Input disabled />
+            </Form.Item>
+            <Form.Item label="Nội dung" name="content">
+              <TextArea disabled />
+            </Form.Item>
+            <Form.Item label="Trạng thái" name="statusId">
+              <Select>
+                {props.adminReducer.statuses &&
+                  props.adminReducer.statuses.length > 0 &&
+                  props.adminReducer.statuses.map(i => (
+                    <Option key={i.id} value={i.id}>
+                      {i.name}
+                    </Option>
+                  ))}
+              </Select>
+            </Form.Item>
+          </div>
         }
       />
     </div>

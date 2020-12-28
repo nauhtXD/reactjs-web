@@ -13,18 +13,27 @@ import { Row, Col, Input, Button, Modal, Form } from 'antd';
 // import messages from './messages';
 
 import MyBox from '../MyBox/index';
+import MyTable from '../MyTable/index';
 
 const layout = {
   labelCol: { span: 8 },
   wrapperCol: { span: 16 },
 };
 
+let k = -1;
+
 const { Search } = Input;
 
 function AdminTable(props) {
   const [isVisible, setIsVisible] = useState(false);
-
+  const [searchValue, setSearchValue] = useState('');
+  const [dataSource, setDataSource] = useState(props.mData);
   const [form] = Form.useForm();
+
+  useEffect(() => {
+    setDataSource(props.mData);
+    k = 0;
+  }, [props.mData, k === -1]);
 
   useEffect(() => {
     let data = [];
@@ -57,7 +66,18 @@ function AdminTable(props) {
           <Row>
             <Col span={4} />
             <Col span={16}>
-              <Search placeholder="Nhập ký tự cần tìm" />
+              <Search
+                placeholder="Nhập ký tự cần tìm"
+                value={searchValue}
+                onChange={e => {
+                  const currValue = e.target.value;
+                  setSearchValue(currValue);
+                  const filteredData = props.mData.filter(entry =>
+                    props.mSearch(entry, currValue.toLowerCase()),
+                  );
+                  setDataSource(filteredData);
+                }}
+              />
             </Col>
             <Col span={4}>
               {props.mCreate && (
@@ -70,7 +90,16 @@ function AdminTable(props) {
         </MyBox>
       </div>
       <div style={{ clear: 'both', height: '10px' }} />
-      <MyBox>{props.mTable}</MyBox>
+      <MyBox>
+        <MyTable
+          mData={dataSource}
+          mPropertyNames={props.mPropertyNames}
+          mDelete={props.mDelete}
+          mUpdate={props.mUpdate}
+          mModal={props.mTableModal}
+          mWidth={props.mWidth}
+        />
+      </MyBox>
       <Modal
         title="Thêm mới"
         centered
@@ -93,9 +122,14 @@ AdminTable.propTypes = {
   mTitle: PropTypes.string,
   mCreate: PropTypes.func,
   mModal: PropTypes.any,
-  mTable: PropTypes.any,
   mInitialValues: PropTypes.any,
   mWidth: PropTypes.number,
+  mData: PropTypes.array,
+  mPropertyNames: PropTypes.array,
+  mDelete: PropTypes.func,
+  mUpdate: PropTypes.func,
+  mTableModal: PropTypes.any,
+  mSearch: PropTypes.any,
 };
 
 export default memo(AdminTable);

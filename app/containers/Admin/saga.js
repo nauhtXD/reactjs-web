@@ -530,6 +530,141 @@ export function* getCenterSaga({ payload }) {
   }
 }
 
+// #region contact
+export function* getContactSaga({ payload }) {
+  try {
+    const response = yield call(api.getContacts, payload);
+    if (response && response.status === 200) {
+      yield put({
+        type: types.GET_CONTACT_SUCCESS,
+        contacts: response.data.data,
+      });
+    } else {
+      yield put({
+        type: types.GET_CONTACT_FAIL,
+        error: response && response.data ? response.data.messages : 'API Error',
+      });
+      notification.error({
+        message: 'Error',
+        description:
+          response && response.data ? response.data.messages : 'API Error',
+      });
+    }
+  } catch (err) {
+    yield put({
+      type: types.GET_CONTACT_FAIL,
+      error: err,
+    });
+    notification.error({
+      message: 'Error',
+      description: err,
+    });
+  }
+}
+
+export function* createContactSaga({ payload }) {
+  try {
+    const response = yield call(api.createContact, payload);
+    if (response && response.status === 200) {
+      yield put({
+        type: types.CREATE_CONTACT_SUCCESS,
+      });
+      notification.success({
+        message: 'Success',
+        description: 'Thêm thành công',
+      });
+    } else {
+      yield put({
+        type: types.CREATE_CONTACT_FAIL,
+        error: response && response.data ? response.data.messages : 'API Error',
+      });
+      notification.error({
+        message: 'Error',
+        description:
+          response && response.data ? response.data.messages : 'API Error',
+      });
+    }
+  } catch (err) {
+    yield put({
+      type: types.CREATE_CONTACT_FAIL,
+      error: err,
+    });
+    notification.error({
+      message: 'Error',
+      description: err,
+    });
+  }
+}
+
+export function* updateContactSaga({ payload }) {
+  try {
+    const response = yield call(api.updateContact, payload);
+    if (response && response.status === 200) {
+      yield put({
+        type: types.UPDATE_CONTACT_SUCCESS,
+      });
+      notification.success({
+        message: 'Success',
+        description: 'Chỉnh sửa thành công',
+      });
+    } else {
+      yield put({
+        type: types.UPDATE_CONTACT_FAIL,
+        error: response && response.data ? response.data.messages : 'API Error',
+      });
+      notification.error({
+        message: 'Error',
+        description:
+          response && response.data ? response.data.messages : 'API Error',
+      });
+    }
+  } catch (err) {
+    yield put({
+      type: types.UPDATE_CONTACT_FAIL,
+      error: err,
+    });
+    notification.error({
+      message: 'Error',
+      description: err,
+    });
+  }
+}
+
+export function* deleteContactSaga({ payload }) {
+  try {
+    const response = yield call(api.deleteContact, payload);
+    if (response && response.status === 200) {
+      yield put({
+        type: types.DELETE_CONTACT_SUCCESS,
+      });
+      notification.success({
+        message: 'Success',
+        description: 'Xóa thành công',
+      });
+    } else {
+      yield put({
+        type: types.DELETE_CONTACT_FAIL,
+        error: response && response.data ? response.data.messages : 'API Error',
+      });
+      notification.error({
+        message: 'Error',
+        description:
+          response && response.data ? response.data.messages : 'API Error',
+      });
+    }
+  } catch (err) {
+    yield put({
+      type: types.DELETE_CONTACT_FAIL,
+      error: err,
+    });
+    notification.error({
+      message: 'Error',
+      description: err,
+    });
+  }
+}
+// #endregion
+
 export default function* rootSaga() {
   yield all([
     takeLatest(types.GET_USER, getUserSaga),
@@ -548,5 +683,9 @@ export default function* rootSaga() {
     takeLatest(types.DELETE_PROBLEM, deleteProblemSaga),
     takeLatest(types.GET_PROVINCE, getProvinceSaga),
     takeLatest(types.GET_CENTER, getCenterSaga),
+    takeLatest(types.GET_CONTACT, getContactSaga),
+    takeLatest(types.CREATE_CONTACT, createContactSaga),
+    takeLatest(types.UPDATE_CONTACT, updateContactSaga),
+    takeLatest(types.DELETE_CONTACT, deleteContactSaga),
   ]);
 }

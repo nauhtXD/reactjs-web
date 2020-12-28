@@ -19,7 +19,6 @@ import makeSelect from '../selectors';
 import * as action from '../actions';
 import MyBox from '../../../components/MyBox/index';
 import AdminTable from '../../../components/AdminTable/index';
-import MyTable from '../../../components/MyTable/index';
 // import minioClient from '../../../components/MyStorage/Loadable';
 
 const dateFormat = 'DD/MM/YYYY';
@@ -205,16 +204,11 @@ export function Post(props) {
         mTitle="Danh sách bài viết"
         mCreate={handleCreate}
         mModal={myModal}
-        mTable={
-          <MyTable
-            mData={props.adminReducer.posts}
-            mPropertyNames={propertyNames}
-            mUpdate={handleClick}
-            mDelete={handleClick}
-            mModal={myModal}
-            mWidth={1000}
-          />
-        }
+        mData={props.adminReducer.posts}
+        mPropertyNames={propertyNames}
+        mDelete={handleClick}
+        mUpdate={handleClick}
+        mTableModal={myModal}
         mInitialValues={init}
         mWidth={1000}
       />

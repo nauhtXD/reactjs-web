@@ -42,7 +42,15 @@ function MyTable(props) {
   const [recordValue, setRecordValue] = useState([]);
 
   useEffect(() => {
-    form.setFieldsValue(defValue);
+    let data = defValue;
+    if (defValue.province) {
+      data = {
+        ...defValue,
+        latitude: defValue.province.latitude,
+        longitude: defValue.province.longitude,
+      };
+    }
+    form.setFieldsValue(data);
   }, [form, defValue]);
 
   const [form] = Form.useForm();

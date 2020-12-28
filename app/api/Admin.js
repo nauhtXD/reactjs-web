@@ -36,3 +36,12 @@ export const getProvinces = () =>
   apiConfig.get(endpoint.API_ENDPOINT_GET_PROVINCE);
 export const getCenter = data =>
   apiConfig.get(`${endpoint.API_ENDPOINT_GET_PROVINCE}/${data}`);
+// contact
+export const getContacts = () =>
+  apiConfig.get(endpoint.API_ENDPOINT_GET_CONTACT);
+export const createContact = data =>
+  apiConfig.post(endpoint.API_ENDPOINT_GET_CONTACT, data);
+export const updateContact = data =>
+  apiConfig.put(`${endpoint.API_ENDPOINT_UPDATE_CONTACT}/${data.id}`, data);
+export const deleteContact = data =>
+  apiConfig.put(`${endpoint.API_ENDPOINT_DELETE_CONTACT}/${data}`, data);

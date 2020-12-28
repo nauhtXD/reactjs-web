@@ -30,7 +30,7 @@ export function User(props) {
   useInjectReducer({ key: 'admin', reducer });
   useInjectSaga({ key: 'admin', saga });
 
-  const [isReRender, setIsRerender] = useState(false);
+  const [isReRender, setIsReRender] = useState(false);
 
   useEffect(() => {
     props.getUsers();
@@ -72,7 +72,7 @@ export function User(props) {
   const handleClick = (record, key) => {
     if (key === 0) props.updateUser(record);
     else props.deleteUser(record);
-    setIsRerender(!isReRender);
+    setIsReRender(!isReRender);
   };
 
   const handleCreate = values => {
@@ -80,7 +80,7 @@ export function User(props) {
       const userTypeId = 1;
       const input = { ...values, userTypeId };
       props.createUser(input);
-      setIsRerender(!isReRender);
+      setIsReRender(!isReRender);
       return 0;
     }
     openNotiWIcon('error', 'Error', 'Mật khẩu nhập lại không trùng khớp');
@@ -139,47 +139,41 @@ export function User(props) {
             </Form.Item>
           </div>
         }
-        mTable={
-          <MyTable
-            mData={props.adminReducer.users}
-            mPropertyNames={propertyNames}
-            mDelete={handleClick}
-            mUpdate={handleClick}
-            mModal={
-              <div>
-                <Form.Item label="Tên đăng nhập" name="username">
-                  <Input disabled />
-                </Form.Item>
-                <Form.Item
-                  label="Mật khẩu"
-                  name="password"
-                  rules={[
-                    { required: true, message: 'Mật khẩu không được trống!' },
-                  ]}
-                >
-                  <Input.Password />
-                </Form.Item>
-                <Form.Item
-                  label="Email"
-                  name="email"
-                  rules={[
-                    { required: true, message: 'Email không được trống!' },
-                  ]}
-                >
-                  <Input />
-                </Form.Item>
-                <Form.Item label="Số điện thoại" name="phone">
-                  <Input />
-                </Form.Item>
-                <Form.Item label="Trạng thái" name="status">
-                  <Select>
-                    <Option value={false}>Khóa</Option>
-                    <Option value>Mở Khóa</Option>
-                  </Select>
-                </Form.Item>
-              </div>
-            }
-          />
+        mData={props.adminReducer.users}
+        mPropertyNames={propertyNames}
+        mDelete={handleClick}
+        mUpdate={handleClick}
+        mTableModal={
+          <div>
+            <Form.Item label="Tên đăng nhập" name="username">
+              <Input disabled />
+            </Form.Item>
+            <Form.Item
+              label="Mật khẩu"
+              name="password"
+              rules={[
+                { required: true, message: 'Mật khẩu không được trống!' },
+              ]}
+            >
+              <Input.Password />
+            </Form.Item>
+            <Form.Item
+              label="Email"
+              name="email"
+              rules={[{ required: true, message: 'Email không được trống!' }]}
+            >
+              <Input />
+            </Form.Item>
+            <Form.Item label="Số điện thoại" name="phone">
+              <Input />
+            </Form.Item>
+            <Form.Item label="Trạng thái" name="status">
+              <Select>
+                <Option value={false}>Khóa</Option>
+                <Option value>Mở Khóa</Option>
+              </Select>
+            </Form.Item>
+          </div>
         }
       />
     </div>

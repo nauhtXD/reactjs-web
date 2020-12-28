@@ -23,6 +23,8 @@ export const initialState = {
   provinces: [],
   loadingCenter: false,
   center: [],
+  loadingContacts: false,
+  contacts: [],
 };
 
 /* eslint-disable default-case, no-param-reassign */
@@ -116,6 +118,17 @@ const adminReducer = (state = initialState, action) =>
       case types.GET_CENTER_FAIL:
         draft.center = [];
         draft.loadingCenter = false;
+        break;
+      case types.GET_CONTACT:
+        draft.loadingContacts = true;
+        break;
+      case types.GET_CONTACT_SUCCESS:
+        draft.contacts = action.contacts;
+        draft.loadingContacts = false;
+        break;
+      case types.GET_CONTACT_FAIL:
+        draft.contacts = [];
+        draft.loadingContacts = false;
         break;
     }
   });
