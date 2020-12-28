@@ -33,6 +33,7 @@ import Dashboard from '../Admin/pages/dashboard';
 import User from '../Admin/pages/user';
 import Post from '../Admin/pages/post';
 import Report from '../Admin/pages/report';
+import Contact from '../Admin/pages/contact';
 
 import GlobalStyle from '../../global-styles';
 function App(props) {
@@ -74,6 +75,7 @@ function App(props) {
           <Route exact path="/admin/user" component={User} />
           <Route exact path="/admin/post" component={Post} />
           <Route exact path="/admin/report" component={Report} />
+          <Route exact path="/admin/contact" component={Contact} />
 
           <Route path="" component={NotFoundPage} />
         </Switch>
@@ -85,7 +87,13 @@ function App(props) {
 App.propTypes = {};
 const mapStateToProps = createStructuredSelector({});
 
-const mapDispatchToProps = (dispatch) => ({});
+const mapDispatchToProps = dispatch => ({});
 
-const withConnect = connect(mapStateToProps, mapDispatchToProps);
-export default compose(withConnect, memo)(App);
+const withConnect = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+);
+export default compose(
+  withConnect,
+  memo,
+)(App);

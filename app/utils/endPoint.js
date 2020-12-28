@@ -34,3 +34,5 @@ export const API_ENDPOINT_GET_STATUS = 'statuses';
 export const API_ENDPOINT_GET_PROBLEM = 'problems';
 export const API_ENDPOINT_UPDATE_PROBLEM = 'problems/update';
 export const API_ENDPOINT_DELETE_PROBLEM = 'problems/delete';
+// province
+export const API_ENDPOINT_GET_PROVINCE = 'provinces';

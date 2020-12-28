@@ -109,3 +109,47 @@ export function deleteProblem(data) {
   };
 }
 // #endregion
+
+export function getProvinces(data) {
+  return {
+    type: types.GET_PROVINCE,
+    payload: data,
+  };
+}
+
+export function getCenter(data) {
+  return {
+    type: types.GET_CENTER,
+    payload: data,
+  };
+}
+
+// #region contact
+export function getContacts(data) {
+  return {
+    type: types.GET_CONTACT,
+    payload: data,
+  };
+}
+
+export function createContact(data) {
+  return {
+    type: types.CREATE_CONTACT,
+    payload: data,
+  };
+}
+
+export function updateContact(data) {
+  return {
+    type: types.UPDATE_CONTACT,
+    payload: data,
+  };
+}
+
+export function deleteContact(data) {
+  return {
+    type: types.DELETE_CONTACT,
+    payload: data,
+  };
+}
+// #endregion

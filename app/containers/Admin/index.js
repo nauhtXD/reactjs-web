@@ -19,6 +19,7 @@ import Dashboard from './pages/dashboard';
 import User from './pages/user';
 import Post from './pages/post';
 import Report from './pages/report';
+import Contact from './pages/contact';
 
 const { SubMenu } = Menu;
 const { Sider, Content } = Layout;
@@ -67,6 +68,9 @@ export function Admin() {
             <Menu.Item key="posts">
               <Link to="/admin/post">Bài viết</Link>
             </Menu.Item>
+            <Menu.Item key="contacts">
+              <Link to="/admin/contact">Liên hệ</Link>
+            </Menu.Item>
           </Menu>
         </Sider>
         <Layout>
@@ -78,10 +82,11 @@ export function Admin() {
               backgroundColor: '#fff',
             }}
           >
-            <Route path="/admin/dashboard" component={Dashboard} />
-            <Route path="/admin/user" component={User} />
-            <Route path="/admin/post" component={Post} />
-            <Route path="/admin/report" component={Report} />
+            <Route exact path="/admin/dashboard" component={Dashboard} />
+            <Route exact path="/admin/user" component={User} />
+            <Route exact path="/admin/post" component={Post} />
+            <Route exact path="/admin/report" component={Report} />
+            <Route exact path="/admin/contact" component={Contact} />
           </Content>
         </Layout>
       </Layout>

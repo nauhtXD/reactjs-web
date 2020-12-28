@@ -65,6 +65,7 @@
     "@babel/runtime": "^7.12.5",
     "@babel/runtime-corejs2": "^7.12.5",
     "antd": "^4.8.3",
+    "antd-country-phone-input": "^3.0.2",
     "axios": "^0.19.2",
     "babel-runtime": "^6.26.0",
     "chalk": "^2.4.2",

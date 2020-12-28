@@ -468,6 +468,68 @@ export function* deleteProblemSaga({ payload }) {
 }
 // #endregion
 
+export function* getProvinceSaga({ payload }) {
+  try {
+    const response = yield call(api.getProvinces, payload);
+    if (response && response.status === 200) {
+      yield put({
+        type: types.GET_PROVINCE_SUCCESS,
+        provinces: response.data.data,
+      });
+    } else {
+      yield put({
+        type: types.GET_PROVINCE_FAIL,
+        error: response && response.data ? response.data.messages : 'API Error',
+      });
+      notification.error({
+        message: 'Error',
+        description:
+          response && response.data ? response.data.messages : 'API Error',
+      });
+    }
+  } catch (err) {
+    yield put({
+      type: types.GET_PROVINCE_FAIL,
+      error: err,
+    });
+    notification.error({
+      message: 'Error',
+      description: err,
+    });
+  }
+}
+
+export function* getCenterSaga({ payload }) {
+  try {
+    const response = yield call(api.getCenter, payload);
+    if (response && response.status === 200) {
+      yield put({
+        type: types.GET_CENTER_SUCCESS,
+        center: response.data.data,
+      });
+    } else {
+      yield put({
+        type: types.GET_CENTER_FAIL,
+        error: response && response.data ? response.data.messages : 'API Error',
+      });
+      notification.error({
+        message: 'Error',
+        description:
+          response && response.data ? response.data.messages : 'API Error',
+      });
+    }
+  } catch (err) {
+    yield put({
+      type: types.GET_CENTER_FAIL,
+      error: err,
+    });
+    notification.error({
+      message: 'Error',
+      description: err,
+    });
+  }
+}
+
 export default function* rootSaga() {
   yield all([
     takeLatest(types.GET_USER, getUserSaga),
@@ -484,5 +546,7 @@ export default function* rootSaga() {
     takeLatest(types.GET_PROBLEM, getProblemSaga),
     takeLatest(types.UPDATE_PROBLEM, updateProblemSaga),
     takeLatest(types.DELETE_PROBLEM, deleteProblemSaga),
+    takeLatest(types.GET_PROVINCE, getProvinceSaga),
+    takeLatest(types.GET_CENTER, getCenterSaga),
   ]);
 }

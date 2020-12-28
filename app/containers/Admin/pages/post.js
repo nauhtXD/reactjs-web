@@ -5,17 +5,8 @@ import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
-import {
-  Row,
-  Col,
-  DatePicker,
-  Select,
-  Input,
-  Image,
-  Form,
-  Upload,
-  Modal,
-} from 'antd';
+import { Row, Col, DatePicker, Select, Input, Image, Form, Upload } from 'antd';
+import { PlusOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
 import moment from 'moment';
 import ReactQuill from 'react-quill';
@@ -52,15 +43,6 @@ const MyContentDiv = styled.div`
   max-height: 100px;
 `;
 
-function getBase64(file) {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => resolve(reader.result);
-    reader.onerror = error => reject(error);
-  });
-}
-
 const init = { content: '', subcategoryId: 1, publishAt: moment() };
 
 let k = -1;
@@ -71,18 +53,8 @@ export function Post(props) {
 
   const [form] = Form.useForm();
   // #region useState
-  const [fileList, setFileList] = useState([
-    {
-      uid: '-1',
-      name: 'image.png',
-      status: 'done',
-      url:
-        'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-    },
-  ]);
-  const [previewVisible, setPreviewVisible] = useState(false);
-  const [previewImage, setPreviewImage] = useState(null);
-  const [previewTitle, setPreviewTitle] = useState(null);
+  const [fileList, setFileList] = useState([]);
+  const [imageUrl, setImageUrl] = useState();
   const [isRerender, setIsRerender] = useState(null);
   // #endregion
 
@@ -93,10 +65,7 @@ export function Post(props) {
 
   useEffect(() => {
     props.getPosts();
-    if (k === -1) {
-      console.log(k);
-      k = 0;
-    }
+    if (k === -1) k = 0;
   }, [isRerender]);
 
   useEffect(() => {
@@ -138,27 +107,10 @@ export function Post(props) {
     },
   ];
 
-  const onChange = ({ fileList: newFileList }) => {
-    setFileList(newFileList);
-  };
-
-  const onPreview = async file => {
-    if (!file.url && !file.preview) {
-      file.preview = await getBase64(file.originFileObj);
-    }
-    setPreviewImage(file.url || file.preview);
-    setPreviewVisible(true);
-    setPreviewTitle(
-      file.name || file.url.substring(file.url.lastIndexOf('/') + 1),
-    );
-  };
-
   const handleCreate = async () => {
     form.validateFields().then(values => {
-      const { url } = fileList[0];
       // const metaData = { 'Content-Type': 'application/octet-stream' };
       // minioClient.fPutObject('photos', 'icon.png', url, metaData);
-      values.img = url;
       values.publishAt = values.publishAt.format();
       console.log(values);
       // props.createPost(values);
@@ -170,6 +122,19 @@ export function Post(props) {
     if (key === 0) props.updatePost(record);
     else props.deletePost(record);
     setIsRerender(!isRerender);
+  };
+
+  function getBase64(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = error => reject(error);
+    });
+  }
+
+  const handleChange = url => {
+    setImageUrl(url);
   };
 
   const myModal = [
@@ -195,14 +160,16 @@ export function Post(props) {
         </Col>
         <Col span={8}>
           <MyBox>
-            <Form.Item label="Ảnh hiển thị">
-              <Upload
-                listType="picture-card"
-                fileList={fileList}
-                onChange={onChange}
-                onPreview={onPreview}
-              >
-                {fileList.length < 1 && '+ Upload'}
+            <Form.Item label="Ảnh hiển thị" name="img">
+              <Upload listType="picture-card" onChange={handleChange}>
+                {imageUrl ? (
+                  <Image src={imageUrl} width={150} />
+                ) : (
+                  <div>
+                    <PlusOutlined />
+                    <div style={{ marginTop: 8 }}>Upload</div>
+                  </div>
+                )}
               </Upload>
             </Form.Item>
             <Form.Item label="Danh mục" name="subcategoryId">
@@ -251,15 +218,6 @@ export function Post(props) {
         mInitialValues={init}
         mWidth={1000}
       />
-      <Modal
-        centered
-        visible={previewVisible}
-        title={previewTitle}
-        footer={null}
-        onCancel={() => setPreviewVisible(false)}
-      >
-        <img alt="example" style={{ width: '100%' }} src={previewImage} />
-      </Modal>
     </div>
   );
 }

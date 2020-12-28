@@ -4,7 +4,7 @@
  *
  */
 
-import React, { memo, useState } from 'react';
+import React, { memo, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 // import styled from 'styled-components';
 import { Row, Col, Input, Button, Modal, Form } from 'antd';
@@ -25,6 +25,16 @@ function AdminTable(props) {
   const [isVisible, setIsVisible] = useState(false);
 
   const [form] = Form.useForm();
+
+  useEffect(() => {
+    let data = [];
+    if (props.mInitialValues)
+      data = {
+        latitude: props.mInitialValues.lat,
+        longitude: props.mInitialValues.lng,
+      };
+    form.setFieldsValue(data);
+  }, [form, props.mInitialValues]);
 
   const showModal = () => {
     setIsVisible(!isVisible);
@@ -71,7 +81,7 @@ function AdminTable(props) {
         cancelText="Hủy"
         width={props.mWidth && props.mWidth}
       >
-        <Form form={form} {...layout} initialValues={props.mInitialValues}>
+        <Form form={form} {...layout}>
           {props.mModal}
         </Form>
       </Modal>

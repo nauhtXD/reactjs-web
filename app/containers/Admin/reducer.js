@@ -19,6 +19,10 @@ export const initialState = {
   problems: [],
   loadingPosts: false,
   posts: [],
+  loadingProvinces: false,
+  provinces: [],
+  loadingCenter: false,
+  center: [],
 };
 
 /* eslint-disable default-case, no-param-reassign */
@@ -90,6 +94,28 @@ const adminReducer = (state = initialState, action) =>
       case types.GET_POST_FAIL:
         draft.posts = [];
         draft.loadingPosts = false;
+        break;
+      case types.GET_PROVINCE:
+        draft.loadingProvinces = true;
+        break;
+      case types.GET_PROVINCE_SUCCESS:
+        draft.provinces = action.provinces;
+        draft.loadingProvinces = false;
+        break;
+      case types.GET_PROVINCE_FAIL:
+        draft.provinces = [];
+        draft.loadingProvinces = false;
+        break;
+      case types.GET_CENTER:
+        draft.loadingCenter = true;
+        break;
+      case types.GET_CENTER_SUCCESS:
+        draft.center = action.center;
+        draft.loadingCenter = false;
+        break;
+      case types.GET_CENTER_FAIL:
+        draft.center = [];
+        draft.loadingCenter = false;
         break;
     }
   });

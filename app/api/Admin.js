@@ -31,3 +31,8 @@ export const updateProblem = data =>
   apiConfig.put(`${endpoint.API_ENDPOINT_UPDATE_PROBLEM}/${data.id}`, data);
 export const deleteProblem = data =>
   apiConfig.put(`${endpoint.API_ENDPOINT_DELETE_PROBLEM}/${data}`, data);
+// province
+export const getProvinces = () =>
+  apiConfig.get(endpoint.API_ENDPOINT_GET_PROVINCE);
+export const getCenter = data =>
+  apiConfig.get(`${endpoint.API_ENDPOINT_GET_PROVINCE}/${data}`);
