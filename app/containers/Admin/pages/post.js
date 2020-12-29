@@ -36,16 +36,19 @@ const MyContentDiv = styled.div`
 const init = { content: '', subcategoryId: 1, publishAt: moment() };
 let k = -1;
 
+function getBase64(img, callback) {
+  const reader = new FileReader();
+  reader.addEventListener('load', () => callback(reader.result));
+  reader.readAsDataURL(img);
+}
+
 export function Post(props) {
   useInjectReducer({ key: 'admin', reducer });
   useInjectSaga({ key: 'admin', saga });
 
   const [form] = Form.useForm();
-  // #region useState
-  const [fileList, setFileList] = useState([]);
   const [imageUrl, setImageUrl] = useState();
   const [isRerender, setIsRerender] = useState(null);
-  // #endregion
 
   useEffect(() => {
     props.getSubCategories();
@@ -113,17 +116,12 @@ export function Post(props) {
     setIsRerender(!isRerender);
   };
 
-  function getBase64(file) {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result);
-      reader.onerror = error => reject(error);
-    });
-  }
-
-  const handleChange = url => {
-    setImageUrl(url);
+  const handleChange = info => {
+    console.log(info.file);
+    setImageUrl(
+      'https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg',
+    );
+    // getBase64(info.file.originFileObj, url => setImageUrl(url));
   };
 
   const myModal = [
@@ -144,16 +142,7 @@ export function Post(props) {
         <Col span={8}>
           <MyBox>
             <Form.Item label="Ảnh hiển thị" name="img">
-              <Upload listType="picture-card" onChange={handleChange}>
-                {imageUrl ? (
-                  <Image src={imageUrl} width={150} />
-                ) : (
-                  <div>
-                    <PlusOutlined />
-                    <div style={{ marginTop: 8 }}>Upload</div>
-                  </div>
-                )}
-              </Upload>
+              <Input type="file" />
             </Form.Item>
             <Form.Item label="Danh mục" name="subcategoryId">
               <Select>

@@ -37,7 +37,7 @@ function AdminTable(props) {
 
   useEffect(() => {
     let data = [];
-    if (props.mInitialValues)
+    if (props.mInitialValues && props.mInitialValues[0])
       data = {
         latitude: props.mInitialValues[0].y,
         longitude: props.mInitialValues[0].x,
