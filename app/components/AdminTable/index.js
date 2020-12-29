@@ -39,8 +39,8 @@ function AdminTable(props) {
     let data = [];
     if (props.mInitialValues)
       data = {
-        latitude: props.mInitialValues.lat,
-        longitude: props.mInitialValues.lng,
+        latitude: props.mInitialValues[0].y,
+        longitude: props.mInitialValues[0].x,
       };
     form.setFieldsValue(data);
   }, [form, props.mInitialValues]);

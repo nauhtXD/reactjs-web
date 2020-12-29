@@ -31,7 +31,7 @@ function MyMap(props) {
     <div>
       <Map
         style={{
-          height: '310px',
+          height: '400px',
           width: '100%',
         }}
         zoom={mZoom}

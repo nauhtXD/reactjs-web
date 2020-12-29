@@ -1,6 +1,6 @@
 /**
  *
- * Tests for MyStorage
+ * Tests for MyEditor
  *
  * @see https://github.com/react-boilerplate/react-boilerplate/tree/master/docs/testing
  *
@@ -8,14 +8,20 @@
 
 import React from 'react';
 import { render } from 'react-testing-library';
+import { IntlProvider } from 'react-intl';
 // import 'jest-dom/extend-expect'; // add some helpful assertions
 
-import MyStorage from '../index';
+import MyEditor from '../index';
+import { DEFAULT_LOCALE } from '../../../i18n';
 
-describe('<MyStorage />', () => {
+describe('<MyEditor />', () => {
   it('Expect to not log errors in console', () => {
     const spy = jest.spyOn(global.console, 'error');
-    render(<MyStorage />);
+    render(
+      <IntlProvider locale={DEFAULT_LOCALE}>
+        <MyEditor />
+      </IntlProvider>,
+    );
     expect(spy).not.toHaveBeenCalled();
   });
 
@@ -31,7 +37,11 @@ describe('<MyStorage />', () => {
   it.skip('Should render and match the snapshot', () => {
     const {
       container: { firstChild },
-    } = render(<MyStorage />);
+    } = render(
+      <IntlProvider locale={DEFAULT_LOCALE}>
+        <MyEditor />
+      </IntlProvider>,
+    );
     expect(firstChild).toMatchSnapshot();
   });
 });

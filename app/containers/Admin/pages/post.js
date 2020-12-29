@@ -9,8 +9,7 @@ import { Row, Col, DatePicker, Select, Input, Image, Form, Upload } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
 import moment from 'moment';
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
+
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
 import reducer from '../reducer';
@@ -19,7 +18,7 @@ import makeSelect from '../selectors';
 import * as action from '../actions';
 import MyBox from '../../../components/MyBox/index';
 import AdminTable from '../../../components/AdminTable/index';
-// import minioClient from '../../../components/MyStorage/Loadable';
+import MyEditor from '../../../components/MyEditor/index';
 
 const dateFormat = 'DD/MM/YYYY';
 const { Option } = Select;
@@ -28,22 +27,13 @@ const layout = {
   labelCol: { span: 4 },
   wrapperCol: { span: 18 },
 };
-
-const Mrq = styled(ReactQuill)`
-  .ql-container {
-    height: 90% !important;
-  }
-`;
-
 const MyContentDiv = styled.div`
   overflow: hidden;
   text-overflow: ellipsis;
   max-width: 300px;
   max-height: 100px;
 `;
-
 const init = { content: '', subcategoryId: 1, publishAt: moment() };
-
 let k = -1;
 
 export function Post(props) {
@@ -147,13 +137,7 @@ export function Post(props) {
           </MyBox>
           <MyBox>
             <Form.Item name="content">
-              <Mrq
-                theme="snow"
-                modules={Post.modules}
-                formats={Post.formats}
-                bounds=".app"
-                style={{ height: '300px', width: '600px' }}
-              />
+              <MyEditor mHeight="300px" mWidth="600px" />
             </Form.Item>
           </MyBox>
         </Col>
@@ -215,35 +199,6 @@ export function Post(props) {
     </div>
   );
 }
-
-Post.modules = {
-  toolbar: [
-    [{ header: [1, 2, false] }],
-    ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-    [
-      { list: 'ordered' },
-      { list: 'bullet' },
-      { indent: '-1' },
-      { indent: '+1' },
-    ],
-    ['link', 'image'],
-    ['clean'],
-  ],
-};
-
-Post.formats = [
-  'header',
-  'bold',
-  'italic',
-  'underline',
-  'strike',
-  'blockquote',
-  'list',
-  'bullet',
-  'indent',
-  'link',
-  'image',
-];
 
 Post.propTypes = {
   adminReducer: PropTypes.any,

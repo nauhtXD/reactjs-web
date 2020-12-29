@@ -6,6 +6,7 @@ import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 // import styled from 'styled-component';
 import { Form, Input, Select, Row, Col } from 'antd';
+import { OpenStreetMapProvider } from 'leaflet-geosearch';
 
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
@@ -15,9 +16,9 @@ import saga from '../saga';
 import * as action from '../actions';
 
 import AdminTable from '../../../components/AdminTable';
-import MyMap from '../../../components/MyMap';
 
 const { Option } = Select;
+const provider = new OpenStreetMapProvider();
 let k = -1;
 
 export function Contact(props) {
@@ -46,18 +47,14 @@ export function Contact(props) {
     setIsReRender(!isReRender);
   };
 
-  const handlePos = curr => {
-    setCurrPos(curr);
-  };
-
   const handleClick = (record, key) => {
     if (key === 0) props.updateContact(record);
     else props.deleteContact(record);
     setIsReRender(!isReRender);
   };
 
-  const handleSelect = value => {
-    props.getCenter(value);
+  const handleBlur = async e => {
+    setCurrPos(await provider.search({ query: e.target.value }));
   };
 
   const handleSearch = (entry, currValue) =>
@@ -87,77 +84,70 @@ export function Contact(props) {
 
   const mModal = [
     <div>
+      <Form.Item
+        key="name"
+        label="Tên"
+        name="name"
+        rules={[{ required: true, message: 'Vui lòng nhập tên hội quán!' }]}
+      >
+        <Input />
+      </Form.Item>
+      <Form.Item
+        key="email"
+        label="Email"
+        name="email"
+        rules={[
+          {
+            type: 'email',
+            message: 'Vui lòng nhập đúng định dạng email!',
+          },
+          {
+            required: true,
+            message: 'Vui lòng nhập email hội quán!',
+          },
+        ]}
+      >
+        <Input />
+      </Form.Item>
+      <Form.Item key="fax" label="Fax" name="fax">
+        <Input type="number" />
+      </Form.Item>
+      <Form.Item key="phone" label="Số điện thoại" name="phone">
+        <Input type="number" />
+      </Form.Item>
+      <Form.Item
+        key="address"
+        label="Địa chỉ"
+        name="address"
+        rules={[
+          {
+            required: true,
+            message: 'Vui lòng nhập địa chỉ hội quán!',
+          },
+        ]}
+      >
+        <Input onBlur={handleBlur} />
+      </Form.Item>
+      <Form.Item key="provinceId" label="Tỉnh/TP" name="provinceId">
+        <Select defaultValue={79}>
+          {props.adminReducer.provinces &&
+            props.adminReducer.provinces.map(i => (
+              <Option key={i.id} value={i.id}>
+                {i.provinceName}
+              </Option>
+            ))}
+        </Select>
+      </Form.Item>
       <Row gutter={16}>
-        <Col span={14}>
-          <Form.Item
-            key="name"
-            label="Tên"
-            name="name"
-            rules={[{ required: true, message: 'Vui lòng nhập tên hội quán!' }]}
-          >
-            <Input />
+        <Col span={12}>
+          <Form.Item key="longitude" label="Kinh độ" name="longitude">
+            <Input readOnly />
           </Form.Item>
-          <Form.Item
-            key="address"
-            label="Địa chỉ"
-            name="address"
-            rules={[
-              {
-                required: true,
-                message: 'Vui lòng nhập địa chỉ hội quán!',
-              },
-            ]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            key="email"
-            label="Email"
-            name="email"
-            rules={[
-              {
-                type: 'email',
-                message: 'Vui lòng nhập đúng định dạng email!',
-              },
-              {
-                required: true,
-                message: 'Vui lòng nhập email hội quán!',
-              },
-            ]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item key="fax" label="Fax" name="fax">
-            <Input type="number" />
-          </Form.Item>
-          <Form.Item key="phone" label="Số điện thoại" name="phone">
-            <Input type="number" />
-          </Form.Item>
-          <Form.Item key="provinceId" label="Tỉnh/TP" name="provinceId">
-            <Select onSelect={handleSelect} defaultValue={79}>
-              {props.adminReducer.provinces &&
-                props.adminReducer.provinces.map(i => (
-                  <Option key={i.id} value={i.id}>
-                    {i.provinceName}
-                  </Option>
-                ))}
-            </Select>
-          </Form.Item>
-          <Row gutter={16}>
-            <Col span={12}>
-              <Form.Item key="longitude" label="Kinh độ" name="longitude">
-                <Input readOnly />
-              </Form.Item>
-            </Col>
-            <Col span={12}>
-              <Form.Item key="latitude" label="Vĩ độ" name="latitude">
-                <Input readOnly />
-              </Form.Item>
-            </Col>
-          </Row>
         </Col>
-        <Col span={10}>
-          <MyMap mCenter={props.adminReducer.center} mPos={handlePos} />
+        <Col span={12}>
+          <Form.Item key="latitude" label="Vĩ độ" name="latitude">
+            <Input readOnly />
+          </Form.Item>
         </Col>
       </Row>
     </div>,
@@ -179,7 +169,6 @@ export function Contact(props) {
         mUpdate={handleClick}
         mTableModal={mModal}
         mSearch={handleSearch}
-        mWidth={1000}
         mInitialValues={currPos && currPos}
       />
     </div>
@@ -189,7 +178,6 @@ export function Contact(props) {
 Contact.propTypes = {
   adminReducer: PropTypes.any,
   getProvinces: PropTypes.func,
-  getCenter: PropTypes.func,
   getContacts: PropTypes.func,
   createContact: PropTypes.func,
   updateContact: PropTypes.func,
@@ -203,9 +191,6 @@ const mapStateToProps = createStructuredSelector({
 const mapDispatchToProps = dispatch => ({
   getProvinces: data => {
     dispatch(action.getProvinces(data));
-  },
-  getCenter: data => {
-    dispatch(action.getCenter(data));
   },
   getContacts: data => {
     dispatch(action.getContacts(data));

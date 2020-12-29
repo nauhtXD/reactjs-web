@@ -1,6 +1,6 @@
 /**
  *
- * Asynchronously loads the component for MyStorage
+ * Asynchronously loads the component for MyEditor
  *
  */
 
