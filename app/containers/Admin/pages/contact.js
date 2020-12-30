@@ -55,6 +55,7 @@ export function Contact(props) {
   const handleCreate = record => {
     props.createContact(record);
     setIsReRender(!isReRender);
+    return 0;
   };
 
   const handleClick = (record, key) => {

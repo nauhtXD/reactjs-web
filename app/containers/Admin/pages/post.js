@@ -22,7 +22,6 @@ import MyUpload from '../../../components/MyUpload/index';
 
 const dateFormat = 'DD/MM/YYYY';
 const { Option } = Select;
-
 const layout = {
   labelCol: { span: 4 },
   wrapperCol: { span: 18 },
@@ -40,7 +39,6 @@ export function Post(props) {
   useInjectReducer({ key: 'admin', reducer });
   useInjectSaga({ key: 'admin', saga });
 
-  const [form] = Form.useForm();
   const [isRerender, setIsRerender] = useState(null);
   const [defValue, setDefValue] = useState(init);
 
@@ -101,15 +99,10 @@ export function Post(props) {
     },
   ];
 
-  const handleCreate = async () => {
-    form.validateFields().then(values => {
-      // const metaData = { 'Content-Type': 'application/octet-stream' };
-      // minioClient.fPutObject('photos', 'icon.png', url, metaData);
-      values.publishAt = values.publishAt.format();
-      console.log(values);
-      // props.createPost(values);
-      return 0;
-    });
+  const handleCreate = record => {
+    console.log(record);
+    // props.createPost(values);
+    return 0;
   };
 
   const handleClick = (record, key) => {
@@ -117,6 +110,7 @@ export function Post(props) {
     else props.deletePost(record);
     setIsRerender(!isRerender);
   };
+
   const myModal = [
     <div>
       <Row>

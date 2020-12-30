@@ -60,44 +60,48 @@ const bcrData = [
   },
 ];
 
-const cityList = [];
-const llCityList = [];
-const geoCityList = [];
-
 export function WeatherMap(props) {
   useInjectReducer({ key: 'weatherMap', reducer });
   useInjectSaga({ key: 'weatherMap', saga });
+
   const [history5D, setHis] = useState([]);
+  const [center, setCenter] = useState(null);
+  const [geo, setGeo] = useState({
+    lat: [],
+    lon: [],
+    geo: [],
+  });
 
   useEffect(() => {
     props.getCityList();
     props.getCategories();
     props.getSubCategories();
-    props.getHeadquarters();
-    props.getMarks();
     props.getContacts();
   }, []);
 
   useEffect(() => {
-    props.weatherMapReducer.cityList.map(
+    props.homeReducer.contacts.map(
       i =>
-        cityList.indexOf(i.province.weatherId) === -1 &&
-        cityList.push(i.province.weatherId) &&
-        llCityList.push({
+        i.isHeadquarters === true &&
+        setCenter({
           latitude: i.province.latitude,
           longitude: i.province.longitude,
-        }) &&
-        geoCityList.push(i.province.geo),
+        }),
     );
-  }, [props.weatherMapReducer.cityList]);
+  }, [props.homeReducer.contacts]);
 
   useEffect(() => {
-    console.log(cityList);
-    // props.getWeathers({
-    //   data: cityList,
-    //   key: API_KEY,
-    // });
-  }, [cityList]);
+    const dataList = props.weatherMapReducer.cityList.map(
+      i => i.province.weatherId,
+    );
+    if (dataList.length > 0)
+      props.getWeathers({
+        data: dataList,
+        key: API_KEY,
+      });
+    const geoData = props.weatherMapReducer.cityList.map(i => i.province.geo);
+    if (geoData.length > 0) setGeo(geoData);
+  }, [props.weatherMapReducer.cityList]);
 
   const handleClick = (lat, lon) => {
     setHis([]);
@@ -128,12 +132,7 @@ export function WeatherMap(props) {
                 height: '400px',
                 width: '100%',
               }}
-              center={
-                props.homeReducer.headquarters.province && [
-                  props.homeReducer.headquarters.province.latitude,
-                  props.homeReducer.headquarters.province.longitude,
-                ]
-              }
+              center={center && [center.latitude, center.longitude]}
               zoom={mZoom}
             >
               <LayersControl position="topright">
@@ -141,12 +140,9 @@ export function WeatherMap(props) {
                   attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                   url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
-                {props.weatherMapReducer.contacts &&
-                  props.weatherMapReducer.contacts.map(i => (
-                    <Marker
-                      key={i.id}
-                      position={[i.province.latitude, i.province.longitude]}
-                    >
+                {props.homeReducer.contacts &&
+                  props.homeReducer.contacts.map(i => (
+                    <Marker key={i.id} position={[i.latitude, i.longitude]}>
                       <Popup>{i.name}</Popup>
                     </Marker>
                   ))}
@@ -155,8 +151,8 @@ export function WeatherMap(props) {
                     <TileLayer
                       url={`https://tile.openweathermap.org/map/temp_new/{z}/{x}/{y}.png?appid=${API_KEY}`}
                     />
-                    {props.weatherMapReducer.weathers[0] &&
-                      props.weatherMapReducer.weathers.map((i, index) => (
+                    {props.weatherMapReducer.weathers.length > 0 &&
+                      props.weatherMapReducer.weathers.map(i => (
                         <EMarker
                           key={i.id}
                           icon={
@@ -167,34 +163,26 @@ export function WeatherMap(props) {
                               mTemp={i.main.temp}
                             />
                           }
-                          position={[
-                            llCityList[index].latitude,
-                            llCityList[index].longitude,
-                          ]}
-                          onClick={() =>
-                            handleClick(
-                              llCityList[index].latitude,
-                              llCityList[index].longitude,
-                            )
-                          }
+                          position={[i.coord.lat, i.coord.lon]}
+                          onClick={() => handleClick(i.coord.lat, i.coord.lon)}
                         />
                       ))}
                   </LayerGroup>
                 </LayersControl.BaseLayer>
                 <LayersControl.BaseLayer name="Dịch bệnh">
                   <LayerGroup>
-                    {llCityList.length > 0 &&
-                      llCityList.map(i => (
+                    {props.weatherMapReducer.weathers.length > 0 &&
+                      props.weatherMapReducer.weathers.map(i => (
                         <EMarker
-                          key={i.latitude}
+                          key={i.id}
                           icon={<Epidemic />}
-                          position={[i.latitude, i.longitude]}
-                          onClick={() => handleClick(i.latitude, i.longitude)}
+                          position={[i.coord.lat, i.coord.lon]}
+                          onClick={() => handleClick(i.coord.lat, i.coord.lon)}
                         />
                       ))}
                   </LayerGroup>
                 </LayersControl.BaseLayer>
-                {geoCityList.length > 0 && <GeoJSON data={geoCityList} />}
+                {geo.length > 0 && <GeoJSON data={geo} />}
               </LayersControl>
             </Map>
             {history5D.length > 0 && <WeatherHistory mHistory={history5D} />}
@@ -202,8 +190,7 @@ export function WeatherMap(props) {
         }
         mCategories={props.homeReducer.categories}
         mSubCategories={props.homeReducer.subCategories}
-        mMarks={props.homeReducer.marks}
-        mContacts={props.homeReducer.headquarters}
+        mContacts={props.homeReducer.contacts}
         mBreadcrumbs={bcrData}
         mWeathers={props.weatherMapReducer.weathers}
       />
@@ -218,8 +205,6 @@ WeatherMap.propTypes = {
   getContacts: PropTypes.func,
   getCategories: PropTypes.func,
   getSubCategories: PropTypes.func,
-  getHeadquarters: PropTypes.func,
-  getMarks: PropTypes.func,
   getCityList: PropTypes.func,
 };
 
@@ -232,9 +217,6 @@ const mapDispatchToProps = dispatch => ({
   getWeathers: data => {
     dispatch(action.getWeathers(data));
   },
-  getContacts: data => {
-    dispatch(action.getContacts(data));
-  },
   getCityList: data => {
     dispatch(action.getCityList(data));
   },
@@ -244,11 +226,8 @@ const mapDispatchToProps = dispatch => ({
   getSubCategories: data => {
     dispatch(hAction.getSubCategories(data));
   },
-  getHeadquarters: data => {
-    dispatch(hAction.getHeadquarters(data));
-  },
-  getMarks: data => {
-    dispatch(hAction.getMarks(data));
+  getContacts: data => {
+    dispatch(hAction.getContacts(data));
   },
 });
 

@@ -95,8 +95,7 @@ export function News(props) {
     props.getPost(match.params.id);
     props.getCategories();
     props.getSubCategories();
-    props.getHeadquarters();
-    props.getMarks();
+    props.getContacts();
   }, []);
   return (
     <div>
@@ -178,8 +177,7 @@ export function News(props) {
           }
           mCategories={props.homeReducer.categories}
           mSubCategories={props.homeReducer.subCategories}
-          mMarks={props.homeReducer.marks}
-          mContacts={props.homeReducer.headquarters}
+          mContacts={props.homeReducer.contacts}
         />
       </div>
     </div>
@@ -192,8 +190,7 @@ News.propTypes = {
   getPost: PropTypes.func,
   getCategories: PropTypes.func,
   getSubCategories: PropTypes.func,
-  getHeadquarters: PropTypes.func,
-  getMarks: PropTypes.func,
+  getContacts: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -211,11 +208,8 @@ const mapDispatchToProps = dispatch => ({
   getSubCategories: data => {
     dispatch(hAction.getSubCategories(data));
   },
-  getHeadquarters: data => {
-    dispatch(hAction.getHeadquarters(data));
-  },
-  getMarks: data => {
-    dispatch(hAction.getMarks(data));
+  getContacts: data => {
+    dispatch(hAction.getContacts(data));
   },
 });
 

@@ -39,8 +39,7 @@ export function MangoWiki(props) {
   useEffect(() => {
     props.getCategories();
     props.getSubCategories();
-    props.getHeadquarters();
-    props.getMarks();
+    props.getContacts();
     props.getFamilies();
     props.getGenera();
     props.getGenusFeatures();
@@ -135,8 +134,7 @@ export function MangoWiki(props) {
         }
         mCategories={props.homeReducer.categories}
         mSubCategories={props.homeReducer.subCategories}
-        mMarks={props.homeReducer.marks}
-        mContacts={props.homeReducer.headquarters}
+        mContacts={props.homeReducer.contacts}
         mCheck
       />
     </div>
@@ -148,8 +146,7 @@ MangoWiki.propTypes = {
   mangoWikiReducer: PropTypes.any,
   getCategories: PropTypes.func,
   getSubCategories: PropTypes.func,
-  getHeadquarters: PropTypes.func,
-  getMarks: PropTypes.func,
+  getContacts: PropTypes.func,
   getFamilies: PropTypes.func,
   getGenera: PropTypes.func,
   getGenusFeatures: PropTypes.func,
@@ -167,11 +164,8 @@ const mapDispatchToProps = dispatch => ({
   getSubCategories: data => {
     dispatch(hAction.getSubCategories(data));
   },
-  getHeadquarters: data => {
-    dispatch(hAction.getHeadquarters(data));
-  },
-  getMarks: data => {
-    dispatch(hAction.getMarks(data));
+  getContacts: data => {
+    dispatch(hAction.getContacts(data));
   },
   getFamilies: data => {
     dispatch(action.getFamilies(data));

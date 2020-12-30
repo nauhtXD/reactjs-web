@@ -10,7 +10,6 @@ import { useInjectReducer } from 'utils/injectReducer';
 import reducer from '../reducer';
 import saga from '../saga';
 
-import MyTable from '../../../components/MyTable/index';
 import AdminTable from '../../../components/AdminTable/Loadable';
 import makeSelect from '../selectors';
 import * as action from '../actions';
@@ -75,10 +74,10 @@ export function User(props) {
     setIsReRender(!isReRender);
   };
 
-  const handleCreate = values => {
-    if (values.password === values.retype) {
+  const handleCreate = record => {
+    if (record.password === record.retype) {
       const userTypeId = 1;
-      const input = { ...values, userTypeId };
+      const input = { ...record, userTypeId };
       props.createUser(input);
       setIsReRender(!isReRender);
       return 0;

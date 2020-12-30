@@ -4,7 +4,7 @@
  *
  */
 
-import React, { memo } from 'react';
+import React, { memo, useState, useEffect } from 'react';
 import { Row, Col } from 'antd';
 import { Map, TileLayer, Marker } from 'react-leaflet';
 import PropTypes from 'prop-types';
@@ -13,8 +13,26 @@ import PropTypes from 'prop-types';
 // import { FormattedMessage } from 'react-intl';
 // import messages from './messages';
 
-const mZoom = 15;
+const mZoom = 10;
 function Footer(props) {
+  const [center, setCenter] = useState(null);
+
+  useEffect(() => {
+    props.mContacts.map(
+      i =>
+        i.isHeadquarters === true &&
+        setCenter({
+          latitude: i.province.latitude,
+          longitude: i.province.longitude,
+          name: i.name,
+          address: i.address,
+          fax: i.fax,
+          email: i.email,
+          phone: i.phone,
+        }),
+    );
+  }, [props.mContacts]);
+
   return (
     <div style={{ marginTop: '20px', backgroundColor: '#036921' }}>
       <Row>
@@ -27,12 +45,7 @@ function Footer(props) {
                 float: 'right',
                 margin: '10px auto',
               }}
-              center={
-                props.mContacts.province && [
-                  props.mContacts.province.latitude,
-                  props.mContacts.province.longitude,
-                ]
-              }
+              center={center && [center.latitude, center.longitude]}
               zoom={mZoom}
               scrollWheelZoom={false}
             >
@@ -40,9 +53,8 @@ function Footer(props) {
                 attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               />
-              {props.mMarks &&
-                props.mMarks.length > 0 &&
-                props.mMarks.map(i => (
+              {props.mContacts &&
+                props.mContacts.map(i => (
                   <Marker key={i.id} position={[i.latitude, i.longitude]} />
                 ))}
             </Map>
@@ -56,11 +68,15 @@ function Footer(props) {
             color: '#fff',
           }}
         >
-          <h2 style={{ color: '#ffff00' }}>{props.mContacts.name}</h2>
-          <p>Địa chỉ: {props.mContacts.address}</p>
-          <p>Điện thoại: {props.mContacts.phone}</p>
-          <p>Fax: {props.mContacts.fax}</p>
-          <p>Email: {props.mContacts.email}</p>
+          {center && (
+            <div>
+              <h2 style={{ color: '#ffff00' }}>{center.name}</h2>
+              <p>Địa chỉ: {center.address}</p>
+              <p>Điện thoại: {center.phone}</p>
+              <p>Fax: {center.fax}</p>
+              <p>Email: {center.email}</p>
+            </div>
+          )}
         </Col>
       </Row>
     </div>
@@ -68,7 +84,6 @@ function Footer(props) {
 }
 
 Footer.propTypes = {
-  mMarks: PropTypes.any,
   mContacts: PropTypes.any,
 };
 

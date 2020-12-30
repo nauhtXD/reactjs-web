@@ -50,7 +50,7 @@ function AdminTable(props) {
       if (check === 0) showModal();
     });
   };
-  console.log(props.mInitialValues.img);
+
   return (
     <div>
       <div style={{ textAlign: 'center' }}>

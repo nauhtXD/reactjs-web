@@ -111,10 +111,10 @@ export function Home(props) {
   useEffect(() => {
     props.getCategories();
     props.getSubCategories();
-    props.getHeadquarters();
-    props.getMarks();
+    props.getContacts();
     props.getLastestPosts(5);
   }, []);
+
   return (
     <div>
       <Helmet>
@@ -199,8 +199,7 @@ export function Home(props) {
         }
         mCategories={props.homeReducer.categories}
         mSubCategories={props.homeReducer.subCategories}
-        mMarks={props.homeReducer.marks}
-        mContacts={props.homeReducer.headquarters}
+        mContacts={props.homeReducer.contacts}
       />
     </div>
   );
@@ -210,8 +209,7 @@ Home.propTypes = {
   homeReducer: PropTypes.any,
   getCategories: PropTypes.func,
   getSubCategories: PropTypes.func,
-  getHeadquarters: PropTypes.func,
-  getMarks: PropTypes.func,
+  getContacts: PropTypes.func,
   getLastestPosts: PropTypes.func,
 };
 
@@ -226,11 +224,8 @@ const mapDispatchToProps = dispatch => ({
   getSubCategories: data => {
     dispatch(action.getSubCategories(data));
   },
-  getHeadquarters: data => {
-    dispatch(action.getHeadquarters(data));
-  },
-  getMarks: data => {
-    dispatch(action.getMarks(data));
+  getContacts: data => {
+    dispatch(action.getContacts(data));
   },
   getLastestPosts: data => {
     dispatch(action.getLastestPosts(data));

@@ -20,16 +20,9 @@ export function getSubCategories(data) {
   };
 }
 
-export function getHeadquarters(data) {
+export function getContacts(data) {
   return {
-    type: types.GET_HEADQUARTERS_CONTACT,
-    payload: data,
-  };
-}
-
-export function getMarks(data) {
-  return {
-    type: types.GET_MARK,
+    type: types.GET_CONTACT,
     payload: data,
   };
 }

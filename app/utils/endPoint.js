@@ -20,6 +20,7 @@ export const API_ENDPOINT_GET_CROP = 'crops';
 export const API_ENDPOINT_GET_CONTACT = 'contacts';
 export const API_ENDPOINT_GET_HEADQUARTERS_CONTACT = 'contacts/headquarters';
 export const API_ENDPOINT_GET_CITY_LIST = 'contacts/city-list';
+export const API_ENDPOINT_GET_POS_GEO = 'contacts/pos-geo';
 export const API_ENDPOINT_UPDATE_CONTACT = 'contacts/update';
 export const API_ENDPOINT_DELETE_CONTACT = 'contacts/delete';
 // mark

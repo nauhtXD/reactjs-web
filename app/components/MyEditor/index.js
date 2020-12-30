@@ -19,14 +19,15 @@ const Mrq = styled(ReactQuill)`
 
 function MyEditor(props) {
   return (
-    <Mrq
-      theme="snow"
-      modules={MyEditor.modules}
-      formats={MyEditor.formats}
-      bounds=".app"
-      style={{ height: props.mHeight, width: props.mWidth }}
-      value={props.value}
-    />
+    <div>
+      <Mrq
+        theme="snow"
+        modules={MyEditor.modules}
+        formats={MyEditor.formats}
+        style={{ height: props.mHeight, width: props.mWidth }}
+        value={props.value}
+      />
+    </div>
   );
 }
 

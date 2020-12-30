@@ -35,7 +35,7 @@ function MyLayout(props) {
           )}
         </Layout>
       </div>
-      <Footer mMarks={props.mMarks} mContacts={props.mContacts} />
+      <Footer mContacts={props.mContacts} />
     </div>
   );
 }
@@ -44,7 +44,6 @@ MyLayout.propTypes = {
   mCont: PropTypes.any,
   mCategories: PropTypes.any,
   mSubCategories: PropTypes.any,
-  mMarks: PropTypes.any,
   mContacts: PropTypes.any,
   mCheck: PropTypes.bool,
   mBreadcrumbs: PropTypes.any,

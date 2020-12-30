@@ -11,10 +11,8 @@ export const initialState = {
   categories: [],
   loadingSubCategories: false,
   subCategories: [],
-  loadingHeadquarters: false,
-  headquarters: [],
-  loadingMarks: false,
-  marks: [],
+  loadingContacts: false,
+  contacts: [],
   loadingLastestPosts: false,
   lastestPosts: [],
 };
@@ -45,27 +43,16 @@ const homeReducer = (state = initialState, action) =>
         draft.subCategories = [];
         draft.loadingSubCategories = false;
         break;
-      case types.GET_HEADQUARTERS_CONTACT:
-        draft.loadingHeadquarters = true;
+      case types.GET_CONTACT:
+        draft.loadingContacts = true;
         break;
-      case types.GET_HEADQUARTERS_CONTACT_SUCCESS:
-        draft.headquarters = action.headquarters;
-        draft.loadingHeadquarters = false;
+      case types.GET_CONTACT_SUCCESS:
+        draft.contacts = action.contacts;
+        draft.loadingContacts = false;
         break;
-      case types.GET_HEADQUARTERS_CONTACT_FAIL:
-        draft.headquarters = [];
-        draft.loadingHeadquarters = false;
-        break;
-      case types.GET_MARK:
-        draft.loadingMarks = true;
-        break;
-      case types.GET_MARK_SUCCESS:
-        draft.marks = action.marks;
-        draft.loadingMarks = false;
-        break;
-      case types.GET_MARK_FAIL:
-        draft.marks = [];
-        draft.loadingMarks = false;
+      case types.GET_CONTACT_FAIL:
+        draft.contacts = [];
+        draft.loadingContacts = false;
         break;
       case types.GET_LASTEST_POST:
         draft.loadingLastestPosts = true;

@@ -7,16 +7,16 @@ export function getWeathers(data) {
   };
 }
 
-export function getContacts(data) {
+export function getCityList(data) {
   return {
-    type: types.GET_CONTACT,
+    type: types.GET_CITY_LIST,
     payload: data,
   };
 }
 
-export function getCityList(data) {
+export function getPosGeo(data) {
   return {
-    type: types.GET_CITY_LIST,
+    type: types.GET_POS_GEO,
     payload: data,
   };
 }

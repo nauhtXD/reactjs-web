@@ -26,7 +26,7 @@ function WeatherHistory(props) {
     <Card title="Thời tiết 5 ngày vừa qua">
       {sortArr &&
         sortArr.map(i => (
-          <MyCard>
+          <MyCard key={i.dt}>
             <p>{moment.unix(i.dt).format('DD/MM')}</p>
             <img
               src={`http://openweathermap.org/img/wn/${i.weather[0].icon}.png`}
