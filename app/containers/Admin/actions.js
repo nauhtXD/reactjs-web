@@ -153,3 +153,10 @@ export function deleteContact(data) {
   };
 }
 // #endregion
+
+export function uploadImg(data) {
+  return {
+    type: types.UPLOAD_IMG,
+    payload: data,
+  };
+}

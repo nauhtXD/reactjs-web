@@ -26,8 +26,9 @@ const { Search } = Input;
 
 function AdminTable(props) {
   const [isVisible, setIsVisible] = useState(false);
-  const [searchValue, setSearchValue] = useState('');
+  const [searchValue, setSearchValue] = useState();
   const [dataSource, setDataSource] = useState(props.mData);
+
   const [form] = Form.useForm();
 
   useEffect(() => {
@@ -36,13 +37,7 @@ function AdminTable(props) {
   }, [props.mData, k === -1]);
 
   useEffect(() => {
-    let data = [];
-    if (props.mInitialValues && props.mInitialValues[0])
-      data = {
-        latitude: props.mInitialValues[0].y,
-        longitude: props.mInitialValues[0].x,
-      };
-    form.setFieldsValue(data);
+    form.setFieldsValue(props.mInitialValues);
   }, [form, props.mInitialValues]);
 
   const showModal = () => {
@@ -55,7 +50,7 @@ function AdminTable(props) {
       if (check === 0) showModal();
     });
   };
-
+  console.log(props.mInitialValues.img);
   return (
     <div>
       <div style={{ textAlign: 'center' }}>
@@ -98,6 +93,7 @@ function AdminTable(props) {
           mUpdate={props.mUpdate}
           mModal={props.mTableModal}
           mWidth={props.mWidth}
+          mPreview={props.mInitialValues.img}
         />
       </MyBox>
       <Modal

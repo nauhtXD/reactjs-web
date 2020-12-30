@@ -20,13 +20,15 @@ import AdminTable from '../../../components/AdminTable';
 const { Option } = Select;
 const provider = new OpenStreetMapProvider();
 let k = -1;
+const init = { provinceId: 79 };
 
 export function Contact(props) {
   useInjectReducer({ key: 'admin', reducer });
   useInjectSaga({ key: 'admin', saga });
 
   const [isReRender, setIsReRender] = useState(false);
-  const [currPos, setCurrPos] = useState();
+  const [currPos, setCurrPos] = useState([{ x: 0, y: 0 }]);
+  const [defValue, setDefValue] = useState(init);
 
   useEffect(() => {
     props.getProvinces();
@@ -41,6 +43,14 @@ export function Contact(props) {
   useEffect(() => {
     props.getContacts();
   }, [isReRender]);
+
+  useEffect(() => {
+    setDefValue({
+      ...defValue,
+      longitude: currPos[0].x,
+      latitude: currPos[0].y,
+    });
+  }, [currPos[0]]);
 
   const handleCreate = record => {
     props.createContact(record);
@@ -85,7 +95,6 @@ export function Contact(props) {
   const mModal = [
     <div>
       <Form.Item
-        key="name"
         label="Tên"
         name="name"
         rules={[{ required: true, message: 'Vui lòng nhập tên hội quán!' }]}
@@ -93,7 +102,6 @@ export function Contact(props) {
         <Input />
       </Form.Item>
       <Form.Item
-        key="email"
         label="Email"
         name="email"
         rules={[
@@ -109,14 +117,13 @@ export function Contact(props) {
       >
         <Input />
       </Form.Item>
-      <Form.Item key="fax" label="Fax" name="fax">
+      <Form.Item label="Fax" name="fax">
         <Input type="number" />
       </Form.Item>
-      <Form.Item key="phone" label="Số điện thoại" name="phone">
+      <Form.Item label="Số điện thoại" name="phone">
         <Input type="number" />
       </Form.Item>
       <Form.Item
-        key="address"
         label="Địa chỉ"
         name="address"
         rules={[
@@ -128,8 +135,8 @@ export function Contact(props) {
       >
         <Input onBlur={handleBlur} />
       </Form.Item>
-      <Form.Item key="provinceId" label="Tỉnh/TP" name="provinceId">
-        <Select defaultValue={79}>
+      <Form.Item label="Tỉnh/TP" name="provinceId">
+        <Select>
           {props.adminReducer.provinces &&
             props.adminReducer.provinces.map(i => (
               <Option key={i.id} value={i.id}>
@@ -169,7 +176,7 @@ export function Contact(props) {
         mUpdate={handleClick}
         mTableModal={mModal}
         mSearch={handleSearch}
-        mInitialValues={currPos && currPos}
+        mInitialValues={defValue}
       />
     </div>
   );

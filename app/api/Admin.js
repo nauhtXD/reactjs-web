@@ -1,4 +1,5 @@
 import apiConfig from 'utils/apiConfig';
+import apiConfig3 from 'utils/apiConfig3';
 import * as endpoint from 'utils/endPoint';
 // user
 export const getUsers = () => apiConfig.get(endpoint.API_ENDPOINT_GET_USER);
@@ -45,3 +46,6 @@ export const updateContact = data =>
   apiConfig.put(`${endpoint.API_ENDPOINT_UPDATE_CONTACT}/${data.id}`, data);
 export const deleteContact = data =>
   apiConfig.put(`${endpoint.API_ENDPOINT_DELETE_CONTACT}/${data}`, data);
+// minio
+export const uploadImg = data =>
+  apiConfig3.post(endpoint.API_ENDPOINT_UPLOAD_IMG, data);

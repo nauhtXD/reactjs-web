@@ -665,6 +665,37 @@ export function* deleteContactSaga({ payload }) {
 }
 // #endregion
 
+export function* uploadImgSaga({ payload }) {
+  try {
+    const response = yield call(api.uploadImg, payload);
+    if (response && response.status === 200) {
+      yield put({
+        type: types.UPLOAD_IMG_SUCCESS,
+        url: response.data.data,
+      });
+    } else {
+      yield put({
+        type: types.UPLOAD_IMG_FAIL,
+        error: response && response.data ? response.data.messages : 'API Error',
+      });
+      notification.error({
+        message: 'Error',
+        description:
+          response && response.data ? response.data.messages : 'API Error',
+      });
+    }
+  } catch (err) {
+    yield put({
+      type: types.UPLOAD_IMG_FAIL,
+      error: err,
+    });
+    notification.error({
+      message: 'Error',
+      description: err,
+    });
+  }
+}
+
 export default function* rootSaga() {
   yield all([
     takeLatest(types.GET_USER, getUserSaga),
@@ -687,5 +718,6 @@ export default function* rootSaga() {
     takeLatest(types.CREATE_CONTACT, createContactSaga),
     takeLatest(types.UPDATE_CONTACT, updateContactSaga),
     takeLatest(types.DELETE_CONTACT, deleteContactSaga),
+    takeLatest(types.UPLOAD_IMG, uploadImgSaga),
   ]);
 }

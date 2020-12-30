@@ -15,24 +15,20 @@ import moment from 'moment';
 // import messages from './messages';
 
 const { Column } = Table;
-
 const CheckIcon = styled(CheckSquareTwoTone)`
   &.anticon svg {
     vertical-align: baseline !important;
   }
 `;
-
 const CloseIcon = styled(CloseSquareTwoTone)`
   &.anticon svg {
     vertical-align: baseline !important;
   }
 `;
-
 const layout = {
   labelCol: { span: 8 },
   wrapperCol: { span: 16 },
 };
-
 const green = '#52c41a';
 const red = '#ff4c4c';
 
@@ -52,6 +48,10 @@ function MyTable(props) {
     }
     form.setFieldsValue(data);
   }, [form, defValue]);
+
+  useEffect(() => {
+    setDefValue({ ...defValue, img: props.mPreview });
+  }, [props.mPreview]);
 
   const [form] = Form.useForm();
 
@@ -160,6 +160,7 @@ MyTable.propTypes = {
   mUpdate: PropTypes.func,
   mDelete: PropTypes.func,
   mWidth: PropTypes.number,
+  mPreview: PropTypes.any,
 };
 
 export default memo(MyTable);

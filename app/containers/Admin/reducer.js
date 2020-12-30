@@ -25,6 +25,8 @@ export const initialState = {
   center: [],
   loadingContacts: false,
   contacts: [],
+  loadingUrl: false,
+  url: [],
 };
 
 /* eslint-disable default-case, no-param-reassign */
@@ -129,6 +131,17 @@ const adminReducer = (state = initialState, action) =>
       case types.GET_CONTACT_FAIL:
         draft.contacts = [];
         draft.loadingContacts = false;
+        break;
+      case types.UPLOAD_IMG:
+        draft.loadingUrl = true;
+        break;
+      case types.UPLOAD_IMG_SUCCESS:
+        draft.url = action.url;
+        draft.loadingUrl = false;
+        break;
+      case types.UPLOAD_IMG_FAIL:
+        draft.url = [];
+        draft.loadingUrl = false;
         break;
     }
   });

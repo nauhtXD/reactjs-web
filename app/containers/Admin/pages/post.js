@@ -5,8 +5,7 @@ import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
-import { Row, Col, DatePicker, Select, Input, Image, Form, Upload } from 'antd';
-import { PlusOutlined } from '@ant-design/icons';
+import { Row, Col, DatePicker, Select, Input, Image, Form } from 'antd';
 import styled from 'styled-components';
 import moment from 'moment';
 
@@ -19,6 +18,7 @@ import * as action from '../actions';
 import MyBox from '../../../components/MyBox/index';
 import AdminTable from '../../../components/AdminTable/index';
 import MyEditor from '../../../components/MyEditor/index';
+import MyUpload from '../../../components/MyUpload/index';
 
 const dateFormat = 'DD/MM/YYYY';
 const { Option } = Select;
@@ -33,22 +33,16 @@ const MyContentDiv = styled.div`
   max-width: 300px;
   max-height: 100px;
 `;
-const init = { content: '', subcategoryId: 1, publishAt: moment() };
 let k = -1;
-
-function getBase64(img, callback) {
-  const reader = new FileReader();
-  reader.addEventListener('load', () => callback(reader.result));
-  reader.readAsDataURL(img);
-}
+const init = { content: '', subcategoryId: 1, publishAt: moment(), img: [] };
 
 export function Post(props) {
   useInjectReducer({ key: 'admin', reducer });
   useInjectSaga({ key: 'admin', saga });
 
   const [form] = Form.useForm();
-  const [imageUrl, setImageUrl] = useState();
   const [isRerender, setIsRerender] = useState(null);
+  const [defValue, setDefValue] = useState(init);
 
   useEffect(() => {
     props.getSubCategories();
@@ -63,6 +57,14 @@ export function Post(props) {
   useEffect(() => {
     props.getPosts();
   }, [isRerender]);
+
+  useEffect(() => {
+    setDefValue({ ...defValue, img: props.adminReducer.url });
+  }, [props.adminReducer.url]);
+
+  const setNullPreview = () => {
+    setDefValue({ ...defValue, img: null });
+  };
 
   const mSC = props.adminReducer.subCategories;
 
@@ -115,15 +117,6 @@ export function Post(props) {
     else props.deletePost(record);
     setIsRerender(!isRerender);
   };
-
-  const handleChange = info => {
-    console.log(info.file);
-    setImageUrl(
-      'https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg',
-    );
-    // getBase64(info.file.originFileObj, url => setImageUrl(url));
-  };
-
   const myModal = [
     <div>
       <Row>
@@ -142,7 +135,7 @@ export function Post(props) {
         <Col span={8}>
           <MyBox>
             <Form.Item label="Ảnh hiển thị" name="img">
-              <Input type="file" />
+              <MyUpload mUpload={props.uploadImg} mSetNull={setNullPreview} />
             </Form.Item>
             <Form.Item label="Danh mục" name="subcategoryId">
               <Select>
@@ -182,7 +175,7 @@ export function Post(props) {
         mDelete={handleClick}
         mUpdate={handleClick}
         mTableModal={myModal}
-        mInitialValues={init}
+        mInitialValues={defValue}
         mWidth={1000}
       />
     </div>
@@ -196,6 +189,7 @@ Post.propTypes = {
   updatePost: PropTypes.func,
   deletePost: PropTypes.func,
   getSubCategories: PropTypes.func,
+  uploadImg: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -217,6 +211,9 @@ const mapDispatchToProps = dispatch => ({
   },
   getSubCategories: data => {
     dispatch(action.getSubCategories(data));
+  },
+  uploadImg: data => {
+    dispatch(action.uploadImg(data));
   },
 });
 
