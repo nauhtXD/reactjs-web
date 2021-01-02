@@ -100,8 +100,7 @@ export function Post(props) {
   ];
 
   const handleCreate = record => {
-    console.log(record);
-    // props.createPost(values);
+    props.createPost(record);
     return 0;
   };
 
