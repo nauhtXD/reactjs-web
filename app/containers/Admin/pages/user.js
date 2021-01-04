@@ -145,7 +145,7 @@ export function User(props) {
         mTableModal={
           <div>
             <Form.Item label="Tên đăng nhập" name="username">
-              <Input disabled />
+              <Input readOnly />
             </Form.Item>
             <Form.Item
               label="Mật khẩu"

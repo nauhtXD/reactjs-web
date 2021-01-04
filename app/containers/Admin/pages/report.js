@@ -80,10 +80,10 @@ export function Report(props) {
         mTableModal={
           <div>
             <Form.Item label="Tiêu đề" name="title">
-              <Input disabled />
+              <Input readOnly />
             </Form.Item>
             <Form.Item label="Nội dung" name="content">
-              <TextArea disabled />
+              <TextArea readOnly />
             </Form.Item>
             <Form.Item label="Trạng thái" name="statusId">
               <Select>

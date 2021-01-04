@@ -41,3 +41,5 @@ export const API_ENDPOINT_DELETE_PROBLEM = 'problems/delete';
 export const API_ENDPOINT_GET_PROVINCE = 'provinces';
 // minio
 export const API_ENDPOINT_UPLOAD_IMG = 'upload';
+// comment
+export const API_ENDPOINT_GET_COMMENT = 'comments';

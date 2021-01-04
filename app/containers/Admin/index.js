@@ -59,7 +59,7 @@ export function Admin() {
                 <Link to="/admin/user">Tài khoản</Link>
               </Menu.Item>
               <Menu.Item key="hh2">
-                <Link to="/admin/households">Thông tin hộ</Link>
+                <Link to="/admin/household">Thông tin hộ</Link>
               </Menu.Item>
             </SubMenu>
             <Menu.Item key="reports">

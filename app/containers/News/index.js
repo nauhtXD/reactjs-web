@@ -1,13 +1,21 @@
-import React, { memo, useEffect } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
 // import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
-// import styled from 'styled-component';
-import { Rate, Typography, List, Comment, Tooltip } from 'antd';
+import styled from 'styled-components';
+import { List, Comment, Space, Form, Button } from 'antd';
 import moment from 'moment';
+import {
+  FacebookShareButton,
+  FacebookIcon,
+  TwitterShareButton,
+  TwitterIcon,
+  TelegramShareButton,
+  TelegramIcon,
+} from 'react-share';
 
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
@@ -24,79 +32,54 @@ import * as hAction from '../Home/actions';
 
 import MyLayout from '../../components/MyLayout/Loadable';
 import TitleCom from '../../components/TitleCom/Loadable';
+import MyEditor from '../../components/MyEditor/Loadable';
 
-const dataa = [
-  'Racing car sprays burning fuel into crowd.',
-  'Japanese princess to wed commoner.',
-  'Australian walks 100km after outback crash.',
-  'Man charged over missing wedding girl.',
-  'Los Angeles battles huge wildfires.',
-];
+const dateFormat = 'DD/MM/YYYY';
 
-const data1 = [
-  {
-    actions: [<span key="comment-list-reply-to-0">Reply to</span>],
-    author: 'Han Solo',
-    avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
-    content: (
-      <p>
-        We supply a series of design principles, practical patterns and high
-        quality design resources (Sketch and Axure), to help people create their
-        product prototypes beautifully and efficiently.
-      </p>
-    ),
-    datetime: (
-      <Tooltip
-        title={moment()
-          .subtract(1, 'days')
-          .format('YYYY-MM-DD HH:mm:ss')}
-      >
-        <span>
-          {moment()
-            .subtract(1, 'days')
-            .fromNow()}
-        </span>
-      </Tooltip>
-    ),
-  },
-  {
-    actions: [<span key="comment-list-reply-to-0">Reply to</span>],
-    author: 'Han Solo',
-    avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
-    content: (
-      <p>
-        We supply a series of design principles, practical patterns and high
-        quality design resources (Sketch and Axure), to help people create their
-        product prototypes beautifully and efficiently.
-      </p>
-    ),
-    datetime: (
-      <Tooltip
-        title={moment()
-          .subtract(2, 'days')
-          .format('YYYY-MM-DD HH:mm:ss')}
-      >
-        <span>
-          {moment()
-            .subtract(2, 'days')
-            .fromNow()}
-        </span>
-      </Tooltip>
-    ),
-  },
-];
+const MyContentDiv = styled.div`
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 500px;
+  max-height: 100px;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+`;
 
 export function News(props) {
   // eslint-disable-next-line react/prop-types
   const { match } = props;
   useInjectReducer({ key: 'news', reducer });
   useInjectSaga({ key: 'news', saga });
+
+  const [editorValue, setEditorValue] = useState('');
+  const [form] = Form.useForm();
+
   useEffect(() => {
     props.getPost(match.params.id);
+    props.getComments(match.params.id);
+    props.getLastestPosts(5);
     props.getCategories();
     props.getSubCategories();
     props.getContacts();
   }, []);
+
+  useEffect(() => {
+    form.setFieldsValue({
+      content: editorValue,
+    });
+  }, [form, editorValue]);
+
+  const handleEditor = value => {
+    setEditorValue(value);
+  };
+
+  const handleSubmit = () => {
+    form.validateFields().then(values => {
+      console.log(values);
+    });
+  };
+
   return (
     <div>
       <Helmet>
@@ -127,52 +110,89 @@ export function News(props) {
                         __html: props.newsReducer.post.content,
                       }}
                     />
-                    <p style={{ textAlign: 'right' }}>
-                      Nguồn:{' '}
-                      <a href={props.newsReducer.post.source}>
-                        {props.newsReducer.post.source}
-                      </a>
-                    </p>
+
+                    <div style={{ textAlign: 'right' }}>
+                      <p>
+                        Nguồn:{' '}
+                        <a href={props.newsReducer.post.source}>
+                          {props.newsReducer.post.source}
+                        </a>
+                      </p>
+                      <Space>
+                        <FacebookShareButton url={window.location.href}>
+                          <FacebookIcon size={32} round />
+                        </FacebookShareButton>
+                        <TelegramShareButton url={window.location.href}>
+                          <TelegramIcon size={32} round />
+                        </TelegramShareButton>
+                        <TwitterShareButton url={window.location.href}>
+                          <TwitterIcon size={32} round />
+                        </TwitterShareButton>
+                      </Space>
+                    </div>
                   </div>
                 }
               />
 
-              <div>
-                <Rate />
-                <div />
-              </div>
-              <List
-                className="comment-list"
-                header={`${dataa.length} replies`}
-                itemLayout="horizontal"
-                dataSource={data1}
-                renderItem={item => (
-                  <li>
-                    <Comment
-                      actions={item.actions}
-                      author={item.author}
-                      avatar={item.avatar}
-                      content={item.content}
-                      datetime={item.datetime}
-                    />
-                  </li>
-                )}
-              />
-              <div>
-                <h2>Tin liên quan</h2>
-                <div>
-                  <List
-                    bordered
-                    dataSource={dataa}
-                    renderItem={item => (
-                      <List.Item>
-                        <Typography.Text mark>[dd/MM/yyyy]</Typography.Text>
-                        {item}
-                      </List.Item>
-                    )}
-                  />
-                </div>
-              </div>
+              <Form form={form}>
+                <Form.Item name="content">
+                  <MyEditor mHeight="200px" mChange={handleEditor} />
+                </Form.Item>
+                <Form.Item>
+                  <Button type="primary" onClick={handleSubmit}>
+                    Bình luận
+                  </Button>
+                </Form.Item>
+              </Form>
+
+              {props.newsReducer.comments.length > 0 && (
+                <List
+                  bordered
+                  className="comment-list"
+                  header={`${props.newsReducer.comments.length} bình luận`}
+                  itemLayout="horizontal"
+                  dataSource={props.newsReducer.comments}
+                  style={{ margin: '10px auto' }}
+                  renderItem={item => (
+                    <List.Item key={item.id}>
+                      <Comment
+                        author={item.user.username}
+                        avatar="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+                        content={
+                          <div
+                            // eslint-disable-next-line react/no-danger
+                            dangerouslySetInnerHTML={{
+                              __html: item.content,
+                            }}
+                          />
+                        }
+                        datetime={moment(item.updatedAt).format(dateFormat)}
+                      />
+                    </List.Item>
+                  )}
+                />
+              )}
+
+              {props.homeReducer.lastestPosts.length > 0 && (
+                <List
+                  bordered
+                  header="Tin liên quan"
+                  dataSource={props.homeReducer.lastestPosts}
+                  renderItem={item => (
+                    <List.Item key={item.id}>
+                      <List.Item.Meta
+                        title={<a href={`/news/${item.id}`}>{item.title}</a>}
+                        description={moment(item.publishAt).format(dateFormat)}
+                      />
+                      <MyContentDiv
+                        dangerouslySetInnerHTML={{
+                          __html: item.content,
+                        }}
+                      />
+                    </List.Item>
+                  )}
+                />
+              )}
             </div>
           }
           mCategories={props.homeReducer.categories}
@@ -191,6 +211,8 @@ News.propTypes = {
   getCategories: PropTypes.func,
   getSubCategories: PropTypes.func,
   getContacts: PropTypes.func,
+  getComments: PropTypes.func,
+  getLastestPosts: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -210,6 +232,12 @@ const mapDispatchToProps = dispatch => ({
   },
   getContacts: data => {
     dispatch(hAction.getContacts(data));
+  },
+  getComments: data => {
+    dispatch(action.getComments(data));
+  },
+  getLastestPosts: data => {
+    dispatch(hAction.getLastestPosts(data));
   },
 });
 

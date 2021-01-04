@@ -4,7 +4,7 @@
  *
  */
 
-import React, { memo } from 'react';
+import React, { memo, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
@@ -13,21 +13,37 @@ import 'react-quill/dist/quill.snow.css';
 
 const Mrq = styled(ReactQuill)`
   .ql-container {
-    height: 90% !important;
+    height: 80% !important;
+    cursor: auto !important;
   }
 `;
-
+let k = -1;
 function MyEditor(props) {
+  const [eValue, setEValue] = useState(props.value);
+
+  useEffect(() => {
+    setEValue(props.value);
+  }, [props.value]);
+
+  const handleChange = e => {
+    if (k === -1) k = 0;
+    setEValue(e);
+  };
+
+  const handlePress = () => {
+    props.mChange(eValue);
+  };
+
   return (
-    <div>
-      <Mrq
-        theme="snow"
-        modules={MyEditor.modules}
-        formats={MyEditor.formats}
-        style={{ height: props.mHeight, width: props.mWidth }}
-        value={props.value}
-      />
-    </div>
+    <Mrq
+      theme="snow"
+      modules={MyEditor.modules}
+      formats={MyEditor.formats}
+      style={{ height: props.mHeight, width: props.mWidth }}
+      value={k === -1 ? props.value : eValue}
+      onKeyUp={handlePress}
+      onChange={handleChange}
+    />
   );
 }
 
@@ -65,6 +81,7 @@ MyEditor.propTypes = {
   mHeight: PropTypes.string,
   mWidth: PropTypes.string,
   value: PropTypes.any,
+  mChange: PropTypes.func,
 };
 
 export default memo(MyEditor);

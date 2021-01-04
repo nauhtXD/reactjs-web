@@ -93,7 +93,6 @@ function AdminTable(props) {
           mUpdate={props.mUpdate}
           mModal={props.mTableModal}
           mWidth={props.mWidth}
-          mPreview={props.mInitialValues.img}
         />
       </MyBox>
       <Modal

@@ -60,6 +60,10 @@ export function Post(props) {
     setDefValue({ ...defValue, img: props.adminReducer.url });
   }, [props.adminReducer.url]);
 
+  const handleEditor = value => {
+    setDefValue({ ...defValue, content: value });
+  };
+
   const setNullPreview = () => {
     setDefValue({ ...defValue, img: null });
   };
@@ -105,8 +109,10 @@ export function Post(props) {
   };
 
   const handleClick = (record, key) => {
-    if (key === 0) props.updatePost(record);
-    else props.deletePost(record);
+    if (key === 0) {
+      const realValue = { ...record, content: defValue.content };
+      props.updatePost(realValue);
+    } else props.deletePost(record);
     setIsRerender(!isRerender);
   };
 
@@ -121,7 +127,7 @@ export function Post(props) {
           </MyBox>
           <MyBox>
             <Form.Item name="content">
-              <MyEditor mHeight="300px" mWidth="600px" />
+              <MyEditor mHeight="300px" mWidth="600px" mChange={handleEditor} />
             </Form.Item>
           </MyBox>
         </Col>
