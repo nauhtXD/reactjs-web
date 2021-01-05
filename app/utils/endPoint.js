@@ -44,3 +44,13 @@ export const API_ENDPOINT_GET_PROVINCE = 'provinces';
 export const API_ENDPOINT_UPLOAD_IMG = 'upload';
 // comment
 export const API_ENDPOINT_GET_COMMENT = 'comments';
+// household
+export const API_ENDPOINT_GET_HOUSEHOLD = 'households';
+export const API_ENDPOINT_UPDATE_HOUSEHOLD = 'households/update';
+export const API_ENDPOINT_DELETE_HOUSEHOLD = 'households/delete';
+// land
+export const API_ENDPOINT_GET_LAND = 'lands';
+// plant
+export const API_ENDPOINT_GET_PLANT = 'plants';
+export const API_ENDPOINT_UPDATE_PLANT = 'plants/update';
+export const API_ENDPOINT_DELETE_PLANT = 'plants/delete';

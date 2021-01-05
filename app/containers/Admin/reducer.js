@@ -27,6 +27,14 @@ export const initialState = {
   contacts: [],
   loadingUrl: false,
   url: [],
+  loadingHouseholds: false,
+  households: [],
+  loadingLands: false,
+  lands: [],
+  loadingPlants: false,
+  plants: [],
+  loadingGenusFeatures: false,
+  genusFeatures: [],
 };
 
 /* eslint-disable default-case, no-param-reassign */
@@ -142,6 +150,52 @@ const adminReducer = (state = initialState, action) =>
       case types.UPLOAD_IMG_FAIL:
         draft.url = [];
         draft.loadingUrl = false;
+        break;
+      case types.GET_HOUSEHOLD:
+        draft.loadingHouseholds = true;
+        break;
+      case types.GET_HOUSEHOLD_SUCCESS:
+        draft.households = action.households;
+        draft.loadingHouseholds = false;
+        break;
+      case types.GET_HOUSEHOLD_FAIL:
+        draft.households = [];
+        draft.loadingHouseholds = false;
+        break;
+      case types.GET_LAND:
+        draft.loadingLands = true;
+        break;
+      case types.GET_LAND_SUCCESS:
+        draft.lands = action.lands;
+        draft.loadingLands = false;
+        break;
+      case types.GET_LAND_FAIL:
+        draft.lands = [];
+        draft.loadingLands = false;
+        break;
+
+      case types.GET_PLANT:
+        draft.loadingPlants = true;
+        break;
+      case types.GET_PLANT_SUCCESS:
+        draft.plants = action.plants;
+        draft.loadingPlants = false;
+        break;
+      case types.GET_PLANT_FAIL:
+        draft.plants = [];
+        draft.loadingPlants = false;
+        break;
+
+      case types.GET_GENUS_FEATURE:
+        draft.loadingGenus_Features = true;
+        break;
+      case types.GET_GENUS_FEATURE_SUCCESS:
+        draft.genusfeatures = action.genusfeatures;
+        draft.loadingGenus_Features = false;
+        break;
+      case types.GET_GENUS_FEATURE_FAIL:
+        draft.genusfeatures = [];
+        draft.loadingGenus_Features = false;
         break;
     }
   });

@@ -37,6 +37,8 @@ import User from '../Admin/pages/user';
 import Post from '../Admin/pages/post';
 import Report from '../Admin/pages/report';
 import Contact from '../Admin/pages/contact';
+import Household from '../Admin/pages/household';
+import Plant from '../Admin/pages/plant';
 
 import GlobalStyle from '../../global-styles';
 function App(props) {
@@ -81,6 +83,8 @@ function App(props) {
           <PrivateRoute exact path="/admin/post" component={Post} />
           <PrivateRoute exact path="/admin/report" component={Report} />
           <PrivateRoute exact path="/admin/contact" component={Contact} />
+          <Route exact path="/admin/household" component={Household} />
+          <Route exact path="/admin/plant" component={Plant} />
 
           <Route path="" component={NotFoundPage} />
         </Switch>

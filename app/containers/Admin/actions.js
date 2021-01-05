@@ -154,9 +154,83 @@ export function deleteContact(data) {
 }
 // #endregion
 
+// #region HOUSEHOLD
+export function getHouseholds(data) {
+  return {
+    type: types.GET_HOUSEHOLD,
+    payload: data,
+  };
+}
+
+export function createHousehold(data) {
+  return {
+    type: types.CREATE_HOUSEHOLD,
+    payload: data,
+  };
+}
+
+export function updateHousehold(data) {
+  return {
+    type: types.UPDATE_HOUSEHOLD,
+    payload: data,
+  };
+}
+
+export function deleteHousehold(data) {
+  return {
+    type: types.DELETE_HOUSEHOLD,
+    payload: data,
+  };
+}
+// #endregion
+
 export function uploadImg(data) {
   return {
     type: types.UPLOAD_IMG,
     payload: data,
   };
 }
+
+export function getLands(data) {
+  return {
+    type: types.GET_LAND,
+    payload: data,
+  };
+}
+
+export function getGenusFeatures(data) {
+  return {
+    type: types.GET_GENUS_FEATURE,
+    payload: data,
+  };
+}
+
+// #region PLANT
+export function getPlants(data) {
+  return {
+    type: types.GET_PLANT,
+    payload: data,
+  };
+}
+
+export function createPlant(data) {
+  return {
+    type: types.CREATE_PLANT,
+    payload: data,
+  };
+}
+
+export function updatePlant(data) {
+  return {
+    type: types.UPDATE_PLANT,
+    payload: data,
+  };
+}
+
+export function deletePlant(data) {
+  return {
+    type: types.DELETE_PLANT,
+    payload: data,
+  };
+}
+// #endregion
