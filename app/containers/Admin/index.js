@@ -6,7 +6,7 @@ import { Helmet } from 'react-helmet';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import styled from 'styled-components';
-import { Menu, Layout, Avatar } from 'antd';
+import { Menu, Layout, Avatar, Row, Col } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 import { Route, Link } from 'react-router-dom';
 import { useInjectSaga } from 'utils/injectSaga';
@@ -33,7 +33,10 @@ const UIcon = styled(UserOutlined)`
 export function Admin() {
   useInjectReducer({ key: 'admin', reducer });
   useInjectSaga({ key: 'admin', saga });
-
+  const handleLogout = () => {
+    localStorage.clear();
+    window.location.href = '/login';
+  };
   return (
     <div>
       <Helmet>
@@ -47,9 +50,20 @@ export function Admin() {
           style={{ backgroundColor: '#fff' }}
         >
           <Menu defaultSelectedKeys={['dashboard']} mode="inline">
-            <Menu.Item key="user" icon={<Avatar icon={<UIcon />} />}>
-              <a href=".">Tên</a>
-              <a href="/">Đăng xuất</a>
+            <Menu.Item key="user">
+              <Row>
+                <Col span={8}>
+                  <Avatar icon={<UIcon />} />
+                </Col>
+                <Col span={16}>
+                  <p onClick={handleLogout}>
+                    <span style={{ display: 'block' }}>
+                      {localStorage.getItem('usrName')}
+                    </span>
+                    <span style={{ display: 'block' }}>Đăng xuất</span>
+                  </p>
+                </Col>
+              </Row>
             </Menu.Item>
             <Menu.Item key="dashboard">
               <Link to="/admin/dashboard">Dashboard</Link>

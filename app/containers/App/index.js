@@ -13,6 +13,8 @@ import { compose } from 'redux';
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
 
+import PrivateRoute from 'utils/privateRoute';
+
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
 
 import reducer from '../Home/reducer';
@@ -20,6 +22,7 @@ import saga from '../Home/saga';
 
 import Home from '../Home/Loadable';
 import News from '../News/Loadable';
+import Login from '../Login/Loadable';
 // import Crops from '../Crops/Loadable';
 import Documents from '../Documents/Loadable';
 import WeatherMap from '../WeatherMap/Loadable';
@@ -39,6 +42,7 @@ import GlobalStyle from '../../global-styles';
 function App(props) {
   useInjectReducer({ key: 'home', reducer });
   useInjectSaga({ key: 'home', saga });
+  localStorage.clear();
   return (
     <>
       <Helmet
@@ -70,12 +74,13 @@ function App(props) {
           />
           <Route exact path="/mangowiki/list/" component={WikiList} />
 
-          <Route path="/admin" component={Admin} />
-          <Route exact path="/admin/dashboard" component={Dashboard} />
-          <Route exact path="/admin/user" component={User} />
-          <Route exact path="/admin/post" component={Post} />
-          <Route exact path="/admin/report" component={Report} />
-          <Route exact path="/admin/contact" component={Contact} />
+          <Route exact path="/login" component={Login} />
+          <PrivateRoute path="/admin" component={Admin} />
+          <PrivateRoute exact path="/admin/dashboard" component={Dashboard} />
+          <PrivateRoute exact path="/admin/user" component={User} />
+          <PrivateRoute exact path="/admin/post" component={Post} />
+          <PrivateRoute exact path="/admin/report" component={Report} />
+          <PrivateRoute exact path="/admin/contact" component={Contact} />
 
           <Route path="" component={NotFoundPage} />
         </Switch>

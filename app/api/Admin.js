@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import apiConfig from 'utils/apiConfig';
 import apiConfig3 from 'utils/apiConfig3';
 import * as endpoint from 'utils/endPoint';

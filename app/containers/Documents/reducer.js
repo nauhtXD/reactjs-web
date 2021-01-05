@@ -6,7 +6,6 @@ export const initialState = {};
 /* eslint-disable default-case, no-param-reassign */
 const documentsReducer = (state = initialState, action) =>
   produce(state, draft => {
-    const { data, error } = action;
     switch (action.type) {
       case types.DEFAULT_REQUEST:
         break;
