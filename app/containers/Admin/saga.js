@@ -696,6 +696,338 @@ export function* uploadImgSaga({ payload }) {
   }
 }
 
+export function* getLandSaga({ payload }) {
+  try {
+    const response = yield call(api.getLands, payload);
+    if (response && response.status === 200) {
+      yield put({
+        type: types.GET_LAND_SUCCESS,
+        lands: response.data.data,
+      });
+    } else {
+      yield put({
+        type: types.GET_LAND_FAIL,
+        error: response && response.data ? response.data.messages : 'API Error',
+      });
+      notification.error({
+        message: 'Error',
+        description:
+          response && response.data ? response.data.messages : 'API Error',
+      });
+    }
+  } catch (err) {
+    yield put({
+      type: types.GET_LAND_FAIL,
+      error: err,
+    });
+    notification.error({
+      message: 'Error',
+      description: err,
+    });
+  }
+}
+
+// #region household
+export function* getHouseholdSaga({ payload }) {
+  try {
+    const response = yield call(api.getHouseholds, payload);
+    if (response && response.status === 200) {
+      yield put({
+        type: types.GET_HOUSEHOLD_SUCCESS,
+        households: response.data.data,
+      });
+    } else {
+      yield put({
+        type: types.GET_HOUSEHOLD_FAIL,
+        error: response && response.data ? response.data.messages : 'API Error',
+      });
+      notification.error({
+        message: 'Error',
+        description:
+          response && response.data ? response.data.messages : 'API Error',
+      });
+    }
+  } catch (err) {
+    yield put({
+      type: types.GET_HOUSEHOLD_FAIL,
+      error: err,
+    });
+    notification.error({
+      message: 'Error',
+      description: err,
+    });
+  }
+}
+
+export function* createHouseholdSaga({ payload }) {
+  try {
+    const response = yield call(api.createHousehold, payload);
+    if (response && response.status === 200) {
+      yield put({
+        type: types.CREATE_HOUSEHOLD_SUCCESS,
+      });
+      notification.success({
+        message: 'Success',
+        description: 'Thêm thành công',
+      });
+    } else {
+      yield put({
+        type: types.CREATE_HOUSEHOLD_FAIL,
+        error: response && response.data ? response.data.messages : 'API Error',
+      });
+      notification.error({
+        message: 'Error',
+        description:
+          response && response.data ? response.data.messages : 'API Error',
+      });
+    }
+  } catch (err) {
+    yield put({
+      type: types.CREATE_HOUSEHOLD_FAIL,
+      error: err,
+    });
+    notification.error({
+      message: 'Error',
+      description: err,
+    });
+  }
+}
+
+export function* updateHouseholdSaga({ payload }) {
+  try {
+    const response = yield call(api.updateHousehold, payload);
+    if (response && response.status === 200) {
+      yield put({
+        type: types.UPDATE_HOUSEHOLD_SUCCESS,
+      });
+      notification.success({
+        message: 'Success',
+        description: 'Chỉnh sửa thành công',
+      });
+    } else {
+      yield put({
+        type: types.UPDATE_HOUSEHOLD_FAIL,
+        error: response && response.data ? response.data.messages : 'API Error',
+      });
+      notification.error({
+        message: 'Error',
+        description:
+          response && response.data ? response.data.messages : 'API Error',
+      });
+    }
+  } catch (err) {
+    yield put({
+      type: types.UPDATE_HOUSEHOLD_FAIL,
+      error: err,
+    });
+    notification.error({
+      message: 'Error',
+      description: err,
+    });
+  }
+}
+
+export function* deleteHouseholdSaga({ payload }) {
+  try {
+    const response = yield call(api.deleteHousehold, payload);
+    if (response && response.status === 200) {
+      yield put({
+        type: types.DELETE_HOUSEHOLD_SUCCESS,
+      });
+      notification.success({
+        message: 'Success',
+        description: 'Xóa thành công',
+      });
+    } else {
+      yield put({
+        type: types.DELETE_HOUSEHOLD_FAIL,
+        error: response && response.data ? response.data.messages : 'API Error',
+      });
+      notification.error({
+        message: 'Error',
+        description:
+          response && response.data ? response.data.messages : 'API Error',
+      });
+    }
+  } catch (err) {
+    yield put({
+      type: types.DELETE_HOUSEHOLD_FAIL,
+      error: err,
+    });
+    notification.error({
+      message: 'Error',
+      description: err,
+    });
+  }
+}
+// #endregion
+
+// #region plant
+export function* getPlantSaga({ payload }) {
+  try {
+    const response = yield call(api.getPlants, payload);
+    if (response && response.status === 200) {
+      yield put({
+        type: types.GET_PLANT_SUCCESS,
+        plants: response.data.data,
+      });
+    } else {
+      yield put({
+        type: types.GET_PLANT_FAIL,
+        error: response && response.data ? response.data.messages : 'API Error',
+      });
+      notification.error({
+        message: 'Error',
+        description:
+          response && response.data ? response.data.messages : 'API Error',
+      });
+    }
+  } catch (err) {
+    yield put({
+      type: types.GET_PLANT_FAIL,
+      error: err,
+    });
+    notification.error({
+      message: 'Error',
+      description: err,
+    });
+  }
+}
+
+export function* createPlantSaga({ payload }) {
+  try {
+    const response = yield call(api.createPlant, payload);
+    if (response && response.status === 200) {
+      yield put({
+        type: types.CREATE_PLANT_SUCCESS,
+      });
+      notification.success({
+        message: 'Success',
+        description: 'Thêm thành công',
+      });
+    } else {
+      yield put({
+        type: types.CREATE_PLANT_FAIL,
+        error: response && response.data ? response.data.messages : 'API Error',
+      });
+      notification.error({
+        message: 'Error',
+        description:
+          response && response.data ? response.data.messages : 'API Error',
+      });
+    }
+  } catch (err) {
+    yield put({
+      type: types.CREATE_PLANT_FAIL,
+      error: err,
+    });
+    notification.error({
+      message: 'Error',
+      description: err,
+    });
+  }
+}
+
+export function* updatePlantSaga({ payload }) {
+  try {
+    const response = yield call(api.updatePlant, payload);
+    if (response && response.status === 200) {
+      yield put({
+        type: types.UPDATE_PLANT_SUCCESS,
+      });
+      notification.success({
+        message: 'Success',
+        description: 'Chỉnh sửa thành công',
+      });
+    } else {
+      yield put({
+        type: types.UPDATE_PLANT_FAIL,
+        error: response && response.data ? response.data.messages : 'API Error',
+      });
+      notification.error({
+        message: 'Error',
+        description:
+          response && response.data ? response.data.messages : 'API Error',
+      });
+    }
+  } catch (err) {
+    yield put({
+      type: types.UPDATE_PLANT_FAIL,
+      error: err,
+    });
+    notification.error({
+      message: 'Error',
+      description: err,
+    });
+  }
+}
+
+export function* deletePlantSaga({ payload }) {
+  try {
+    const response = yield call(api.deletePlant, payload);
+    if (response && response.status === 200) {
+      yield put({
+        type: types.DELETE_PLANT_SUCCESS,
+      });
+      notification.success({
+        message: 'Success',
+        description: 'Xóa thành công',
+      });
+    } else {
+      yield put({
+        type: types.DELETE_PLANT_FAIL,
+        error: response && response.data ? response.data.messages : 'API Error',
+      });
+      notification.error({
+        message: 'Error',
+        description:
+          response && response.data ? response.data.messages : 'API Error',
+      });
+    }
+  } catch (err) {
+    yield put({
+      type: types.DELETE_PLANT_FAIL,
+      error: err,
+    });
+    notification.error({
+      message: 'Error',
+      description: err,
+    });
+  }
+}
+// #endregion
+
+export function* getGenusFeatureSaga({ payload }) {
+  try {
+    const response = yield call(api.getGenusFeatures, payload);
+    if (response && response.status === 200) {
+      yield put({
+        type: types.GET_GENUS_FEATURE_SUCCESS,
+        lands: response.data.data,
+      });
+    } else {
+      yield put({
+        type: types.GET_GENUS_FEATURE_FAIL,
+        error: response && response.data ? response.data.messages : 'API Error',
+      });
+      notification.error({
+        message: 'Error',
+        description:
+          response && response.data ? response.data.messages : 'API Error',
+      });
+    }
+  } catch (err) {
+    yield put({
+      type: types.GET_GENUS_FEATURE_FAIL,
+      error: err,
+    });
+    notification.error({
+      message: 'Error',
+      description: err,
+    });
+  }
+}
+
 export default function* rootSaga() {
   yield all([
     takeLatest(types.GET_USER, getUserSaga),
@@ -719,5 +1051,15 @@ export default function* rootSaga() {
     takeLatest(types.UPDATE_CONTACT, updateContactSaga),
     takeLatest(types.DELETE_CONTACT, deleteContactSaga),
     takeLatest(types.UPLOAD_IMG, uploadImgSaga),
+    takeLatest(types.GET_HOUSEHOLD, getHouseholdSaga),
+    takeLatest(types.CREATE_HOUSEHOLD, createHouseholdSaga),
+    takeLatest(types.UPDATE_HOUSEHOLD, updateHouseholdSaga),
+    takeLatest(types.DELETE_HOUSEHOLD, deleteHouseholdSaga),
+    takeLatest(types.GET_LAND, getLandSaga),
+    takeLatest(types.GET_PLANT, getPlantSaga),
+    takeLatest(types.CREATE_PLANT, createPlantSaga),
+    takeLatest(types.UPDATE_PLANT, updatePlantSaga),
+    takeLatest(types.DELETE_PLANT, deletePlantSaga),
+    takeLatest(types.GET_GENUS_FEATURE, getGenusFeatureSaga),
   ]);
 }

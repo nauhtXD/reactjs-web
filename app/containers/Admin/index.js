@@ -20,6 +20,8 @@ import User from './pages/user';
 import Post from './pages/post';
 import Report from './pages/report';
 import Contact from './pages/contact';
+import Household from './pages/household';
+import Plant from './pages/plant';
 
 const { SubMenu } = Menu;
 const { Sider, Content } = Layout;
@@ -61,6 +63,9 @@ export function Admin() {
               <Menu.Item key="hh2">
                 <Link to="/admin/household">Thông tin hộ</Link>
               </Menu.Item>
+              <Menu.Item key="hh3">
+                <Link to="/admin/plant">Thông tin cây</Link>
+              </Menu.Item>
             </SubMenu>
             <Menu.Item key="reports">
               <Link to="/admin/report">Sự cố</Link>
@@ -87,6 +92,8 @@ export function Admin() {
             <Route exact path="/admin/post" component={Post} />
             <Route exact path="/admin/report" component={Report} />
             <Route exact path="/admin/contact" component={Contact} />
+            <Route exact path="/admin/household" component={Household} />
+            <Route exact path="/admin/plant" component={Plant} />
           </Content>
         </Layout>
       </Layout>

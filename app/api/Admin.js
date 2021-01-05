@@ -49,3 +49,25 @@ export const deleteContact = data =>
 // minio
 export const uploadImg = data =>
   apiConfig3.post(endpoint.API_ENDPOINT_UPLOAD_IMG, data);
+// household
+export const getHouseholds = () =>
+  apiConfig.get(endpoint.API_ENDPOINT_GET_HOUSEHOLD);
+export const createHousehold = data =>
+  apiConfig.post(endpoint.API_ENDPOINT_GET_HOUSEHOLD, data);
+export const updateHousehold = data =>
+  apiConfig.put(`${endpoint.API_ENDPOINT_UPDATE_HOUSEHOLD}/${data.id}`, data);
+export const deleteHousehold = data =>
+  apiConfig.put(`${endpoint.API_ENDPOINT_DELETE_HOUSEHOLD}/${data}`, data);
+// land
+export const getLands = () => apiConfig.get(endpoint.API_ENDPOINT_GET_LAND);
+// plant
+export const getPlants = () => apiConfig.get(endpoint.API_ENDPOINT_GET_PLANT);
+export const createPlant = data =>
+  apiConfig.post(endpoint.API_ENDPOINT_GET_PLANT, data);
+export const updatePlant = data =>
+  apiConfig.put(`${endpoint.API_ENDPOINT_UPDATE_PLANT}/${data.id}`, data);
+export const deletePlant = data =>
+  apiConfig.put(`${endpoint.API_ENDPOINT_DELETE_PLANT}/${data}`, data);
+// genusFeatures
+export const getGenusFeatures = () =>
+  apiConfig.get(endpoint.API_ENDPOINT_GET_GENUS_FEATURE);
