@@ -21,35 +21,34 @@ function ImgCom(props) {
       style={{ display: 'block', margin: '2px auto', width: '50%' }}
     />,
   ];
-
   const imgCol = [<Col span={14}>{myImg}</Col>];
   const contentCol = [
     <Col span={10}>
-      <a href={props.mLink}>{props.mTitle}</a>
-      <p>{props.mDay}</p>
-      {props.mContent && <p>{props.mContent}</p>}
+      <a href={props.mLink} style={{ fontSize: '17px' }}>
+        <b>{props.mTitle}</b>
+      </a>
+      <p style={{ fontSize: '13px' }}>{props.mDay}</p>
+      {props.mContent && <p style={{ fontSize: '15px' }}>{props.mContent}</p>}
     </Col>,
   ];
 
   return (
     <div>
-      {myStyle === 'center' && (
+      {myStyle === 'center' ? (
         <div style={{ textAlign: 'center' }}>
           {myImg}
           <a href={props.mLink}>{props.mTitle}</a>
           {props.mDay && <p>{props.mDay}</p>}
           {props.mContent && <p>{props.mContent}</p>}
         </div>
-      )}
-      {myStyle !== 'center' && (
+      ) : (
         <div style={{ marginBottom: '15px' }}>
-          {myStyle === 'left' && (
+          {myStyle === 'left' ? (
             <Row>
               {imgCol}
               {contentCol}
             </Row>
-          )}
-          {myStyle === 'right' && (
+          ) : (
             <Row>
               {contentCol}
               {imgCol}

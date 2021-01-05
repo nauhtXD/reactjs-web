@@ -1,19 +1,19 @@
 import { takeLatest, call, put, all } from 'redux-saga/effects';
-import * as api from 'api/Crops';
+import * as api from 'api/NewsList';
 import { notification } from 'antd';
 import * as types from './constants';
 
-export function* getCropsSaga({ data }) {
+export function* getNewListSaga({ payload }) {
   try {
-    const response = yield call(api.getCropsPage, data);
-    if (response && response.status === 200 && response.data.code === 200) {
+    const response = yield call(api.getPostsBySCID, payload);
+    if (response && response.status === 200) {
       yield put({
-        type: types.DEFAULT_ACTION_SUCCESS,
-        data: response.data.data,
+        type: types.GET_POST_BY_SCID_SUCCESS,
+        posts: response.data.data,
       });
     } else {
       yield put({
-        type: types.DEFAULT_ACTION_FAIL,
+        type: types.GET_POST_BY_SCID_FAIL,
         error: response && response.data ? response.data.messages : 'API Error',
       });
       notification.error({
@@ -24,7 +24,7 @@ export function* getCropsSaga({ data }) {
     }
   } catch (err) {
     yield put({
-      type: types.DEFAULT_ACTION_FAIL,
+      type: types.GET_POST_BY_SCID_FAIL,
       error: err,
     });
     notification.error({
@@ -35,5 +35,5 @@ export function* getCropsSaga({ data }) {
 }
 
 export default function* rootSaga() {
-  yield all([takeLatest(types.DEFAULT_ACTION, getCropsSaga)]);
+  yield all([takeLatest(types.GET_POST_BY_SCID, getNewListSaga)]);
 }

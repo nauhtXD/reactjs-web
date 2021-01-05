@@ -6,29 +6,16 @@
 
 import React, { memo, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
+// import styled from 'styled-components';
 import { Table, Space, Button, Modal, Form } from 'antd';
-import { CheckSquareTwoTone, CloseSquareTwoTone } from '@ant-design/icons';
 import moment from 'moment';
+import { CheckIcon, CloseIcon, layout } from '../Style/index';
 
 // import { FormattedMessage } from 'react-intl';
 // import messages from './messages';
 
 const { Column } = Table;
-const CheckIcon = styled(CheckSquareTwoTone)`
-  &.anticon svg {
-    vertical-align: baseline !important;
-  }
-`;
-const CloseIcon = styled(CloseSquareTwoTone)`
-  &.anticon svg {
-    vertical-align: baseline !important;
-  }
-`;
-const layout = {
-  labelCol: { span: 8 },
-  wrapperCol: { span: 16 },
-};
+
 const green = '#52c41a';
 const red = '#ff4c4c';
 

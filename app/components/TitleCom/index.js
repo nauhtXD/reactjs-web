@@ -18,6 +18,7 @@ const OSDiv = styled(Card)`
     color: #22b14c !important;
     background-color: #deffc0 !important;
   }
+  line-height: 1;
 `;
 
 const OSDivNoPadding = styled(Card)`

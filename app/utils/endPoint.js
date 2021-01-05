@@ -8,8 +8,10 @@ export const API_ENDPOINT_GET_LOGIN_TOKEN = 'users/login';
 export const API_ENDPOINT_GET_CATEGORY = 'categories';
 // subcategory
 export const API_ENDPOINT_GET_SUB_CATEGORY = 'subcategories';
+export const API_ENDPOINT_GET_SUB_CATEGORY_BY_CID = 'subcategories/category';
 // new, post
 export const API_ENDPOINT_GET_POST = 'posts';
+export const API_ENDPOINT_GET_POST_BY_SCID = 'posts/list';
 export const API_ENDPOINT_GET_LASTEST_POST = 'posts/lastest-posts';
 export const API_ENDPOINT_UPDATE_POST = 'posts/update';
 export const API_ENDPOINT_DELETE_POST = 'posts/delete';

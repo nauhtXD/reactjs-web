@@ -12,11 +12,14 @@ import styled from 'styled-components';
 import { Row, Col, Image } from 'antd';
 // import reducer from './reducer';
 // import saga from './saga';
+import moment from 'moment';
 import makeSelect from './selectors';
 import MyLayout from '../../components/MyLayout/Loadable';
 import ImgCom from '../../components/ImgCom/Loadable';
 import TitleCom from '../../components/TitleCom/Loadable';
 import * as action from './actions';
+
+const dateFormat = 'DD/MM/YYYY';
 
 const MyDiv = styled.div`
   display: -webkit-box;
@@ -24,6 +27,7 @@ const MyDiv = styled.div`
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
+  font-size: 15px;
 `;
 
 // #region  row
@@ -61,23 +65,6 @@ for (let i = 0; i < 3; i++) {
   );
 }
 
-const rowc1 = [];
-for (let i = 0; i < 3; i++) {
-  rowc.push(
-    <Col span={8}>
-      <ImgCom
-        mStyle="right"
-        mWidth="150px"
-        mSrc="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
-        mLink="/News"
-        mTitle="Title2"
-        mDay="dd/MM/yyyy"
-        mContent="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-      />
-    </Col>,
-  );
-}
-
 const rowhcont = [];
 for (let i = 0; i < 3; i++) {
   rowhcont.push(
@@ -92,27 +79,15 @@ for (let i = 0; i < 3; i++) {
     />,
   );
 }
-
-const rowh = [];
-for (let i = 0; i < 3; i++) {
-  rowh.push(
-    <Col span={8}>
-      <TitleCom mCategory="Category" mCont={<div>{rowhcont}</div>} />
-    </Col>,
-  );
-}
 // #endregion
-
-function formatDate(string) {
-  return new Date(string).toLocaleDateString();
-}
 
 export function Home(props) {
   useEffect(() => {
     props.getCategories();
     props.getSubCategories();
     props.getContacts();
-    props.getLastestPosts(5);
+    props.getLastestPosts(4);
+    props.getSubCategoriesByCID(3);
   }, []);
 
   return (
@@ -130,22 +105,24 @@ export function Home(props) {
                 <div>
                   {props.homeReducer.lastestPosts[0] && (
                     <Row gutter={16} style={{ marginBottom: '15px' }}>
-                      <Col span={16}>
+                      <Col span={14}>
                         <Image
                           height={300}
                           src={props.homeReducer.lastestPosts[0].img}
                         />
                       </Col>
-                      <Col span={8}>
+                      <Col span={10}>
                         <a
                           href={`/news/${props.homeReducer.lastestPosts[0].id}`}
                         >
-                          {props.homeReducer.lastestPosts[0].title}
+                          <b style={{ fontSize: '17px' }}>
+                            {props.homeReducer.lastestPosts[0].title}
+                          </b>
                         </a>
-                        <p>
-                          {formatDate(
+                        <p style={{ fontSize: '13px' }}>
+                          {moment(
                             props.homeReducer.lastestPosts[0].publishAt,
-                          )}
+                          ).format(dateFormat)}
                         </p>
                         <MyDiv
                           // eslint-disable-next-line react/no-danger
@@ -161,14 +138,14 @@ export function Home(props) {
                       props.homeReducer.lastestPosts.map(
                         (i, index) =>
                           index !== 0 && (
-                            <Col key={i.id} span={6}>
+                            <Col key={i.id} span={8}>
                               <ImgCom
-                                mStyle="center"
+                                mStyle="left"
                                 mWidth="150px"
                                 mSrc={i.img}
                                 mLink={`/news/${i.id}`}
                                 mTitle={i.title}
-                                mDay={formatDate(i.publishAt)}
+                                mDay={moment(i.publishAt).format(dateFormat)}
                                 mContent={
                                   <MyDiv
                                     // eslint-disable-next-line react/no-danger
@@ -190,11 +167,21 @@ export function Home(props) {
               mCont={
                 <div>
                   <Row>{rowc}</Row>
-                  <Row>{rowc1}</Row>
+                  <Row>{rowc}</Row>
                 </div>
               }
             />
-            <Row gutter={16}>{rowh}</Row>
+            <Row gutter={16}>
+              {props.homeReducer.subCategoriesByCID.length > 0 &&
+                props.homeReducer.subCategoriesByCID.map(i => (
+                  <Col span={8}>
+                    <TitleCom
+                      mCategory={i.name}
+                      mCont={<div>{rowhcont}</div>}
+                    />
+                  </Col>
+                ))}
+            </Row>
           </div>
         }
         mCategories={props.homeReducer.categories}
@@ -209,6 +196,7 @@ Home.propTypes = {
   homeReducer: PropTypes.any,
   getCategories: PropTypes.func,
   getSubCategories: PropTypes.func,
+  getSubCategoriesByCID: PropTypes.func,
   getContacts: PropTypes.func,
   getLastestPosts: PropTypes.func,
 };
@@ -223,6 +211,9 @@ const mapDispatchToProps = dispatch => ({
   },
   getSubCategories: data => {
     dispatch(action.getSubCategories(data));
+  },
+  getSubCategoriesByCID: data => {
+    dispatch(action.getSubCategoriesByCID(data));
   },
   getContacts: data => {
     dispatch(action.getContacts(data));

@@ -13,11 +13,7 @@ import { Modal, Button, Form, Input, Carousel } from 'antd';
 // import messages from './messages';
 import TitleCom from '../TitleCom/Loadable';
 import WeatherWidget from '../WeatherWidget/Loadable';
-
-const layout = {
-  labelCol: { span: 8 },
-  wrapperCol: { span: 16 },
-};
+import { layout } from '../Style/index';
 
 const { TextArea } = Input;
 

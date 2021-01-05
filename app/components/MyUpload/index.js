@@ -8,8 +8,9 @@ import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Image } from 'antd';
-import { PlusOutlined, CloseSquareTwoTone } from '@ant-design/icons';
+import { CloseSquareTwoTone } from '@ant-design/icons';
 import Upload from 'react-file-reader';
+import { PlusIcon } from '../Style/index';
 
 const UploadDiv = styled.div`
   width: 50%;
@@ -22,6 +23,7 @@ const UploadDiv = styled.div`
     cursor: pointer;
   }
 `;
+
 const CloseSpan = styled.span`
   position: absolute;
   top: -5px;
@@ -31,9 +33,6 @@ const CloseSpan = styled.span`
   :hover {
     cursor: pointer;
   }
-`;
-const PlusIcon = styled(PlusOutlined)`
-  margin-bottom: 8px;
 `;
 
 function MyUpload(props) {

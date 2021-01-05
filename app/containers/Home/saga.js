@@ -65,6 +65,37 @@ export function* getSubCategorySaga({ payload }) {
   }
 }
 
+export function* getSubCategoryByCIDSaga({ payload }) {
+  try {
+    const response = yield call(api.getSubCategoriesByCID, payload);
+    if (response && response.status === 200) {
+      yield put({
+        type: types.GET_SUB_CATEGORY_BY_CID_SUCCESS,
+        subCategoriesByCID: response.data.data,
+      });
+    } else {
+      yield put({
+        type: types.GET_SUB_CATEGORY_BY_CID_FAIL,
+        error: response && response.data ? response.data.messages : 'API Error',
+      });
+      notification.error({
+        message: 'Error',
+        description:
+          response && response.data ? response.data.messages : 'API Error',
+      });
+    }
+  } catch (err) {
+    yield put({
+      type: types.GET_SUB_CATEGORY_BY_CID_FAIL,
+      error: err,
+    });
+    notification.error({
+      message: 'Error',
+      description: err,
+    });
+  }
+}
+
 export function* getContactsSaga({ payload }) {
   try {
     const response = yield call(api.getContacts, payload);

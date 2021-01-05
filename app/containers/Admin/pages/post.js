@@ -15,7 +15,7 @@ import reducer from '../reducer';
 import saga from '../saga';
 import makeSelect from '../selectors';
 import * as action from '../actions';
-import MyBox from '../../../components/MyBox/index';
+import { MyBox } from '../../../components/Style/index';
 import AdminTable from '../../../components/AdminTable/index';
 import MyEditor from '../../../components/MyEditor/index';
 import MyUpload from '../../../components/MyUpload/index';

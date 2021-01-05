@@ -1,8 +1,8 @@
 import * as types from './constants';
 
-export function cropsAction({ ...data }) {
+export function getPostsBySCID(data) {
   return {
-    type: types.DEFAULT_REQUEST,
+    type: types.GET_POST_BY_SCID,
     payload: data,
   };
 }

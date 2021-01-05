@@ -1,6 +1,6 @@
 /**
  *
- * Asynchronously loads the component for Crops
+ * Asynchronously loads the component for NewsList
  *
  */
 

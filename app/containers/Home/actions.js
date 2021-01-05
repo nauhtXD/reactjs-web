@@ -20,6 +20,13 @@ export function getSubCategories(data) {
   };
 }
 
+export function getSubCategoriesByCID(data) {
+  return {
+    type: types.GET_SUB_CATEGORY_BY_CID,
+    payload: data,
+  };
+}
+
 export function getContacts(data) {
   return {
     type: types.GET_CONTACT,
@@ -30,6 +37,13 @@ export function getContacts(data) {
 export function getLastestPosts(data) {
   return {
     type: types.GET_LASTEST_POST,
+    payload: data,
+  };
+}
+
+export function getLastestPostsBySCID(data) {
+  return {
+    type: types.GET_LASTEST_POST_BY_SCID,
     payload: data,
   };
 }
