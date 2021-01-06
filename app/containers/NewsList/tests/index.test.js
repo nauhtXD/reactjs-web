@@ -1,6 +1,6 @@
 /**
  *
- * Tests for MyBox
+ * Tests for NewsList
  *
  * @see https://github.com/react-boilerplate/react-boilerplate/tree/master/docs/testing
  *
@@ -8,14 +8,21 @@
 
 import React from 'react';
 import { render } from 'react-testing-library';
+import { IntlProvider } from 'react-intl';
 // import 'jest-dom/extend-expect'; // add some helpful assertions
 
-import MyBox from '../index';
+import { NewsList } from '../index';
+import { DEFAULT_LOCALE } from '../../../i18n';
 
-describe('<MyBox />', () => {
+describe('<NewsList />', () => {
   it('Expect to not log errors in console', () => {
     const spy = jest.spyOn(global.console, 'error');
-    render(<MyBox />);
+    const dispatch = jest.fn();
+    render(
+      <IntlProvider locale={DEFAULT_LOCALE}>
+        <NewsList dispatch={dispatch} />
+      </IntlProvider>,
+    );
     expect(spy).not.toHaveBeenCalled();
   });
 
@@ -31,7 +38,11 @@ describe('<MyBox />', () => {
   it.skip('Should render and match the snapshot', () => {
     const {
       container: { firstChild },
-    } = render(<MyBox />);
+    } = render(
+      <IntlProvider locale={DEFAULT_LOCALE}>
+        <NewsList />
+      </IntlProvider>,
+    );
     expect(firstChild).toMatchSnapshot();
   });
 });

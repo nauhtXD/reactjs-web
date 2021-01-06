@@ -1,6 +1,6 @@
 /**
  *
- * Tests for Crops
+ * Tests for Style
  *
  * @see https://github.com/react-boilerplate/react-boilerplate/tree/master/docs/testing
  *
@@ -8,21 +8,14 @@
 
 import React from 'react';
 import { render } from 'react-testing-library';
-import { IntlProvider } from 'react-intl';
 // import 'jest-dom/extend-expect'; // add some helpful assertions
 
-import { Crops } from '../index';
-import { DEFAULT_LOCALE } from '../../../i18n';
+import Style from '../index';
 
-describe('<Crops />', () => {
+describe('<Style />', () => {
   it('Expect to not log errors in console', () => {
     const spy = jest.spyOn(global.console, 'error');
-    const dispatch = jest.fn();
-    render(
-      <IntlProvider locale={DEFAULT_LOCALE}>
-        <Crops dispatch={dispatch} />
-      </IntlProvider>,
-    );
+    render(<Style />);
     expect(spy).not.toHaveBeenCalled();
   });
 
@@ -38,11 +31,7 @@ describe('<Crops />', () => {
   it.skip('Should render and match the snapshot', () => {
     const {
       container: { firstChild },
-    } = render(
-      <IntlProvider locale={DEFAULT_LOCALE}>
-        <Crops />
-      </IntlProvider>,
-    );
+    } = render(<Style />);
     expect(firstChild).toMatchSnapshot();
   });
 });

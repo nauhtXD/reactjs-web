@@ -11,6 +11,8 @@ export const initialState = {
   categories: [],
   loadingSubCategories: false,
   subCategories: [],
+  loadingSubCategoriesByCID: false,
+  subCategoriesByCID: [],
   loadingContacts: false,
   contacts: [],
   loadingLastestPosts: false,
@@ -42,6 +44,17 @@ const homeReducer = (state = initialState, action) =>
       case types.GET_SUB_CATEGORY_FAIL:
         draft.subCategories = [];
         draft.loadingSubCategories = false;
+        break;
+      case types.GET_SUB_CATEGORY_BY_CID:
+        draft.loadingSubCategoriesByCID = true;
+        break;
+      case types.GET_SUB_CATEGORY_BY_CID_SUCCESS:
+        draft.subCategoriesByCID = action.subCategoriesByCID;
+        draft.loadingSubCategoriesByCID = false;
+        break;
+      case types.GET_SUB_CATEGORY_BY_CID_FAIL:
+        draft.subCategoriesByCID = [];
+        draft.loadingSubCategoriesByCID = false;
         break;
       case types.GET_CONTACT:
         draft.loadingContacts = true;

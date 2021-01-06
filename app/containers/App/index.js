@@ -23,9 +23,9 @@ import saga from '../Home/saga';
 import Home from '../Home/Loadable';
 import News from '../News/Loadable';
 import Login from '../Login/Loadable';
-// import Crops from '../Crops/Loadable';
 import Documents from '../Documents/Loadable';
 import WeatherMap from '../WeatherMap/Loadable';
+import NewsList from '../NewsList/Loadable';
 
 import MangoWiki from '../MangoWiki/Loadable';
 import WikiList from '../MangoWiki/pages/list';
@@ -57,9 +57,9 @@ function App(props) {
         <Switch>
           <Route exact path="/" component={Home} />
           <Route exact path="/news/:id" component={News} />
-          {/* <Route exact path="/Crops" component={Crops} /> */}
           <Route exact path="/documents" component={Documents} />
           <Route exact path="/weathermap" component={WeatherMap} />
+          <Route exact path="/list/:subId" component={NewsList} />
 
           <Route path="/mangowiki" component={MangoWiki} />
           <Route exact path="/mangowiki/news/new/:id" component={WikiNews} />
@@ -77,6 +77,7 @@ function App(props) {
           <Route exact path="/mangowiki/list/" component={WikiList} />
 
           <Route exact path="/login" component={Login} />
+
           <Route path="/admin" component={Admin} />
           <Route exact path="/admin/dashboard" component={Dashboard} />
           <Route exact path="/admin/user" component={User} />

@@ -12,13 +12,8 @@ import { Row, Col, Input, Button, Modal, Form } from 'antd';
 // import { FormattedMessage } from 'react-intl';
 // import messages from './messages';
 
-import MyBox from '../MyBox/index';
 import MyTable from '../MyTable/index';
-
-const layout = {
-  labelCol: { span: 8 },
-  wrapperCol: { span: 16 },
-};
+import { layout, MyBox } from '../Style/index';
 
 let k = -1;
 

@@ -24,7 +24,7 @@ const GlobalStyle = createGlobalStyle`
 
   p,
   label {
-    font-family: 'Times New Roman', Times, serif;
+    font-family: 'Helvetica Neue', Times, serif;
     line-height: 1.5em;
   }
 `;

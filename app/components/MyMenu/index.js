@@ -8,7 +8,7 @@ import React, { memo, useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Menu, Modal, Form, Input, Button } from 'antd';
-import { UserOutlined } from '@ant-design/icons';
+import { layout, tailLayout, UIcon } from '../Style/index';
 
 // import { FormattedMessage } from 'react-intl';
 // import messages from './messages';
@@ -27,7 +27,6 @@ const FMenu = styled(Menu)`
 `;
 const NavItem = styled(Menu.Item)`
   color: #fff;
-  font-weight: bold;
   :hover,
   &.ant-menu-item-selected {
     color: ${mColor} !important;
@@ -36,7 +35,6 @@ const NavItem = styled(Menu.Item)`
 `;
 const SubItem = styled(Menu.Item)`
   color: #009000;
-  font-weight: bold;
   :hover,
   &.ant-menu-item-selected {
     color: ${mColor} !important;
@@ -45,7 +43,6 @@ const SubItem = styled(Menu.Item)`
 `;
 const SubNav = styled(SubMenu)`
   color: #fff;
-  font-weight: bold;
   .ant-menu-submenu-title {
     :hover {
       color: ${mColor} !important;
@@ -56,33 +53,19 @@ const SubNav = styled(SubMenu)`
     border-bottom: 1px solid ${mColor} !important;
   }
 `;
-const UIcon = styled(UserOutlined)`
-  &.anticon svg {
-    vertical-align: baseline !important;
-  }
-`;
 const MLink = styled.a`
   color: #fff !important;
-  font-weight: bold;
   :hover {
     color: ${mColor} !important;
   }
 `;
 const MSubLink = styled.a`
   color: #009000 !important;
-  font-weight: bold;
   :hover {
     color: ${mColor} !important;
   }
 `;
 // #endregion
-const layout = {
-  labelCol: { span: 8 },
-  wrapperCol: { span: 16 },
-};
-const tailLayout = {
-  wrapperCol: { offset: 8, span: 16 },
-};
 
 function MyMenu(props) {
   const [isVisible, setIsVisible] = useState(false);
@@ -118,7 +101,7 @@ function MyMenu(props) {
           style={{ float: 'right' }}
           onClick={() => setIsVisible(true)}
         >
-          ĐĂNG NHẬP
+          Đăng nhập
         </NavItem>
       </FMenu>
       <Modal

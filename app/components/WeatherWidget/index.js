@@ -8,7 +8,7 @@ import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import kToC from 'kelvin-to-celsius';
-import { Card, Row, Col } from 'antd';
+import { Card } from 'antd';
 
 // import { FormattedMessage } from 'react-intl';
 // import messages from './messages';
