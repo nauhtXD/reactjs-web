@@ -77,12 +77,12 @@ function App(props) {
           <Route exact path="/mangowiki/list/" component={WikiList} />
 
           <Route exact path="/login" component={Login} />
-          <PrivateRoute path="/admin" component={Admin} />
-          <PrivateRoute exact path="/admin/dashboard" component={Dashboard} />
-          <PrivateRoute exact path="/admin/user" component={User} />
-          <PrivateRoute exact path="/admin/post" component={Post} />
-          <PrivateRoute exact path="/admin/report" component={Report} />
-          <PrivateRoute exact path="/admin/contact" component={Contact} />
+          <Route path="/admin" component={Admin} />
+          <Route exact path="/admin/dashboard" component={Dashboard} />
+          <Route exact path="/admin/user" component={User} />
+          <Route exact path="/admin/post" component={Post} />
+          <Route exact path="/admin/report" component={Report} />
+          <Route exact path="/admin/contact" component={Contact} />
           <Route exact path="/admin/household" component={Household} />
           <Route exact path="/admin/plant" component={Plant} />
 

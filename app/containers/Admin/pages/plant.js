@@ -8,6 +8,7 @@ import { compose } from 'redux';
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
 import { Form, Input, Select, DatePicker } from 'antd';
+import moment from 'moment';
 
 import reducer from '../reducer';
 import saga from '../saga';
@@ -17,7 +18,7 @@ import makeSelect from '../selectors';
 import * as action from '../actions';
 
 const { Option } = Select;
-
+const dateFormat = 'DD/MM/YYYY';
 let k = -1;
 
 export function Plant(props) {
@@ -28,7 +29,6 @@ export function Plant(props) {
 
   useEffect(() => {
     props.getPlants();
-    // props.getLands();
     props.getHouseholds();
     props.getGenusFeatures();
   }, [isRerender]);
@@ -57,8 +57,9 @@ export function Plant(props) {
       data: 'root',
     },
     {
-      title: 'Tuổi',
-      data: 'age',
+      title: 'Ngày trồng',
+      data: 'publishAt',
+      render: record => moment(record).format(dateFormat),
     },
   ];
 
@@ -73,6 +74,10 @@ export function Plant(props) {
     setIsRerender(!isRerender);
     return 0;
   };
+  const handleSearch = (entry, currValue) =>
+    entry.household.name.toLowerCase().includes(currValue) ||
+    entry.genusFeature.name.toLowerCase().includes(currValue) ||
+    entry.root.toString().includes(currValue);
 
   return (
     <div>
@@ -82,11 +87,12 @@ export function Plant(props) {
       </Helmet>
       <AdminTable
         mTitle="Danh sách thông tin cây trồng của hộ dân"
-        mData={props.adminReducer.Plants}
+        mData={props.adminReducer.plants}
         mPropertyNames={propertyNames}
         mDelete={handleClick}
         mUpdate={handleClick}
         mCreate={handleCreate}
+        mSearch={handleSearch}
         mModal={
           <div>
             <Form.Item name="householdId" label="Hộ dân">
@@ -112,7 +118,7 @@ export function Plant(props) {
             <Form.Item name="root" label="Số gốc cây">
               <Input type="number" />
             </Form.Item>
-            <Form.Item name="age" label="Thời gian trồng">
+            <Form.Item name="publishAt" label="Thời gian trồng">
               <DatePicker />
             </Form.Item>
           </div>
@@ -142,7 +148,7 @@ export function Plant(props) {
             <Form.Item name="root" label="Số gốc cây">
               <Input type="number" />
             </Form.Item>
-            <Form.Item name="age" label="Thời gian trồng">
+            <Form.Item name="publishAt" label="Thời gian trồng">
               <DatePicker />
             </Form.Item>
           </div>

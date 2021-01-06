@@ -173,7 +173,6 @@ const adminReducer = (state = initialState, action) =>
         draft.lands = [];
         draft.loadingLands = false;
         break;
-
       case types.GET_PLANT:
         draft.loadingPlants = true;
         break;
@@ -185,17 +184,16 @@ const adminReducer = (state = initialState, action) =>
         draft.plants = [];
         draft.loadingPlants = false;
         break;
-
       case types.GET_GENUS_FEATURE:
-        draft.loadingGenus_Features = true;
+        draft.loadingGenusFeatures = true;
         break;
       case types.GET_GENUS_FEATURE_SUCCESS:
-        draft.genusfeatures = action.genusfeatures;
-        draft.loadingGenus_Features = false;
+        draft.genusFeatures = action.genusFeatures;
+        draft.loadingGenusFeatures = false;
         break;
       case types.GET_GENUS_FEATURE_FAIL:
-        draft.genusfeatures = [];
-        draft.loadingGenus_Features = false;
+        draft.genusFeatures = [];
+        draft.loadingGenusFeatures = false;
         break;
     }
   });
