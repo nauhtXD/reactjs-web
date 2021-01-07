@@ -30,10 +30,15 @@ function MyLayout(props) {
           <Content style={{ marginRight: '10px' }}>{props.mCont}</Content>
           {!props.mCheck && (
             <Sider style={{ backgroundColor: '#fff' }}>
-              <Sidebar mWeathers={props.mWeathers} />
+              <Sidebar
+                mWeathers={props.mWeathers}
+                mCreateReport={props.mCreateReport}
+                mDocuments={props.mDocuments}
+              />
             </Sider>
           )}
         </Layout>
+        {props.mCont2}
       </div>
       <Footer mContacts={props.mContacts} />
     </div>
@@ -42,12 +47,15 @@ function MyLayout(props) {
 
 MyLayout.propTypes = {
   mCont: PropTypes.any,
+  mCont2: PropTypes.any,
   mCategories: PropTypes.any,
   mSubCategories: PropTypes.any,
   mContacts: PropTypes.any,
   mCheck: PropTypes.bool,
   mBreadcrumbs: PropTypes.any,
   mWeathers: PropTypes.any,
+  mCreateReport: PropTypes.func,
+  mDocuments: PropTypes.any,
 };
 
 export default memo(MyLayout);

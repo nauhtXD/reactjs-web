@@ -13,7 +13,7 @@ import 'react-quill/dist/quill.snow.css';
 
 const Mrq = styled(ReactQuill)`
   .ql-container {
-    height: 80% !important;
+    height: 90% !important;
     cursor: auto !important;
   }
 `;

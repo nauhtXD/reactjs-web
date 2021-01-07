@@ -9,9 +9,7 @@ import { Row, Col } from 'antd';
 import { Map, TileLayer, Marker } from 'react-leaflet';
 import PropTypes from 'prop-types';
 // import styled from 'styled-components';
-
-// import { FormattedMessage } from 'react-intl';
-// import messages from './messages';
+import { primaryColor } from '../Style/index';
 
 const mZoom = 10;
 function Footer(props) {
@@ -34,16 +32,16 @@ function Footer(props) {
   }, [props.mContacts]);
 
   return (
-    <div style={{ marginTop: '20px', backgroundColor: '#036921' }}>
+    <div style={{ marginTop: '20px', backgroundColor: `${primaryColor}` }}>
       <Row>
         <Col span={12}>
           <Row>
             <Map
               style={{
                 height: '300px',
-                width: '80%',
+                width: '95%',
                 float: 'right',
-                margin: '10px auto',
+                margin: '15px auto',
               }}
               center={center && [center.latitude, center.longitude]}
               zoom={mZoom}

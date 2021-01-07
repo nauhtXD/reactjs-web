@@ -7,13 +7,19 @@
 import React, { memo, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 // import styled from 'styled-components';
-import { Row, Col, Input, Button, Modal, Form } from 'antd';
+import { Row, Col, Input, Form } from 'antd';
 
 // import { FormattedMessage } from 'react-intl';
 // import messages from './messages';
 
 import MyTable from '../MyTable/index';
-import { layout, MyBox } from '../Style/index';
+import {
+  layout,
+  MyBox,
+  MyAntdModal,
+  MyButton,
+  MyAntdForm,
+} from '../Style/index';
 
 let k = -1;
 
@@ -71,9 +77,7 @@ function AdminTable(props) {
             </Col>
             <Col span={4}>
               {props.mCreate && (
-                <Button type="primary" onClick={showModal}>
-                  Tạo mới
-                </Button>
+                <MyButton onClick={showModal}>Tạo mới</MyButton>
               )}
             </Col>
           </Row>
@@ -90,7 +94,7 @@ function AdminTable(props) {
           mWidth={props.mWidth}
         />
       </MyBox>
-      <Modal
+      <MyAntdModal
         title="Thêm mới"
         centered
         visible={isVisible}
@@ -100,10 +104,10 @@ function AdminTable(props) {
         cancelText="Hủy"
         width={props.mWidth && props.mWidth}
       >
-        <Form form={form} {...layout}>
+        <MyAntdForm form={form} {...layout}>
           {props.mModal}
-        </Form>
-      </Modal>
+        </MyAntdForm>
+      </MyAntdModal>
     </div>
   );
 }

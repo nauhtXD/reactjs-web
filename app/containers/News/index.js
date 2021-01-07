@@ -1,12 +1,12 @@
-import React, { memo, useEffect, useState } from 'react';
+import React, { memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
 // import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
-import styled from 'styled-components';
-import { List, Comment, Space, Form, Button } from 'antd';
+// import styled from 'styled-components';
+import { List, Comment, Space, Form, Input } from 'antd';
 import moment from 'moment';
 import {
   FacebookShareButton,
@@ -32,47 +32,25 @@ import * as hAction from '../Home/actions';
 
 import MyLayout from '../../components/MyLayout/Loadable';
 import TitleCom from '../../components/TitleCom/Loadable';
-import MyEditor from '../../components/MyEditor/Loadable';
+import { MyLink, MyText, MyButton } from '../../components/Style/index';
 
 const dateFormat = 'DD/MM/YYYY';
-
-const MyContentDiv = styled.div`
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 500px;
-  max-height: 100px;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-`;
 
 export function News(props) {
   // eslint-disable-next-line react/prop-types
   const { match } = props;
   useInjectReducer({ key: 'news', reducer });
   useInjectSaga({ key: 'news', saga });
-
-  const [editorValue, setEditorValue] = useState('');
   const [form] = Form.useForm();
 
   useEffect(() => {
     props.getPost(match.params.id);
     props.getComments(match.params.id);
-    props.getLastestPosts(5);
+    props.getLastestPosts();
     props.getCategories();
     props.getSubCategories();
     props.getContacts();
   }, []);
-
-  useEffect(() => {
-    form.setFieldsValue({
-      content: editorValue,
-    });
-  }, [form, editorValue]);
-
-  const handleEditor = value => {
-    setEditorValue(value);
-  };
 
   const handleSubmit = () => {
     form.validateFields().then(values => {
@@ -97,7 +75,7 @@ export function News(props) {
                 }
                 mCont={
                   <div>
-                    <p style={{ textAlign: 'right' }}>
+                    <p style={{ textAlign: 'right', opacity: 0.6 }}>
                       Ngày đăng:{' '}
                       {moment(props.newsReducer.post.publishAt).format(
                         'DD-MM-YYYY',
@@ -114,10 +92,13 @@ export function News(props) {
                     <div style={{ textAlign: 'right' }}>
                       <p>
                         Nguồn:{' '}
-                        <a href={props.newsReducer.post.source}>
+                        <MyLink
+                          href={`https://${props.newsReducer.post.source}`}
+                        >
                           {props.newsReducer.post.source}
-                        </a>
+                        </MyLink>
                       </p>
+
                       <Space>
                         <FacebookShareButton url={window.location.href}>
                           <FacebookIcon size={32} round />
@@ -136,12 +117,10 @@ export function News(props) {
 
               <Form form={form}>
                 <Form.Item name="content">
-                  <MyEditor mHeight="200px" mChange={handleEditor} />
+                  <Input.TextArea placeholder="Để lại bình luận" />
                 </Form.Item>
                 <Form.Item>
-                  <Button type="primary" onClick={handleSubmit}>
-                    Bình luận
-                  </Button>
+                  <MyButton onClick={handleSubmit}>Bình luận</MyButton>
                 </Form.Item>
               </Form>
 
@@ -178,19 +157,23 @@ export function News(props) {
                   bordered
                   header="Tin liên quan"
                   dataSource={props.homeReducer.lastestPosts}
-                  renderItem={item => (
-                    <List.Item key={item.id}>
-                      <List.Item.Meta
-                        title={<a href={`/news/${item.id}`}>{item.title}</a>}
-                        description={moment(item.publishAt).format(dateFormat)}
-                      />
-                      <MyContentDiv
-                        dangerouslySetInnerHTML={{
-                          __html: item.content,
-                        }}
-                      />
-                    </List.Item>
-                  )}
+                  renderItem={(item, index) =>
+                    index < 5 &&
+                    item.id !== match.params.id && (
+                      <List.Item key={item.id}>
+                        <MyText>
+                          <Space>
+                            <MyLink href={`/news/${item.id}`}>
+                              {item.title}
+                            </MyLink>
+                            <MyText style={{ opacity: 0.6 }}>{`[${moment(
+                              item.publishAt,
+                            ).format(dateFormat)}]`}</MyText>
+                          </Space>
+                        </MyText>
+                      </List.Item>
+                    )
+                  }
                 />
               )}
             </div>

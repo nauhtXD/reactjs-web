@@ -46,13 +46,13 @@ export function Login(props) {
   const [usrName, setUsrName] = useState(null);
 
   useEffect(() => {
-    if (props.loginReducer.loginToken.length > 0) {
-      localStorage.setItem('authToken', props.loginReducer.loginToken);
+    if (props.loginReducer.loginToken.token) {
+      localStorage.setItem('authToken', props.loginReducer.loginToken.token);
+      localStorage.setItem('usrId', props.loginReducer.loginToken.uid);
       localStorage.setItem('usrName', usrName);
       window.location.href = '/admin';
     }
   }, [props.loginReducer.loginToken]);
-
   const [form] = Form.useForm();
 
   const handleCLick = () => {

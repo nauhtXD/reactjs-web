@@ -1,5 +1,6 @@
 /* eslint-disable prettier/prettier */
 import apiConfig from 'utils/apiConfig';
+import apiConfig2 from 'utils/apiConfig2';
 import * as endpoint from 'utils/endPoint';
 export const getCategories = () =>
   apiConfig.get(endpoint.API_ENDPOINT_GET_CATEGORY);
@@ -13,5 +14,13 @@ export const getLastestPostsBySCID = data =>
   apiConfig.get(
     `${endpoint.API_ENDPOINT_GET_LASTEST_POST}/${data.subId}/${data.limit}`,
   );
-export const getLastestPosts = data =>
-  apiConfig.get(`${endpoint.API_ENDPOINT_GET_LASTEST_POST}/${data}`);
+export const getLastestPosts = () =>
+  apiConfig.get(`${endpoint.API_ENDPOINT_GET_LASTEST_POST}/all`);
+export const createProblem = data =>
+  apiConfig.post(endpoint.API_ENDPOINT_GET_PROBLEM, data);
+export const getLastestDocuments = data =>
+  apiConfig.get(`${endpoint.API_ENDPOINT_GET_LASTEST_DOCUMENT}/${data}`);
+export const getWeathers = data =>
+  apiConfig2.get(`group?id=${data.data}&lang=vi&appid=${data.key}`);
+export const getCityList = () =>
+  apiConfig.get(endpoint.API_ENDPOINT_GET_CITY_LIST);

@@ -9,17 +9,20 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import kToC from 'kelvin-to-celsius';
 import { Card } from 'antd';
+import { primaryColor } from '../Style/index';
 
-// import { FormattedMessage } from 'react-intl';
-// import messages from './messages';
+const fgColor = '#fff';
+const bgColor = '#e4f1d2';
 
 const OSDiv = styled(Card)`
   .ant-card-head {
-    color: #22b14c !important;
-    background-color: #deffc0 !important;
+    color: ${fgColor} !important;
+    background-color: ${primaryColor} !important;
     text-align: center !important;
     height: 30px;
   }
+  color: ${fgColor} !important;
+  background-color: ${primaryColor} !important;
 `;
 
 const handleClick = () => {
@@ -46,7 +49,7 @@ function WeatherWidget(props) {
         </div>
         <div style={{ textAlign: 'center' }}>{props.mDescription}</div>
       </OSDiv>
-      <div style={{ backgroundColor: '#deffc0', height: '30px' }} />
+      <div style={{ backgroundColor: `${primaryColor}`, height: '30px' }} />
     </div>
   );
 }

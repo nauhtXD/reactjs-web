@@ -33,7 +33,14 @@ function WikiNews(props) {
     }
     props.getNew(mD);
   }, []);
-  console.log(props.mangoWikiReducer.new.scienceName);
+
+  useEffect(() => {
+    if (match.params.genusFeatureId) {
+      mD = `/genusFeatures/${match.params.genusFeatureId}`;
+      props.getNew(mD);
+    }
+  }, [match.params.genusFeatureId]);
+
   return (
     <div>
       <Helmet>
@@ -47,7 +54,9 @@ function WikiNews(props) {
             mCont={
               <div>
                 <Row gutter={16}>
-                  <Col span={16}>{props.mangoWikiReducer.new.define}</Col>
+                  <Col span={16} style={{ lineHeight: 1.5 }}>
+                    {props.mangoWikiReducer.new.define}
+                  </Col>
                   <Col span={8}>
                     <Card
                       hoverable

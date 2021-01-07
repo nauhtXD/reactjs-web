@@ -20,6 +20,7 @@ import makeSelectHome from '../Home/selectors';
 
 import MyLayout from '../../components/MyLayout/index';
 import TitleCom from '../../components/TitleCom/index';
+import { MyLink, ContentDiv } from '../../components/Style/index';
 
 const dateFormat = 'DD/MM/YYYY';
 
@@ -39,7 +40,10 @@ export function NewsList(props) {
   return (
     <div>
       <Helmet>
-        <title>NewsList</title>
+        <title>
+          {props.newsListReducer.posts[0] &&
+            props.newsListReducer.posts[0].subcategory.name}
+        </title>
         <meta name="description" content="Description of NewsList" />
       </Helmet>
       <div>
@@ -58,22 +62,27 @@ export function NewsList(props) {
                         renderItem={item => (
                           <List.Item
                             key={item.id}
-                            extra={<Image width={272} src={item.img} />}
+                            extra={<Image width={160} src={item.img} />}
                           >
                             <List.Item.Meta
                               title={
-                                <a href={`/news/${item.id}`}>{item.title}</a>
+                                <MyLink href={`/news/${item.id}`}>
+                                  {item.title}
+                                </MyLink>
                               }
                               description={moment(item.publishAt).format(
                                 dateFormat,
                               )}
                             />
-                            {item.content}
+                            <ContentDiv
+                              dangerouslySetInnerHTML={{ __html: item.content }}
+                            />
                           </List.Item>
                         )}
                       />
                     </div>
                   }
+                  mCheck
                 />
               )}
             </div>

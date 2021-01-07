@@ -6,23 +6,46 @@
 
 import React, { memo, useState } from 'react';
 import PropTypes from 'prop-types';
-// import styled from 'styled-components';
-import { Modal, Button, Form, Input, Carousel } from 'antd';
+import styled from 'styled-components';
+import { Form, Input, Carousel } from 'antd';
 
-// import { FormattedMessage } from 'react-intl';
-// import messages from './messages';
 import TitleCom from '../TitleCom/Loadable';
 import WeatherWidget from '../WeatherWidget/Loadable';
-import { layout } from '../Style/index';
+import {
+  layout,
+  MyLink,
+  MyText,
+  MyAntdModal,
+  MyAntdForm,
+} from '../Style/index';
 
 const { TextArea } = Input;
+const NewDiv = styled.div`
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.8;
+`;
 
 function Sidebar(props) {
   const [isVisible, setIsVisible] = useState(false);
+
   const [form] = Form.useForm();
+
   const showModal = () => {
     setIsVisible(!isVisible);
   };
+
+  const handleCreate = () => {
+    form.validateFields().then(values => {
+      const data = { ...values, userId: localStorage.getItem('usrId') };
+      props.mCreateReport(data);
+      showModal();
+    });
+  };
+
   return (
     <div>
       <Carousel autoplay>
@@ -37,52 +60,59 @@ function Sidebar(props) {
             />
           ))}
       </Carousel>
-      <TitleCom
-        mCategory="Văn bản hội"
-        mCont={
-          <div>
-            <ul>
-              <li>
-                <a href=".">Văn bản 1</a>
-              </li>
-              <li>
-                <a href=".">Văn bản 2</a>
-              </li>
-              <li>
-                <a href=".">Văn bản 3</a>
-              </li>
-            </ul>
-          </div>
-        }
-      />
-      <TitleCom
-        mCategory="Báo cáo sự cố"
-        mCont={
-          <div>
-            <Button type="primary" onClick={showModal}>
-              Báo cáo
-            </Button>
-          </div>
-        }
-      />
-      <Modal
+      {props.mDocuments && (
+        <TitleCom
+          mCategory="Văn bản hội"
+          mCont={
+            <div style={{ height: '115px' }}>
+              {props.mDocuments.map(i => (
+                <NewDiv key={i.id}>
+                  <MyText>
+                    {`•  `}
+                    <MyLink href="/documents">{i.summary}</MyLink>
+                  </MyText>
+                </NewDiv>
+              ))}
+            </div>
+          }
+          mCheck
+        />
+      )}
+      {localStorage.getItem('authToken') && (
+        <TitleCom
+          mCategory="Báo cáo sự cố"
+          mCont={
+            <div>
+              <MyText>Bạn gặp sự cố?</MyText>
+              <div style={{ height: '15px' }} />
+              <MyLink
+                onClick={showModal}
+                style={{ textDecoration: 'underline' }}
+              >
+                Báo cáo ngay
+              </MyLink>
+            </div>
+          }
+        />
+      )}
+      <MyAntdModal
         title="Báo cáo"
         centered
         visible={isVisible}
         onCancel={showModal}
-        onOk={props.mCreateReport}
+        onOk={handleCreate}
         okText="Gửi"
         cancelText="Hủy"
       >
-        <Form form={form} {...layout}>
+        <MyAntdForm form={form} {...layout}>
           <Form.Item label="Tiêu đề" name="title">
             <Input />
           </Form.Item>
           <Form.Item label="Nội dung" name="content">
             <TextArea rows={4} />
           </Form.Item>
-        </Form>
-      </Modal>
+        </MyAntdForm>
+      </MyAntdModal>
     </div>
   );
 }
@@ -90,6 +120,7 @@ function Sidebar(props) {
 Sidebar.propTypes = {
   mCreateReport: PropTypes.func,
   mWeathers: PropTypes.any,
+  mDocuments: PropTypes.any,
 };
 
 export default memo(Sidebar);

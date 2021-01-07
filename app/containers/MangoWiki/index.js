@@ -23,6 +23,7 @@ import WikiList from './pages/list';
 import WikiNews from './pages/news';
 import MyLayout from '../../components/MyLayout/Loadable';
 import TitleCom from '../../components/TitleCom/Loadable';
+import { MyInlineMenu } from '../../components/Style/index';
 
 const { SubMenu } = Menu;
 
@@ -58,7 +59,11 @@ export function MangoWiki(props) {
                 <TitleCom
                   mCont={
                     <div>
-                      <Menu style={{ width: 230 }} mode="inline">
+                      <MyInlineMenu
+                        style={{ width: 230 }}
+                        mode="inline"
+                        defaultOpenKeys={['family1', 'genus1']}
+                      >
                         {props.mangoWikiReducer.families &&
                           props.mangoWikiReducer.families.map(i => (
                             <SubMenu
@@ -99,7 +104,7 @@ export function MangoWiki(props) {
                                 ))}
                             </SubMenu>
                           ))}
-                      </Menu>
+                      </MyInlineMenu>
                     </div>
                   }
                   mCategory="Mục lục"

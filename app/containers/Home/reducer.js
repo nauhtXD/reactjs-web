@@ -7,6 +7,8 @@ import produce from 'immer';
 import * as types from './constants';
 
 export const initialState = {
+  loadingWeathers: false,
+  weathers: [],
   loadingCategories: false,
   categories: [],
   loadingSubCategories: false,
@@ -17,12 +19,38 @@ export const initialState = {
   contacts: [],
   loadingLastestPosts: false,
   lastestPosts: [],
+  loadingLastestDocuments: false,
+  lastestDocuments: [],
+  loadingCityList: false,
+  cityList: [],
 };
 
 /* eslint-disable default-case, no-param-reassign */
 const homeReducer = (state = initialState, action) =>
   produce(state, draft => {
     switch (action.type) {
+      case types.GET_CITY_LIST:
+        draft.loadingCityList = true;
+        break;
+      case types.GET_CITY_LIST_SUCCESS:
+        draft.loadingCityList = false;
+        draft.cityList = action.cityList;
+        break;
+      case types.GET_CITY_LIST_FAIL:
+        draft.loadingCityList = false;
+        draft.cityList = [];
+        break;
+      case types.GET_WEATHER:
+        draft.loadingWeathers = true;
+        break;
+      case types.GET_WEATHER_SUCCESS:
+        draft.loadingWeathers = false;
+        draft.weathers = action.weathers;
+        break;
+      case types.GET_WEATHER_FAIL:
+        draft.loadingWeathers = false;
+        draft.weathers = [];
+        break;
       case types.GET_CATEGORY:
         draft.loadingCategories = true;
         break;
@@ -77,6 +105,17 @@ const homeReducer = (state = initialState, action) =>
       case types.GET_LASTEST_POST_FAIL:
         draft.lastestPosts = [];
         draft.loadingLastestPosts = false;
+        break;
+      case types.GET_LASTEST_DOCUMENT:
+        draft.loadingLastestDocuments = true;
+        break;
+      case types.GET_LASTEST_DOCUMENT_SUCCESS:
+        draft.lastestDocuments = action.lastestDocuments;
+        draft.loadingLastestDocuments = false;
+        break;
+      case types.GET_LASTEST_DOCUMENT_FAIL:
+        draft.lastestDocuments = [];
+        draft.loadingLastestDocuments = false;
         break;
     }
   });

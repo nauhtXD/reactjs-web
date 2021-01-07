@@ -6,7 +6,7 @@ import { Helmet } from 'react-helmet';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 // import styled from 'styled-component';
-import { Input, Table, Modal, Form } from 'antd';
+import { Input, Table, Form } from 'antd';
 import moment from 'moment';
 
 import { useInjectSaga } from 'utils/injectSaga';
@@ -21,10 +21,18 @@ import makeSelectHome from '../Home/selectors';
 // import messages from './messages';
 import MyLayout from '../../components/MyLayout/Loadable';
 import TitleCom from '../../components/TitleCom/Loadable';
-import { CenterDiv, layout, DownloadIcon } from '../../components/Style/index';
+import {
+  CenterDiv,
+  layout,
+  DownloadIcon,
+  MyLink,
+  MyAntdTable,
+  MyAntdModal,
+  MyAntdSearch,
+  MyAntdForm,
+} from '../../components/Style/index';
 
 const { Column } = Table;
-const { Search } = Input;
 
 const dateFormat = 'DD/MM/YYYY';
 
@@ -57,12 +65,20 @@ export function Documents(props) {
     setIsVisible(!isVisible);
   };
 
-  const handleDownload = () => {};
+  const handleDownload = () => {
+    window.location.href = defValue.file;
+  };
 
   const handleClick = record => {
-    const data = record;
-    data.publishAt = moment(record.publishAt).format(dateFormat);
+    const data = {
+      ...record,
+      contactName: record.contact.name,
+      documentTypeName: record.documentType.name,
+      fieldName: record.field.name,
+      publishAt: moment(record.publishAt).format(dateFormat),
+    };
     setDefValue(data);
+    showModal();
   };
 
   const propertyNames = [
@@ -71,27 +87,27 @@ export function Documents(props) {
       data: 'id',
     },
     {
-      title: 'Số ký hiệu',
-      data: 'code',
-    },
-    {
       title: 'Ngày ban hành',
       data: 'publishAt',
+      render: record => moment(record).format(dateFormat),
     },
     {
       title: 'Cơ quan ban hành',
-      data: ['organization', 'name'],
+      data: ['contact', 'name'],
     },
     {
       title: 'Trích yếu',
       data: 'summary',
+      render: (record, rowData) => (
+        <MyLink onClick={() => handleClick(rowData)}>{record}</MyLink>
+      ),
     },
   ];
 
   const handleSearch = (entry, currValue) =>
     entry.id.toString().includes(currValue) ||
     entry.code.toLowerCase().includes(currValue) ||
-    entry.organization.name.toLowerCase().includes(currValue) ||
+    entry.contact.name.toLowerCase().includes(currValue) ||
     entry.summary.toLowerCase().includes(currValue);
 
   return (
@@ -109,7 +125,7 @@ export function Documents(props) {
                 mCont={
                   <div style={{ margin: 'auto' }}>
                     <CenterDiv>
-                      <Search
+                      <MyAntdSearch
                         placeholder="Nhập kí tự cần tìm"
                         style={{ width: '70%' }}
                         value={searchValue}
@@ -124,26 +140,25 @@ export function Documents(props) {
                         }}
                       />
                     </CenterDiv>
-                    <Table rowKey="id" dataSource={dataSource}>
+                    <MyAntdTable
+                      rowKey="id"
+                      dataSource={dataSource}
+                      pagination={{
+                        defaultPageSize: 5,
+                        showSizeChanger: true,
+                        pageSizeOptions: ['5', '10', '20'],
+                      }}
+                    >
                       {propertyNames.map(i => (
                         <Column
-                          align="center"
+                          align="left"
                           title={i.title}
                           dataIndex={i.data}
                           key={i.data}
                           render={i.render && i.render}
                         />
                       ))}
-                      <Column
-                        align="center"
-                        title="Tải về"
-                        dataIndex=""
-                        key="action"
-                        render={record => (
-                          <DownloadIcon onClick={() => handleClick(record)} />
-                        )}
-                      />
-                    </Table>
+                    </MyAntdTable>
                   </div>
                 }
               />
@@ -153,16 +168,14 @@ export function Documents(props) {
           mSubCategories={props.homeReducer.subCategories}
           mContacts={props.homeReducer.contacts}
         />
-        <Modal
+        <MyAntdModal
           title="Chi tiết"
           centered
           visible={isVisible}
           onCancel={showModal}
-          onOk={handleDownload}
-          okText="Tải về"
-          cancelText="Đóng"
+          footer={null}
         >
-          <Form form={form} {...layout}>
+          <MyAntdForm form={form} {...layout}>
             <Form.Item label="Số kí hiệu" name="code">
               <Input readOnly />
             </Form.Item>
@@ -170,19 +183,22 @@ export function Documents(props) {
               <Input readOnly />
             </Form.Item>
             <Form.Item label="Trích yếu" name="summary">
+              <Input.TextArea readOnly />
+            </Form.Item>
+            <Form.Item label="Loại" name="documentTypeName">
               <Input readOnly />
             </Form.Item>
-            <Form.Item label="Loại" name="documentType.name">
+            <Form.Item label="Cơ quan ban hành" name="contactName">
               <Input readOnly />
             </Form.Item>
-            <Form.Item label="Cơ quan ban hành" name="organization.name">
+            <Form.Item label="Lĩnh vực" name="fieldName">
               <Input readOnly />
             </Form.Item>
-            <Form.Item label="Lĩnh vực" name="field.name">
-              <Input readOnly />
+            <Form.Item label="Tải về" name="file">
+              <DownloadIcon onClick={handleDownload} />
             </Form.Item>
-          </Form>
-        </Modal>
+          </MyAntdForm>
+        </MyAntdModal>
       </div>
     </div>
   );

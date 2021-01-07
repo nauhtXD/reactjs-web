@@ -9,26 +9,32 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Card } from 'antd';
 
-// import { FormattedMessage } from 'react-intl';
-// import messages from './messages';
+import { MyLink } from '../Style/index';
+
+const fgColor = '#325700';
+const bgColor = '#e4f1d2';
 
 const OSDiv = styled(Card)`
   margin-bottom: 10px !important;
-  .ant-card-head {
-    color: #22b14c !important;
-    background-color: #deffc0 !important;
-  }
   line-height: 1;
+  .ant-card-head {
+    color: ${fgColor} !important;
+    background-color: ${bgColor} !important;
+  }
 `;
 
 const OSDivNoPadding = styled(Card)`
-  margin-bottom: 10px !important;
-  .ant-card-head {
-    color: #22b14c !important;
-    background-color: #deffc0 !important;
+  line-height: 1;
+  .ant-card-head,
+  .ant-card-head a {
+    color: ${fgColor} !important;
+    background-color: ${bgColor} !important;
+  }
+  .ant-card-head a {
+    text-decoration: underline !important;
   }
   .ant-card-body {
-    padding: 0 !important;
+    padding: 10px 0 0 0 !important;
   }
 `;
 
@@ -36,22 +42,18 @@ function TitleCom(props) {
   return (
     <div>
       {!props.mCheck ? (
-        <OSDiv title={props.mCategory}>
+        <OSDiv
+          title={props.mCategory}
+          extra={props.mLink && <a href={props.mLink}>Xem thêm</a>}
+        >
           {props.mCont}
-          {props.mLink && (
-            <div style={{ textAlign: 'right' }}>
-              <a href={props.mLink}>Xem thêm</a>
-            </div>
-          )}
         </OSDiv>
       ) : (
-        <OSDivNoPadding title={props.mCategory}>
+        <OSDivNoPadding
+          title={props.mCategory}
+          extra={props.mLink && <a href={props.mLink}>Xem thêm</a>}
+        >
           {props.mCont}
-          {props.mLink && (
-            <div style={{ textAlign: 'right' }}>
-              <a href={props.mLink}>Xem thêm</a>
-            </div>
-          )}
         </OSDivNoPadding>
       )}
     </div>

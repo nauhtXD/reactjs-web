@@ -44,7 +44,7 @@ import GlobalStyle from '../../global-styles';
 function App(props) {
   useInjectReducer({ key: 'home', reducer });
   useInjectSaga({ key: 'home', saga });
-  localStorage.clear();
+
   return (
     <>
       <Helmet

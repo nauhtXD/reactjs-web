@@ -15,17 +15,13 @@ import reducer from '../reducer';
 import saga from '../saga';
 import makeSelect from '../selectors';
 import * as action from '../actions';
-import { MyBox } from '../../../components/Style/index';
+import { MyBox, layout } from '../../../components/Style/index';
 import AdminTable from '../../../components/AdminTable/index';
 import MyEditor from '../../../components/MyEditor/index';
 import MyUpload from '../../../components/MyUpload/index';
 
 const dateFormat = 'DD/MM/YYYY';
 const { Option } = Select;
-const layout = {
-  labelCol: { span: 4 },
-  wrapperCol: { span: 18 },
-};
 const MyContentDiv = styled.div`
   overflow: hidden;
   text-overflow: ellipsis;
@@ -39,7 +35,7 @@ export function Post(props) {
   useInjectReducer({ key: 'admin', reducer });
   useInjectSaga({ key: 'admin', saga });
 
-  const [isRerender, setIsRerender] = useState(null);
+  const [isRerender, setIsRerender] = useState(false);
   const [defValue, setDefValue] = useState(init);
 
   useEffect(() => {
@@ -104,7 +100,8 @@ export function Post(props) {
   ];
 
   const handleCreate = record => {
-    props.createPost(record);
+    const data = { ...record, author: localStorage.getItem('usrName') };
+    props.createPost(data);
     return 0;
   };
 

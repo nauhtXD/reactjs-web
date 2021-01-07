@@ -17,6 +17,7 @@ export const API_ENDPOINT_UPDATE_POST = 'posts/update';
 export const API_ENDPOINT_DELETE_POST = 'posts/delete';
 // document
 export const API_ENDPOINT_GET_DOCUMENT = 'documents';
+export const API_ENDPOINT_GET_LASTEST_DOCUMENT = 'documents/lastest-docs';
 // crop
 export const API_ENDPOINT_GET_CROP = 'crops';
 // contact

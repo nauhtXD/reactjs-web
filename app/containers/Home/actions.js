@@ -54,3 +54,31 @@ export function getLastestPostsBSC(data) {
     payload: data,
   };
 }
+
+export function getLastestDocuments(data) {
+  return {
+    type: types.GET_LASTEST_DOCUMENT,
+    payload: data,
+  };
+}
+
+export function createProblem(data) {
+  return {
+    type: types.CREATE_PROBLEM,
+    payload: data,
+  };
+}
+
+export function getWeathers(data) {
+  return {
+    type: types.GET_WEATHER,
+    payload: data,
+  };
+}
+
+export function getCityList(data) {
+  return {
+    type: types.GET_CITY_LIST,
+    payload: data,
+  };
+}

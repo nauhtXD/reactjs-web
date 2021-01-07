@@ -7,23 +7,20 @@
 import React, { memo, useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { Menu, Modal, Form, Input, Button } from 'antd';
-import { layout, tailLayout, UIcon } from '../Style/index';
-
-// import { FormattedMessage } from 'react-intl';
-// import messages from './messages';
+import { Menu, Modal, Form, Input } from 'antd';
+import { layout, UIcon } from '../Style/index';
 
 const { SubMenu } = Menu;
-const mColor = '#fff000';
+const mColor = '#000';
+const menuColor = '#77b81e';
 // #region styled
 const FMenu = styled(Menu)`
-  background-color: #009000 !important;
+  background-color: ${menuColor} !important;
   position: fixed;
   z-index: 1024;
   overflow: hidden;
   top: 0;
-  width: 90%;
-  left: 5%;
+  width: 100%;
 `;
 const NavItem = styled(Menu.Item)`
   color: #fff;
@@ -34,11 +31,10 @@ const NavItem = styled(Menu.Item)`
   }
 `;
 const SubItem = styled(Menu.Item)`
-  color: #009000;
+  color: ${mColor};
   :hover,
   &.ant-menu-item-selected {
-    color: ${mColor} !important;
-    background-color: #009000;
+    color: ${menuColor} !important;
   }
 `;
 const SubNav = styled(SubMenu)`
@@ -60,23 +56,37 @@ const MLink = styled.a`
   }
 `;
 const MSubLink = styled.a`
-  color: #009000 !important;
+  color: ${mColor} !important;
   :hover {
-    color: ${mColor} !important;
+    color: ${menuColor} !important;
   }
 `;
 // #endregion
 
 function MyMenu(props) {
+  const [form] = Form.useForm();
   const [isVisible, setIsVisible] = useState(false);
+
+  const showModal = () => {
+    setIsVisible(!isVisible);
+  };
+
+  const handleLogout = () => {
+    localStorage.clear();
+    window.location.reload();
+  };
+
+  const handleLogin = () => {
+    window.location.reload();
+  };
+
   return (
     <div>
       <FMenu mode="horizontal">
         <NavItem key="home">
           <MLink href="/">Trang chủ</MLink>
         </NavItem>
-        {props.mCategories &&
-          props.mCategories.length > 0 &&
+        {props.mCategories.length > 0 &&
           props.mCategories.map(i =>
             props.mSubCategories.some(j => j.categoryId === i.id) ? (
               <SubNav key={i.key} title={i.name}>
@@ -95,23 +105,37 @@ function MyMenu(props) {
               </NavItem>
             ),
           )}
-        <NavItem
-          key="login"
-          icon={<UIcon />}
-          style={{ float: 'right' }}
-          onClick={() => setIsVisible(true)}
-        >
-          Đăng nhập
-        </NavItem>
+
+        {localStorage.getItem('authToken') ? (
+          <NavItem
+            key="logout"
+            // icon={}
+            style={{ float: 'right' }}
+            onClick={handleLogout}
+          >
+            Đăng xuất
+          </NavItem>
+        ) : (
+          <NavItem
+            key="login"
+            icon={<UIcon />}
+            style={{ float: 'right' }}
+            onClick={showModal}
+          >
+            Đăng nhập
+          </NavItem>
+        )}
       </FMenu>
       <Modal
         title="Đăng nhập"
         centered
         visible={isVisible}
-        onCancel={() => setIsVisible(false)}
-        footer={null}
+        onCancel={showModal}
+        onOk={handleLogin}
+        okText="Đăng nhập"
+        cancelText="Hủy"
       >
-        <Form {...layout} name="basic">
+        <Form form={form} {...layout}>
           <Form.Item
             label="Tên đăng nhập"
             name="username"
@@ -121,23 +145,12 @@ function MyMenu(props) {
           >
             <Input />
           </Form.Item>
-
           <Form.Item
             label="Mật khẩu"
             name="password"
             rules={[{ required: true, message: 'Vui lòng nhập mật khẩu!' }]}
           >
             <Input.Password />
-          </Form.Item>
-
-          <Form.Item {...tailLayout}>
-            <Button
-              type="primary"
-              htmlType="submit"
-              onClick={() => setIsVisible(false)}
-            >
-              Đăng nhập
-            </Button>
           </Form.Item>
         </Form>
       </Modal>
@@ -148,7 +161,6 @@ function MyMenu(props) {
 MyMenu.propTypes = {
   mCategories: PropTypes.any,
   mSubCategories: PropTypes.any,
-  mUsers: PropTypes.any,
 };
 
 export default memo(MyMenu);

@@ -9,8 +9,7 @@ import PropTypes from 'prop-types';
 // import styled from 'styled-components';
 import { Image, Row, Col } from 'antd';
 
-// import { FormattedMessage } from 'react-intl';
-// import messages from './messages';
+import { MyLink } from '../Style/index';
 
 function ImgCom(props) {
   const myStyle = props.mStyle;
@@ -21,13 +20,13 @@ function ImgCom(props) {
       style={{ display: 'block', margin: '2px auto', width: '50%' }}
     />,
   ];
-  const imgCol = [<Col span={14}>{myImg}</Col>];
+  const imgCol = [<Col span={10}>{myImg}</Col>];
   const contentCol = [
-    <Col span={10}>
-      <a href={props.mLink} style={{ fontSize: '17px' }}>
+    <Col span={14}>
+      <MyLink href={props.mLink} style={{ fontSize: '17px' }}>
         <b>{props.mTitle}</b>
-      </a>
-      <p style={{ fontSize: '13px' }}>{props.mDay}</p>
+      </MyLink>
+      <p style={{ fontSize: '13px', opacity: 0.6 }}>{props.mDay}</p>
       {props.mContent && <p style={{ fontSize: '15px' }}>{props.mContent}</p>}
     </Col>,
   ];
@@ -37,12 +36,12 @@ function ImgCom(props) {
       {myStyle === 'center' ? (
         <div style={{ textAlign: 'center' }}>
           {myImg}
-          <a href={props.mLink}>{props.mTitle}</a>
-          {props.mDay && <p>{props.mDay}</p>}
+          <MyLink href={props.mLink}>{props.mTitle}</MyLink>
+          {props.mDay && <p style={{ opacity: 0.6 }}>{props.mDay}</p>}
           {props.mContent && <p>{props.mContent}</p>}
         </div>
       ) : (
-        <div style={{ marginBottom: '15px' }}>
+        <div>
           {myStyle === 'left' ? (
             <Row>
               {imgCol}

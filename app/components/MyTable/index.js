@@ -9,14 +9,23 @@ import PropTypes from 'prop-types';
 // import styled from 'styled-components';
 import { Table, Space, Button, Modal, Form } from 'antd';
 import moment from 'moment';
-import { CheckIcon, CloseIcon, layout } from '../Style/index';
+import {
+  CheckIcon,
+  CloseIcon,
+  layout,
+  MyButton,
+  MyAntdModal,
+  MyAntdTable,
+  MyAntdForm,
+  primaryColor,
+} from '../Style/index';
 
 // import { FormattedMessage } from 'react-intl';
 // import messages from './messages';
 
 const { Column } = Table;
 
-const green = '#52c41a';
+const green = primaryColor;
 const red = '#ff4c4c';
 
 function MyTable(props) {
@@ -82,7 +91,15 @@ function MyTable(props) {
 
   return (
     <div>
-      <Table dataSource={props.mData} rowKey="id">
+      <MyAntdTable
+        dataSource={props.mData}
+        rowKey="id"
+        pagination={{
+          defaultPageSize: 5,
+          showSizeChanger: true,
+          pageSizeOptions: ['5', '10', '20'],
+        }}
+      >
         {props.mPropertyNames.map(i =>
           i.data !== 'status' ? (
             <Column
@@ -112,17 +129,17 @@ function MyTable(props) {
           key="action"
           render={record => (
             <Space>
-              <Button type="primary" onClick={() => handleClick(record, 0)}>
+              <MyButton onClick={() => handleClick(record, 0)}>
                 Chỉnh sửa
-              </Button>
+              </MyButton>
               <Button type="danger" onClick={() => handleClick(record, 1)}>
                 Xóa
               </Button>
             </Space>
           )}
         />
-      </Table>
-      <Modal
+      </MyAntdTable>
+      <MyAntdModal
         title="Chỉnh sửa"
         centered
         visible={isUpdate}
@@ -132,10 +149,10 @@ function MyTable(props) {
         cancelText="Hủy"
         width={props.mWidth}
       >
-        <Form form={form} {...layout}>
+        <MyAntdForm form={form} {...layout}>
           {props.mModal}
-        </Form>
-      </Modal>
+        </MyAntdForm>
+      </MyAntdModal>
     </div>
   );
 }

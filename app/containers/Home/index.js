@@ -6,89 +6,39 @@ import { Helmet } from 'react-helmet';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
-// import { useInjectSaga } from 'utils/injectSaga';
-// import { useInjectReducer } from 'utils/injectReducer';
+// import styled from 'styled-components';
 import { Row, Col, Image } from 'antd';
-// import reducer from './reducer';
-// import saga from './saga';
 import moment from 'moment';
+
+import * as action from './actions';
 import makeSelect from './selectors';
 import MyLayout from '../../components/MyLayout/Loadable';
 import ImgCom from '../../components/ImgCom/Loadable';
 import TitleCom from '../../components/TitleCom/Loadable';
-import * as action from './actions';
+import { MyLink, ContentDiv } from '../../components/Style/index';
 
 const dateFormat = 'DD/MM/YYYY';
 
-const MyDiv = styled.div`
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  font-size: 15px;
-`;
-
-// #region  row
-const row = [];
-for (let i = 0; i < 4; i++) {
-  row.push(
-    <Col span={6}>
-      <ImgCom
-        mStyle="center"
-        mWidth="150px"
-        mSrc="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
-        mLink="/news/1"
-        mTitle="Title2"
-        mDay="dd/MM/yyyy"
-        mContent="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean a eleifend lacus. Duis condimentum molestie leo, a scelerisque neque"
-      />
-    </Col>,
-  );
-}
-
-const rowc = [];
-for (let i = 0; i < 3; i++) {
-  rowc.push(
-    <Col span={8}>
-      <ImgCom
-        mStyle="left"
-        mWidth="150px"
-        mSrc="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
-        mLink="/News"
-        mTitle="Title2"
-        mDay="dd/MM/yyyy"
-        mContent="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-      />
-    </Col>,
-  );
-}
-
-const rowhcont = [];
-for (let i = 0; i < 3; i++) {
-  rowhcont.push(
-    <ImgCom
-      mStyle="left"
-      mWidth="100px"
-      mSrc="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
-      mLink="/News"
-      mTitle="Title2"
-      mDay="dd/MM/yyyy"
-      mContent="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-    />,
-  );
-}
-// #endregion
-
+const API_KEY = 'f9b8a21d57e020513b5c7e50113dd4ea';
 export function Home(props) {
   useEffect(() => {
+    props.getCityList();
     props.getCategories();
     props.getSubCategories();
     props.getContacts();
-    props.getLastestPosts(4);
+    props.getLastestPosts();
     props.getSubCategoriesByCID(3);
+    props.getLastestDocuments(4);
   }, []);
+
+  useEffect(() => {
+    const dataList = props.homeReducer.cityList.map(i => i.province.weatherId);
+    if (dataList.length > 0)
+      props.getWeathers({
+        data: dataList,
+        key: API_KEY,
+      });
+  }, [props.homeReducer.cityList]);
 
   return (
     <div>
@@ -104,50 +54,94 @@ export function Home(props) {
               mCont={
                 <div>
                   {props.homeReducer.lastestPosts[0] && (
-                    <Row gutter={16} style={{ marginBottom: '15px' }}>
-                      <Col span={14}>
+                    <Row>
+                      <Col span={15}>
                         <Image
                           height={300}
                           src={props.homeReducer.lastestPosts[0].img}
                         />
-                      </Col>
-                      <Col span={10}>
-                        <a
+                        <div style={{ height: '10px' }} />
+                        <MyLink
                           href={`/news/${props.homeReducer.lastestPosts[0].id}`}
                         >
-                          <b style={{ fontSize: '17px' }}>
+                          <b style={{ fontSize: '19px' }}>
                             {props.homeReducer.lastestPosts[0].title}
                           </b>
-                        </a>
-                        <p style={{ fontSize: '13px' }}>
+                        </MyLink>
+                        <p style={{ fontSize: '13px', opacity: 0.6 }}>
                           {moment(
                             props.homeReducer.lastestPosts[0].publishAt,
                           ).format(dateFormat)}
                         </p>
-                        <MyDiv
+                        <ContentDiv
+                          style={{
+                            WebkitLineClamp: 4,
+                          }}
                           // eslint-disable-next-line react/no-danger
                           dangerouslySetInnerHTML={{
                             __html: props.homeReducer.lastestPosts[0].content,
                           }}
                         />
                       </Col>
+                      <Col span={9}>
+                        {props.homeReducer.lastestPosts &&
+                          props.homeReducer.lastestPosts.map(
+                            (i, index) =>
+                              index !== 0 &&
+                              index < 4 && (
+                                <ImgCom
+                                  key={i.id}
+                                  mStyle="left"
+                                  mWidth="128px"
+                                  mSrc={i.img}
+                                  mLink={`/news/${i.id}`}
+                                  mTitle={i.title}
+                                  mDay={moment(i.publishAt).format(dateFormat)}
+                                  mContent={
+                                    <ContentDiv
+                                      // eslint-disable-next-line react/no-danger
+                                      dangerouslySetInnerHTML={{
+                                        __html: i.content,
+                                      }}
+                                    />
+                                  }
+                                />
+                              ),
+                          )}
+                      </Col>
                     </Row>
                   )}
-                  <Row>
-                    {props.homeReducer.lastestPosts &&
-                      props.homeReducer.lastestPosts.map(
+                </div>
+              }
+              mCheck
+            />
+          </div>
+        }
+        mCont2={
+          <div>
+            <TitleCom
+              mCategory="Nhà nông cần biết"
+              mCont={
+                <Row>
+                  {props.homeReducer.lastestPosts &&
+                    props.homeReducer.lastestPosts
+                      .filter(
+                        i => i.subcategoryId === 6 || i.subcategoryId === 7,
+                      )
+                      .map(
                         (i, index) =>
-                          index !== 0 && (
-                            <Col key={i.id} span={8}>
+                          index < 6 && (
+                            <Col span={8}>
                               <ImgCom
+                                key={i.id}
                                 mStyle="left"
-                                mWidth="150px"
+                                mWidth="128px"
                                 mSrc={i.img}
                                 mLink={`/news/${i.id}`}
                                 mTitle={i.title}
                                 mDay={moment(i.publishAt).format(dateFormat)}
                                 mContent={
-                                  <MyDiv
+                                  <ContentDiv
                                     // eslint-disable-next-line react/no-danger
                                     dangerouslySetInnerHTML={{
                                       __html: i.content,
@@ -158,18 +152,9 @@ export function Home(props) {
                             </Col>
                           ),
                       )}
-                  </Row>
-                </div>
+                </Row>
               }
-            />
-            <TitleCom
-              mCategory="Nhà nông cần biết"
-              mCont={
-                <div>
-                  <Row>{rowc}</Row>
-                  <Row>{rowc}</Row>
-                </div>
-              }
+              mCheck
             />
             <Row gutter={16}>
               {props.homeReducer.subCategoriesByCID.length > 0 &&
@@ -177,7 +162,39 @@ export function Home(props) {
                   <Col span={8}>
                     <TitleCom
                       mCategory={i.name}
-                      mCont={<div>{rowhcont}</div>}
+                      mCont={
+                        <div>
+                          {props.homeReducer.lastestPosts.length > 0 &&
+                            props.homeReducer.lastestPosts
+                              .filter(j => j.subcategoryId === i.id)
+                              .map(
+                                (j, index) =>
+                                  index < 3 && (
+                                    <ImgCom
+                                      key={j.id}
+                                      mStyle="left"
+                                      mWidth="128px"
+                                      mSrc={j.img}
+                                      mLink={`/news/${j.id}`}
+                                      mTitle={j.title}
+                                      mDay={moment(j.publishAt).format(
+                                        dateFormat,
+                                      )}
+                                      mContent={
+                                        <ContentDiv
+                                          // eslint-disable-next-line react/no-danger
+                                          dangerouslySetInnerHTML={{
+                                            __html: j.content,
+                                          }}
+                                        />
+                                      }
+                                    />
+                                  ),
+                              )}
+                        </div>
+                      }
+                      mCheck
+                      mLink={`/list/${i.id}`}
                     />
                   </Col>
                 ))}
@@ -187,6 +204,9 @@ export function Home(props) {
         mCategories={props.homeReducer.categories}
         mSubCategories={props.homeReducer.subCategories}
         mContacts={props.homeReducer.contacts}
+        mCreateReport={props.createProblem}
+        mDocuments={props.homeReducer.lastestDocuments}
+        mWeathers={props.homeReducer.weathers}
       />
     </div>
   );
@@ -199,6 +219,10 @@ Home.propTypes = {
   getSubCategoriesByCID: PropTypes.func,
   getContacts: PropTypes.func,
   getLastestPosts: PropTypes.func,
+  createProblem: PropTypes.func,
+  getLastestDocuments: PropTypes.func,
+  getWeathers: PropTypes.func,
+  getCityList: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -206,6 +230,12 @@ const mapStateToProps = createStructuredSelector({
 });
 
 const mapDispatchToProps = dispatch => ({
+  getCityList: data => {
+    dispatch(action.getCityList(data));
+  },
+  getWeathers: data => {
+    dispatch(action.getWeathers(data));
+  },
   getCategories: data => {
     dispatch(action.getCategories(data));
   },
@@ -220,6 +250,12 @@ const mapDispatchToProps = dispatch => ({
   },
   getLastestPosts: data => {
     dispatch(action.getLastestPosts(data));
+  },
+  createProblem: data => {
+    dispatch(action.createProblem(data));
+  },
+  getLastestDocuments: data => {
+    dispatch(action.getLastestDocuments(data));
   },
 });
 

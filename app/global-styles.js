@@ -13,7 +13,7 @@ const GlobalStyle = createGlobalStyle`
   }
 
   body.fontLoaded {
-    font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   }
 
   #app {
@@ -23,9 +23,10 @@ const GlobalStyle = createGlobalStyle`
   }
 
   p,
+  a,
   label {
-    font-family: 'Helvetica Neue', Times, serif;
-    line-height: 1.5em;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    line-height: 1.2;
   }
 `;
 
