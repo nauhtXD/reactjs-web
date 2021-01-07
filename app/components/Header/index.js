@@ -10,7 +10,6 @@ import styled from 'styled-components';
 import { Carousel, Breadcrumb, Row, Col, Menu, Image } from 'antd';
 import moment from 'moment';
 import 'moment/locale/vi';
-import { HomeOutlined } from '@ant-design/icons';
 // import { FormattedMessage } from 'react-intl';
 // import messages from './messages';
 import MyMenu from '../MyMenu/Loadable';

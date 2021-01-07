@@ -1003,7 +1003,7 @@ export function* getGenusFeatureSaga({ payload }) {
     if (response && response.status === 200) {
       yield put({
         type: types.GET_GENUS_FEATURE_SUCCESS,
-        lands: response.data.data,
+        genusFeatures: response.data.data,
       });
     } else {
       yield put({
