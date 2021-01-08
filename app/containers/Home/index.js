@@ -15,11 +15,10 @@ import makeSelect from './selectors';
 import MyLayout from '../../components/MyLayout/Loadable';
 import ImgCom from '../../components/ImgCom/Loadable';
 import TitleCom from '../../components/TitleCom/Loadable';
-import { MyLink, ContentDiv } from '../../components/Style/index';
+import { MyLink, ContentDiv, API_KEY } from '../../components/Style/index';
 
 const dateFormat = 'DD/MM/YYYY';
 
-const API_KEY = 'f9b8a21d57e020513b5c7e50113dd4ea';
 export function Home(props) {
   useEffect(() => {
     props.getCityList();
@@ -35,7 +34,7 @@ export function Home(props) {
     const dataList = props.homeReducer.cityList.map(i => i.province.weatherId);
     if (dataList.length > 0)
       props.getWeathers({
-        data: dataList,
+        data: [...new Set(dataList)],
         key: API_KEY,
       });
   }, [props.homeReducer.cityList]);

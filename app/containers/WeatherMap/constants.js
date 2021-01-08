@@ -1,12 +1,3 @@
-// weather
-export const GET_WEATHER = 'GET_WEATHER';
-export const GET_WEATHER_SUCCESS = 'GET_WEATHER_SUCCESS';
-export const GET_WEATHER_FAIL = 'GET_WEATHER_FAIL';
-// contact
-export const GET_CITY_LIST = 'GET_CITY_LIST';
-export const GET_CITY_LIST_SUCCESS = 'GET_CITY_LIST_SUCCESS';
-export const GET_CITY_LIST_FAIL = 'GET_CITY_LIST_FAIL';
-
 export const GET_POS_GEO = 'GET_POS_GEO';
 export const GET_POS_GEO_SUCCESS = 'GET_POS_GEO_SUCCESS';
 export const GET_POS_GEO_FAIL = 'GET_POS_GEO_FAIL';

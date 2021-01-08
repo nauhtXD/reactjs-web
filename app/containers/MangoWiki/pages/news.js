@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
-import { Row, Col, Card } from 'antd';
+import { Row, Col, Card, List } from 'antd';
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
 import reducer from '../reducer';
@@ -14,6 +14,8 @@ import makeSelect from '../selectors';
 import * as action from '../actions';
 
 import TitleCom from '../../../components/TitleCom';
+import DividerList from '../../../components/DividerList';
+import { MyLink } from '../../../components/Style/index';
 
 const { Meta } = Card;
 
@@ -23,6 +25,7 @@ function WikiNews(props) {
   let mD = '';
   useInjectReducer({ key: 'mangoWiki', reducer });
   useInjectSaga({ key: 'mangoWiki', saga });
+
   useEffect(() => {
     if (match.params.genusFeatureId) {
       mD = `/genusFeatures/${match.params.genusFeatureId}`;
@@ -32,14 +35,11 @@ function WikiNews(props) {
       mD = `/families/${match.params.familyId}`;
     }
     props.getNew(mD);
-  }, []);
-
-  useEffect(() => {
-    if (match.params.genusFeatureId) {
-      mD = `/genusFeatures/${match.params.genusFeatureId}`;
-      props.getNew(mD);
-    }
-  }, [match.params.genusFeatureId]);
+  }, [
+    match.params.familyId,
+    match.params.genusId,
+    match.params.genusFeatureId,
+  ]);
 
   return (
     <div>
@@ -48,14 +48,104 @@ function WikiNews(props) {
         <meta name="description" content="News of MangoWiki" />
       </Helmet>
       <div>
-        {props.mangoWikiReducer.new && (
+        {props.mangoWikiReducer.new.data && (
           <TitleCom
-            mCategory={props.mangoWikiReducer.new.name}
+            mCategory={props.mangoWikiReducer.new.data.name}
             mCont={
               <div>
                 <Row gutter={16}>
                   <Col span={16} style={{ lineHeight: 1.5 }}>
-                    {props.mangoWikiReducer.new.define}
+                    {props.mangoWikiReducer.new.data.define}
+                    {props.mangoWikiReducer.new.genera &&
+                      props.mangoWikiReducer.new.genera.length > 0 && (
+                      <div>
+                        <DividerList
+                          mTitle="Các chi"
+                          mSource={props.mangoWikiReducer.new.genera}
+                          mListItem={item => (
+                            <List.Item>
+                              <MyLink
+                                href={`${window.location.href}/${item.id}`}
+                                style={{ marginLeft: '5%' }}
+                              >
+                                {'• '}
+                                {item.scienceName}
+                              </MyLink>
+                            </List.Item>
+                          )}
+                        />
+                      </div>
+                    )}
+                    {props.mangoWikiReducer.new.genusFeatures &&
+                      props.mangoWikiReducer.new.genusFeatures.length > 0 && (
+                      <div>
+                        <DividerList
+                          mTitle="Các loài"
+                          mSource={props.mangoWikiReducer.new.genusFeatures}
+                          mListItem={item => (
+                            <List.Item>
+                              <MyLink
+                                href={`${window.location.href}/${item.id}`}
+                                style={{ marginLeft: '5%' }}
+                              >
+                                {'• '}
+                                {item.scienceName
+                                  ? item.scienceName
+                                  : item.name}
+                              </MyLink>
+                            </List.Item>
+                          )}
+                        />
+                      </div>
+                    )}
+                    {props.mangoWikiReducer.new.characteristics &&
+                      props.mangoWikiReducer.new.characteristics.length > 0 && (
+                      <DividerList
+                        mTitle="Đặc điểm"
+                        mCont={
+                          <div>
+                            {props.mangoWikiReducer.new.characteristics.map(
+                              i => (
+                                <ul>
+                                  <li>{`Rễ: ${i.root}`}</li>
+                                  <li>{`Thân: ${i.stem}`}</li>
+                                  <li>{`Tán: ${i.foliage}`}</li>
+                                  <li>{`Hoa: ${i.flower}`}</li>
+                                  <li>{`Quả: ${i.fruit}`}</li>
+                                </ul>
+                              ),
+                            )}
+                          </div>
+                        }
+                      />
+                    )}
+                    {props.mangoWikiReducer.new.plantingTechniques &&
+                      props.mangoWikiReducer.new.plantingTechniques.length >
+                        0 && (
+                      <DividerList
+                        mTitle="Cách trồng"
+                        mCont={
+                          <div>
+                            {props.mangoWikiReducer.new.plantingTechniques.map(
+                              (i, index) => (
+                                <ul>
+                                  <p
+                                    style={{ fontSize: '15px' }}
+                                  >{`Cách ${index + 1}:`}</p>
+                                  <li>{`Chọn giống: ${i.seed}`}</li>
+                                  <li>{`Chuẩn bị đất: ${
+                                    i.soilPreparation
+                                  }`}</li>
+                                  <li>{`Thời gian trồng: ${i.time}`}</li>
+                                  <li>{`Khoảng cách trồng: ${i.density}`}</li>
+                                  <li>{`Phương pháp: ${i.technique}`}</li>
+                                </ul>
+                              ),
+                            )}
+                          </div>
+                        }
+                      />
+                    )}
                   </Col>
                   <Col span={8}>
                     <Card
@@ -64,13 +154,13 @@ function WikiNews(props) {
                       cover={
                         <img
                           alt="example"
-                          src={props.mangoWikiReducer.new.img}
+                          src={props.mangoWikiReducer.new.data.img}
                         />
                       }
                     >
                       <Meta
-                        title={props.mangoWikiReducer.new.scienceName}
-                        description={props.mangoWikiReducer.new.name}
+                        title={props.mangoWikiReducer.new.data.scienceName}
+                        description={props.mangoWikiReducer.new.data.name}
                       />
                     </Card>
                   </Col>

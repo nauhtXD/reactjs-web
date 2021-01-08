@@ -32,7 +32,12 @@ import * as hAction from '../Home/actions';
 
 import MyLayout from '../../components/MyLayout/Loadable';
 import TitleCom from '../../components/TitleCom/Loadable';
-import { MyLink, MyText, MyButton } from '../../components/Style/index';
+import {
+  MyLink,
+  MyText,
+  MyButton,
+  API_KEY,
+} from '../../components/Style/index';
 
 const dateFormat = 'DD/MM/YYYY';
 
@@ -50,7 +55,18 @@ export function News(props) {
     props.getCategories();
     props.getSubCategories();
     props.getContacts();
+    props.getCityList();
+    props.getLastestDocuments(4);
   }, []);
+
+  useEffect(() => {
+    const dataList = props.homeReducer.cityList.map(i => i.province.weatherId);
+    if (dataList.length > 0)
+      props.getWeathers({
+        data: [...new Set(dataList)],
+        key: API_KEY,
+      });
+  }, [props.homeReducer.cityList]);
 
   const handleSubmit = () => {
     form.validateFields().then(values => {
@@ -181,6 +197,9 @@ export function News(props) {
           mCategories={props.homeReducer.categories}
           mSubCategories={props.homeReducer.subCategories}
           mContacts={props.homeReducer.contacts}
+          mCreateReport={props.createProblem}
+          mDocuments={props.homeReducer.lastestDocuments}
+          mWeathers={props.homeReducer.weathers}
         />
       </div>
     </div>
@@ -196,6 +215,10 @@ News.propTypes = {
   getContacts: PropTypes.func,
   getComments: PropTypes.func,
   getLastestPosts: PropTypes.func,
+  createProblem: PropTypes.func,
+  getLastestDocuments: PropTypes.func,
+  getWeathers: PropTypes.func,
+  getCityList: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -207,6 +230,9 @@ const mapDispatchToProps = dispatch => ({
   getPost: data => {
     dispatch(action.getPost(data));
   },
+  getComments: data => {
+    dispatch(action.getComments(data));
+  },
   getCategories: data => {
     dispatch(hAction.getCategories(data));
   },
@@ -216,11 +242,20 @@ const mapDispatchToProps = dispatch => ({
   getContacts: data => {
     dispatch(hAction.getContacts(data));
   },
-  getComments: data => {
-    dispatch(action.getComments(data));
-  },
   getLastestPosts: data => {
     dispatch(hAction.getLastestPosts(data));
+  },
+  getCityList: data => {
+    dispatch(hAction.getCityList(data));
+  },
+  getWeathers: data => {
+    dispatch(hAction.getWeathers(data));
+  },
+  createProblem: data => {
+    dispatch(hAction.createProblem(data));
+  },
+  getLastestDocuments: data => {
+    dispatch(hAction.getLastestDocuments(data));
   },
 });
 

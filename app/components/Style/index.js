@@ -4,6 +4,7 @@
  *
  */
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 import { Typography, Button, Modal, Table, Input, Form, Menu } from 'antd';
 import {
   PlusOutlined,
@@ -15,7 +16,16 @@ import {
 
 const primaryColor = '#77B81E';
 
+const API_KEY = 'f9b8a21d57e020513b5c7e50113dd4ea';
+
 const MyLink = styled.a`
+  color: #000;
+  :hover {
+    color: ${primaryColor};
+  }
+`;
+
+const MyRouterLink = styled(Link)`
   color: #000;
   :hover {
     color: ${primaryColor};
@@ -168,10 +178,11 @@ const MyInlineMenu = styled(Menu)`
       }
     }
   }
+  .ant-menu-submenu-selected,
   .ant-menu-item-selected a {
     color: ${primaryColor} !important;
   }
-  .ant-menu-inline .ant-menu-item::after {
+  .ant-menu-item::after {
     border-right-color: ${primaryColor} !important;
   }
 `;
@@ -248,6 +259,7 @@ const UIcon = styled(UserOutlined)`
 export {
   primaryColor,
   MyLink,
+  MyRouterLink,
   MyText,
   MyButton,
   MyAntdModal,
@@ -265,4 +277,5 @@ export {
   CloseIcon,
   UIcon,
   DownloadIcon,
+  API_KEY,
 };

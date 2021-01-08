@@ -20,7 +20,7 @@ import makeSelectHome from '../Home/selectors';
 
 import MyLayout from '../../components/MyLayout/index';
 import TitleCom from '../../components/TitleCom/index';
-import { MyLink, ContentDiv } from '../../components/Style/index';
+import { MyLink, ContentDiv, API_KEY } from '../../components/Style/index';
 
 const dateFormat = 'DD/MM/YYYY';
 
@@ -35,7 +35,18 @@ export function NewsList(props) {
     props.getCategories();
     props.getSubCategories();
     props.getContacts();
+    props.getCityList();
+    props.getLastestDocuments(4);
   }, []);
+
+  useEffect(() => {
+    const dataList = props.homeReducer.cityList.map(i => i.province.weatherId);
+    if (dataList.length > 0)
+      props.getWeathers({
+        data: [...new Set(dataList)],
+        key: API_KEY,
+      });
+  }, [props.homeReducer.cityList]);
 
   return (
     <div>
@@ -90,6 +101,9 @@ export function NewsList(props) {
           mCategories={props.homeReducer.categories}
           mSubCategories={props.homeReducer.subCategories}
           mContacts={props.homeReducer.contacts}
+          mCreateReport={props.createProblem}
+          mDocuments={props.homeReducer.lastestDocuments}
+          mWeathers={props.homeReducer.weathers}
         />
       </div>
     </div>
@@ -103,6 +117,10 @@ NewsList.propTypes = {
   getSubCategories: PropTypes.func,
   getContacts: PropTypes.func,
   getPostsBySCID: PropTypes.func,
+  createProblem: PropTypes.func,
+  getLastestDocuments: PropTypes.func,
+  getWeathers: PropTypes.func,
+  getCityList: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -119,6 +137,18 @@ const mapDispatchToProps = dispatch => ({
   },
   getContacts: data => {
     dispatch(hAction.getContacts(data));
+  },
+  getCityList: data => {
+    dispatch(hAction.getCityList(data));
+  },
+  getWeathers: data => {
+    dispatch(hAction.getWeathers(data));
+  },
+  createProblem: data => {
+    dispatch(hAction.createProblem(data));
+  },
+  getLastestDocuments: data => {
+    dispatch(hAction.getLastestDocuments(data));
   },
   getPostsBySCID: data => {
     dispatch(action.getPostsBySCID(data));

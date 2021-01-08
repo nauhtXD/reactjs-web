@@ -5,7 +5,7 @@ import { Helmet } from 'react-helmet';
 // import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
-import { Route, Link } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 import styled from 'styled-components';
 import { Menu, Row, Col } from 'antd';
 
@@ -23,11 +23,9 @@ import WikiList from './pages/list';
 import WikiNews from './pages/news';
 import MyLayout from '../../components/MyLayout/Loadable';
 import TitleCom from '../../components/TitleCom/Loadable';
-import { MyInlineMenu } from '../../components/Style/index';
+import { MyInlineMenu, MyRouterLink } from '../../components/Style/index';
 
 const { SubMenu } = Menu;
-
-const MyLink = styled(Link)``;
 const MyMI = styled(Menu.Item)`
   :active {
     background-color: #fff !important;
@@ -69,9 +67,9 @@ export function MangoWiki(props) {
                             <SubMenu
                               key={`family${i.id}`}
                               title={
-                                <MyLink to={`/mangowiki/news/${i.id}`}>
+                                <MyRouterLink to={`/mangowiki/news/${i.id}`}>
                                   Họ {i.name}
-                                </MyLink>
+                                </MyRouterLink>
                               }
                             >
                               {props.mangoWikiReducer.genera &&
@@ -79,24 +77,24 @@ export function MangoWiki(props) {
                                   <SubMenu
                                     key={`genus${j.id}`}
                                     title={
-                                      <MyLink
+                                      <MyRouterLink
                                         to={`/mangowiki/news/${i.id}/${j.id}`}
                                       >
                                         Chi {j.name}
-                                      </MyLink>
+                                      </MyRouterLink>
                                     }
                                   >
                                     {props.mangoWikiReducer.genusFeatures &&
                                       props.mangoWikiReducer.genusFeatures.map(
                                         k => (
                                           <MyMI key={`genusFeature${k.id}`}>
-                                            <MyLink
+                                            <MyRouterLink
                                               to={`/mangowiki/news/${i.id}/${
                                                 j.id
                                               }/${k.id}`}
                                             >
                                               {k.name}
-                                            </MyLink>
+                                            </MyRouterLink>
                                           </MyMI>
                                         ),
                                       )}

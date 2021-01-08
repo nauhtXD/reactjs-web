@@ -30,6 +30,7 @@ import {
   MyAntdModal,
   MyAntdSearch,
   MyAntdForm,
+  API_KEY,
 } from '../../components/Style/index';
 
 const { Column } = Table;
@@ -51,7 +52,18 @@ export function Documents(props) {
     props.getCategories();
     props.getSubCategories();
     props.getDocuments();
+    props.getCityList();
+    props.getLastestDocuments(4);
   }, []);
+
+  useEffect(() => {
+    const dataList = props.homeReducer.cityList.map(i => i.province.weatherId);
+    if (dataList.length > 0)
+      props.getWeathers({
+        data: [...new Set(dataList)],
+        key: API_KEY,
+      });
+  }, [props.homeReducer.cityList]);
 
   useEffect(() => {
     setDataSource(props.documentsReducer.documents);
@@ -167,6 +179,9 @@ export function Documents(props) {
           mCategories={props.homeReducer.categories}
           mSubCategories={props.homeReducer.subCategories}
           mContacts={props.homeReducer.contacts}
+          mCreateReport={props.createProblem}
+          mDocuments={props.homeReducer.lastestDocuments}
+          mWeathers={props.homeReducer.weathers}
         />
         <MyAntdModal
           title="Chi tiết"
@@ -211,6 +226,10 @@ Documents.propTypes = {
   getSubCategories: PropTypes.func,
   getContacts: PropTypes.func,
   getDocuments: PropTypes.func,
+  createProblem: PropTypes.func,
+  getLastestDocuments: PropTypes.func,
+  getWeathers: PropTypes.func,
+  getCityList: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -227,6 +246,18 @@ const mapDispatchToProps = dispatch => ({
   },
   getContacts: data => {
     dispatch(hAction.getContacts(data));
+  },
+  getCityList: data => {
+    dispatch(hAction.getCityList(data));
+  },
+  getWeathers: data => {
+    dispatch(hAction.getWeathers(data));
+  },
+  createProblem: data => {
+    dispatch(hAction.createProblem(data));
+  },
+  getLastestDocuments: data => {
+    dispatch(hAction.getLastestDocuments(data));
   },
   getDocuments: data => {
     dispatch(action.getDocuments(data));

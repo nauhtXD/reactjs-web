@@ -27,7 +27,7 @@ import { useInjectReducer } from 'utils/injectReducer';
 import makeSelect from './selectors';
 import reducer from './reducer';
 import saga from './saga';
-import * as action from './actions';
+// import * as action from './actions';
 
 import makeSelectHome from '../Home/selectors';
 import * as hAction from '../Home/actions';
@@ -37,8 +37,8 @@ import MyLayout from '../../components/MyLayout/Loadable';
 import EnhancedMarker from '../../components/EnhancedMarker/index';
 import WeatherHistory from '../../components/WeatherHistory/index';
 import Epidemic from '../../components/Epidemic/index';
+import { API_KEY } from '../../components/Style/index';
 
-const API_KEY = 'f9b8a21d57e020513b5c7e50113dd4ea';
 const mZoom = 10;
 
 const bcrData = [
@@ -77,6 +77,7 @@ export function WeatherMap(props) {
     props.getCategories();
     props.getSubCategories();
     props.getContacts();
+    props.getLastestDocuments(4);
   }, []);
 
   useEffect(() => {
@@ -91,17 +92,15 @@ export function WeatherMap(props) {
   }, [props.homeReducer.contacts]);
 
   useEffect(() => {
-    const dataList = props.weatherMapReducer.cityList.map(
-      i => i.province.weatherId,
-    );
+    const dataList = props.homeReducer.cityList.map(i => i.province.weatherId);
     if (dataList.length > 0)
       props.getWeathers({
-        data: dataList,
+        data: [...new Set(dataList)],
         key: API_KEY,
       });
-    const geoData = props.weatherMapReducer.cityList.map(i => i.province.geo);
-    if (geoData.length > 0) setGeo(geoData);
-  }, [props.weatherMapReducer.cityList]);
+    const geoData = props.homeReducer.cityList.map(i => i.province.geo);
+    if (geoData.length > 0) setGeo([...new Set(geoData)]);
+  }, [props.homeReducer.cityList]);
 
   const handleClick = (lat, lon) => {
     setHis([]);
@@ -151,8 +150,8 @@ export function WeatherMap(props) {
                     <TileLayer
                       url={`https://tile.openweathermap.org/map/temp_new/{z}/{x}/{y}.png?appid=${API_KEY}`}
                     />
-                    {props.weatherMapReducer.weathers.length > 0 &&
-                      props.weatherMapReducer.weathers.map(i => (
+                    {props.homeReducer.weathers.length > 0 &&
+                      props.homeReducer.weathers.map(i => (
                         <EMarker
                           key={i.id}
                           icon={
@@ -171,8 +170,8 @@ export function WeatherMap(props) {
                 </LayersControl.BaseLayer>
                 <LayersControl.BaseLayer name="Dịch bệnh">
                   <LayerGroup>
-                    {props.weatherMapReducer.weathers.length > 0 &&
-                      props.weatherMapReducer.weathers.map(i => (
+                    {props.homeReducer.weathers.length > 0 &&
+                      props.homeReducer.weathers.map(i => (
                         <EMarker
                           key={i.id}
                           icon={<Epidemic />}
@@ -192,7 +191,9 @@ export function WeatherMap(props) {
         mSubCategories={props.homeReducer.subCategories}
         mContacts={props.homeReducer.contacts}
         mBreadcrumbs={bcrData}
-        mWeathers={props.weatherMapReducer.weathers}
+        mCreateReport={props.createProblem}
+        mDocuments={props.homeReducer.lastestDocuments}
+        mWeathers={props.homeReducer.weathers}
       />
     </div>
   );
@@ -200,12 +201,14 @@ export function WeatherMap(props) {
 
 WeatherMap.propTypes = {
   homeReducer: PropTypes.any,
-  weatherMapReducer: PropTypes.any,
+  // weatherMapReducer: PropTypes.any,
   getWeathers: PropTypes.func,
   getContacts: PropTypes.func,
   getCategories: PropTypes.func,
   getSubCategories: PropTypes.func,
   getCityList: PropTypes.func,
+  createProblem: PropTypes.func,
+  getLastestDocuments: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -214,12 +217,6 @@ const mapStateToProps = createStructuredSelector({
 });
 
 const mapDispatchToProps = dispatch => ({
-  getWeathers: data => {
-    dispatch(action.getWeathers(data));
-  },
-  getCityList: data => {
-    dispatch(action.getCityList(data));
-  },
   getCategories: data => {
     dispatch(hAction.getCategories(data));
   },
@@ -228,6 +225,18 @@ const mapDispatchToProps = dispatch => ({
   },
   getContacts: data => {
     dispatch(hAction.getContacts(data));
+  },
+  getCityList: data => {
+    dispatch(hAction.getCityList(data));
+  },
+  getWeathers: data => {
+    dispatch(hAction.getWeathers(data));
+  },
+  createProblem: data => {
+    dispatch(hAction.createProblem(data));
+  },
+  getLastestDocuments: data => {
+    dispatch(hAction.getLastestDocuments(data));
   },
 });
 

@@ -23,14 +23,10 @@ import Contact from './pages/contact';
 import Household from './pages/household';
 import Plant from './pages/plant';
 
+import { MyInlineMenu, MyLink, UIcon } from '../../components/Style/index';
+
 const { SubMenu } = Menu;
 const { Sider, Content } = Layout;
-
-const UIcon = styled(UserOutlined)`
-  &.anticon svg {
-    vertical-align: baseline !important;
-  }
-`;
 
 export function Admin() {
   useInjectReducer({ key: 'admin', reducer });
@@ -51,7 +47,7 @@ export function Admin() {
           collapsedWidth="0"
           style={{ backgroundColor: '#fff' }}
         >
-          <Menu defaultSelectedKeys={['dashboard']} mode="inline">
+          <MyInlineMenu defaultSelectedKeys={['dashboard']} mode="inline">
             <Menu.Item key="user">
               <Row>
                 <Col span={8}>
@@ -70,7 +66,7 @@ export function Admin() {
             <Menu.Item key="dashboard">
               <Link to="/admin/dashboard">Dashboard</Link>
             </Menu.Item>
-            <SubMenu key="households" title="Hộ dân">
+            <SubMenu key="households" title={<MyLink>Hộ dân</MyLink>}>
               <Menu.Item key="hh1">
                 <Link to="/admin/user">Tài khoản</Link>
               </Menu.Item>
@@ -90,7 +86,7 @@ export function Admin() {
             <Menu.Item key="contacts">
               <Link to="/admin/contact">Liên hệ</Link>
             </Menu.Item>
-          </Menu>
+          </MyInlineMenu>
         </Sider>
         <Layout>
           <Content
