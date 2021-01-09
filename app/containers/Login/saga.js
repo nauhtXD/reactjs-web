@@ -14,12 +14,12 @@ export function* getLoginTokenSaga({ payload }) {
     } else {
       yield put({
         type: types.GET_LOGIN_TOKEN_FAIL,
-        error: response && response.data ? response.data.messages : 'API Error',
+        error: response && response.data ? response.data.message : 'API Error',
       });
       notification.error({
         message: 'Error',
         description:
-          response && response.data ? response.data.messages : 'API Error',
+          response && response.data ? response.data.message : 'API Error',
       });
     }
   } catch (err) {

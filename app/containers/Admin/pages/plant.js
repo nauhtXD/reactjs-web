@@ -20,6 +20,11 @@ import * as action from '../actions';
 const { Option } = Select;
 const dateFormat = 'DD/MM/YYYY';
 let k = -1;
+const init = {
+  publishAt: moment(),
+  householdId: 1,
+  genusFeatureId: 1,
+};
 
 export function Plant(props) {
   useInjectReducer({ key: 'admin', reducer });
@@ -74,10 +79,42 @@ export function Plant(props) {
     setIsRerender(!isRerender);
     return 0;
   };
+
   const handleSearch = (entry, currValue) =>
     entry.household.name.toLowerCase().includes(currValue) ||
     entry.genusFeature.name.toLowerCase().includes(currValue) ||
     entry.root.toString().includes(currValue);
+
+  const mModal = [
+    <div>
+      <Form.Item name="householdId" label="Hộ dân">
+        <Select>
+          {props.adminReducer.households.length > 0 &&
+            props.adminReducer.households.map(i => (
+              <Option key={i.id} value={i.id}>
+                {i.name}
+              </Option>
+            ))}
+        </Select>
+      </Form.Item>
+      <Form.Item name="genusFeatureId" label="Loại cây">
+        <Select>
+          {props.adminReducer.genusFeatures.length > 0 &&
+            props.adminReducer.genusFeatures.map(i => (
+              <Option key={i.id} value={i.id}>
+                {i.name}
+              </Option>
+            ))}
+        </Select>
+      </Form.Item>
+      <Form.Item name="root" label="Số gốc cây">
+        <Input type="number" />
+      </Form.Item>
+      <Form.Item name="publishAt" label="Thời gian trồng">
+        <DatePicker />
+      </Form.Item>
+    </div>,
+  ];
 
   return (
     <div>
@@ -93,66 +130,9 @@ export function Plant(props) {
         mUpdate={handleClick}
         mCreate={handleCreate}
         mSearch={handleSearch}
-        mModal={
-          <div>
-            <Form.Item name="householdId" label="Hộ dân">
-              <Select>
-                {props.adminReducer.households.length > 0 &&
-                  props.adminReducer.households.map(i => (
-                    <Option key={i.id} value={i.id}>
-                      {i.name}
-                    </Option>
-                  ))}
-              </Select>
-            </Form.Item>
-            <Form.Item name="genusFeatureId" label="Loại cây">
-              <Select>
-                {props.adminReducer.genusFeatures.length > 0 &&
-                  props.adminReducer.genusFeatures.map(i => (
-                    <Option key={i.id} value={i.id}>
-                      {i.name}
-                    </Option>
-                  ))}
-              </Select>
-            </Form.Item>
-            <Form.Item name="root" label="Số gốc cây">
-              <Input type="number" />
-            </Form.Item>
-            <Form.Item name="publishAt" label="Thời gian trồng">
-              <DatePicker />
-            </Form.Item>
-          </div>
-        }
-        mTableModal={
-          <div>
-            <Form.Item name="householdId" label="Hộ dân">
-              <Select>
-                {props.adminReducer.households.length > 0 &&
-                  props.adminReducer.households.map(i => (
-                    <Option key={i.id} value={i.id}>
-                      {i.name}
-                    </Option>
-                  ))}
-              </Select>
-            </Form.Item>
-            <Form.Item name="genusFeatureId" label="Loại cây">
-              <Select>
-                {props.adminReducer.genusFeatures.length > 0 &&
-                  props.adminReducer.genusFeatures.map(i => (
-                    <Option key={i.id} value={i.id}>
-                      {i.name}
-                    </Option>
-                  ))}
-              </Select>
-            </Form.Item>
-            <Form.Item name="root" label="Số gốc cây">
-              <Input type="number" />
-            </Form.Item>
-            <Form.Item name="publishAt" label="Thời gian trồng">
-              <DatePicker />
-            </Form.Item>
-          </div>
-        }
+        mModal={mModal}
+        mTableModal={mModal}
+        mInitialValues={init}
       />
     </div>
   );

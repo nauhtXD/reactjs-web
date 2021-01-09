@@ -50,6 +50,8 @@ export const deleteContact = data =>
 // minio
 export const uploadImg = data =>
   apiConfig3.post(endpoint.API_ENDPOINT_UPLOAD_IMG, data);
+export const uploadPdf = data =>
+  apiConfig3.post(endpoint.API_ENDPOINT_UPLOAD_PDF, data);
 // household
 export const getHouseholds = () =>
   apiConfig.get(endpoint.API_ENDPOINT_GET_HOUSEHOLD);
@@ -72,3 +74,21 @@ export const deletePlant = data =>
 // genusFeatures
 export const getGenusFeatures = () =>
   apiConfig.get(endpoint.API_ENDPOINT_GET_GENUS_FEATURE);
+// banner
+export const getBanners = () => apiConfig.get(endpoint.API_ENDPOINT_GET_BANNER);
+export const updateBanner = data =>
+  apiConfig.put(`${endpoint.API_ENDPOINT_UPDATE_BANNER}/${data.id}`, data);
+// document
+export const getDocuments = () =>
+  apiConfig.get(endpoint.API_ENDPOINT_GET_DOCUMENT);
+export const createDocument = data =>
+  apiConfig.post(endpoint.API_ENDPOINT_GET_DOCUMENT, data);
+export const updateDocument = data =>
+  apiConfig.put(`${endpoint.API_ENDPOINT_UPDATE_DOCUMENT}/${data.id}`, data);
+export const deleteDocument = data =>
+  apiConfig.put(`${endpoint.API_ENDPOINT_DELETE_DOCUMENT}/${data}`, data);
+// documentType
+export const getDocumentTypes = () =>
+  apiConfig.get(endpoint.API_ENDPOINT_GET_DOCUMENT_TYPE);
+// field
+export const getFields = () => apiConfig.get(endpoint.API_ENDPOINT_GET_FIELD);

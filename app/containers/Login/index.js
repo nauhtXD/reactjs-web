@@ -5,7 +5,7 @@ import { Helmet } from 'react-helmet';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import styled from 'styled-components';
-import { Form, Input, Button } from 'antd';
+import { Form, Input } from 'antd';
 
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
@@ -14,14 +14,12 @@ import reducer from './reducer';
 import saga from './saga';
 import * as action from './actions';
 
-const layout = {
-  labelCol: { span: 8 },
-  wrapperCol: { span: 16 },
-};
-
-const tailLayout = {
-  wrapperCol: { offset: 8, span: 16 },
-};
+import {
+  layout,
+  tailLayout,
+  MyButton,
+  MyAntdForm,
+} from '../../components/Style/index';
 
 const CenterDiv = styled.div`
   background-color: #eee;
@@ -70,7 +68,7 @@ export function Login(props) {
       </Helmet>
       <CenterDiv>
         <FormDiv>
-          <Form form={form} {...layout}>
+          <MyAntdForm form={form} {...layout}>
             <Form.Item label="Tên đăng nhập" name="username">
               <Input />
             </Form.Item>
@@ -78,11 +76,9 @@ export function Login(props) {
               <Input.Password />
             </Form.Item>
             <Form.Item {...tailLayout}>
-              <Button type="primary" onClick={handleCLick}>
-                Đăng nhập
-              </Button>
+              <MyButton onClick={handleCLick}>Đăng nhập</MyButton>
             </Form.Item>
-          </Form>
+          </MyAntdForm>
         </FormDiv>
       </CenterDiv>
     </div>

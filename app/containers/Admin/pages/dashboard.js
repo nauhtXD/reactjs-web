@@ -12,6 +12,7 @@ import { Card, Row, Col } from 'antd';
 import { BookOutlined } from '@ant-design/icons';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
+import { CenterDiv } from '../../../components/Style/index';
 
 const { Meta } = Card;
 
@@ -23,32 +24,36 @@ export function Dashboard() {
         <meta name="description" content="Description of Dashboard" />
       </Helmet>
       <div>
-        <Row gutter={16}>
-          <Col span={6}>
-            <Card
-              hoverable
-              style={{ border: '1px solid silver' }}
-              cover={<BookOutlined />}
-            >
-              <Meta title="Hình ảnh" description="86" />
-            </Card>
-          </Col>
-          <Col span={6}>
-            <Card title="Card title" bordered={false}>
-              Content
-            </Card>
-          </Col>
-          <Col span={6}>
-            <Card title="Card title" bordered={false}>
-              Content
-            </Card>
-          </Col>
-          <Col span={6}>
-            <Card title="Card title" bordered={false}>
-              Content
-            </Card>
-          </Col>
-        </Row>
+        <CenterDiv>
+          <Card
+            hoverable
+            style={{ border: '1px solid silver', margin: 'auto 10px' }}
+            cover={<BookOutlined style={{ margin: '10px auto auto auto' }} />}
+          >
+            <Meta title="Hình ảnh" description="86" />
+          </Card>
+          <Card
+            hoverable
+            style={{ border: '1px solid silver', margin: 'auto 10px' }}
+            cover={<BookOutlined />}
+          >
+            <Meta title="Hình ảnh" description="86" />
+          </Card>
+          <Card
+            hoverable
+            style={{ border: '1px solid silver', margin: 'auto 10px' }}
+            cover={<BookOutlined />}
+          >
+            <Meta title="Hình ảnh" description="86" />
+          </Card>
+          <Card
+            hoverable
+            style={{ border: '1px solid silver', margin: 'auto 10px' }}
+            cover={<BookOutlined />}
+          >
+            <Meta title="Hình ảnh" description="86" />
+          </Card>
+        </CenterDiv>
       </div>
     </div>
   );

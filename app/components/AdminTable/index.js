@@ -7,7 +7,7 @@
 import React, { memo, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 // import styled from 'styled-components';
-import { Row, Col, Input, Form } from 'antd';
+import { Row, Col, Form } from 'antd';
 
 // import { FormattedMessage } from 'react-intl';
 // import messages from './messages';
@@ -19,11 +19,10 @@ import {
   MyAntdModal,
   MyButton,
   MyAntdForm,
+  MyAntdSearch,
 } from '../Style/index';
 
 let k = -1;
-
-const { Search } = Input;
 
 function AdminTable(props) {
   const [isVisible, setIsVisible] = useState(false);
@@ -62,7 +61,7 @@ function AdminTable(props) {
           <Row>
             <Col span={4} />
             <Col span={16}>
-              <Search
+              <MyAntdSearch
                 placeholder="Nhập ký tự cần tìm"
                 value={searchValue}
                 onChange={e => {
@@ -92,6 +91,7 @@ function AdminTable(props) {
           mUpdate={props.mUpdate}
           mModal={props.mTableModal}
           mWidth={props.mWidth}
+          mPreview={props.mCheckImg ? props.mInitialValues.img : null}
         />
       </MyBox>
       <MyAntdModal
@@ -124,6 +124,7 @@ AdminTable.propTypes = {
   mUpdate: PropTypes.func,
   mTableModal: PropTypes.any,
   mSearch: PropTypes.any,
+  mCheckImg: PropTypes.bool,
 };
 
 export default memo(AdminTable);

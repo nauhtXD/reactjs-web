@@ -35,6 +35,14 @@ export const initialState = {
   plants: [],
   loadingGenusFeatures: false,
   genusFeatures: [],
+  loadingBanners: false,
+  banners: [],
+  loadingDocuments: false,
+  documents: [],
+  loadingDocumentTypes: false,
+  documentTypes: [],
+  loadingFields: false,
+  fields: [],
 };
 
 /* eslint-disable default-case, no-param-reassign */
@@ -151,6 +159,17 @@ const adminReducer = (state = initialState, action) =>
         draft.url = [];
         draft.loadingUrl = false;
         break;
+      case types.UPLOAD_PDF:
+        draft.loadingUrl = true;
+        break;
+      case types.UPLOAD_PDF_SUCCESS:
+        draft.url = action.url;
+        draft.loadingUrl = false;
+        break;
+      case types.UPLOAD_PDF_FAIL:
+        draft.url = [];
+        draft.loadingUrl = false;
+        break;
       case types.GET_HOUSEHOLD:
         draft.loadingHouseholds = true;
         break;
@@ -194,6 +213,50 @@ const adminReducer = (state = initialState, action) =>
       case types.GET_GENUS_FEATURE_FAIL:
         draft.genusFeatures = [];
         draft.loadingGenusFeatures = false;
+        break;
+      case types.GET_BANNER:
+        draft.loadingBanners = true;
+        break;
+      case types.GET_BANNER_SUCCESS:
+        draft.banners = action.banners;
+        draft.loadingBanners = false;
+        break;
+      case types.GET_BANNER_FAIL:
+        draft.banners = [];
+        draft.loadingBanners = false;
+        break;
+      case types.GET_DOCUMENT:
+        draft.loadingDocuments = true;
+        break;
+      case types.GET_DOCUMENT_SUCCESS:
+        draft.documents = action.documents;
+        draft.loadingDocuments = false;
+        break;
+      case types.GET_DOCUMENT_FAIL:
+        draft.documents = [];
+        draft.loadingDocuments = false;
+        break;
+      case types.GET_DOCUMENT_TYPE:
+        draft.loadingDocumentTypes = true;
+        break;
+      case types.GET_DOCUMENT_TYPE_SUCCESS:
+        draft.documentTypes = action.documentTypes;
+        draft.loadingDocumentTypes = false;
+        break;
+      case types.GET_DOCUMENT_TYPE_FAIL:
+        draft.documentTypes = [];
+        draft.loadingDocumentTypes = false;
+        break;
+      case types.GET_FIELD:
+        draft.loadingFields = true;
+        break;
+      case types.GET_FIELD_SUCCESS:
+        draft.fields = action.fields;
+        draft.loadingFields = false;
+        break;
+      case types.GET_FIELD_FAIL:
+        draft.fields = [];
+        draft.loadingFields = false;
         break;
     }
   });

@@ -5,9 +5,8 @@ import { Helmet } from 'react-helmet';
 // import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
-import styled from 'styled-components';
-import { Menu, Layout, Avatar, Row, Col } from 'antd';
-import { UserOutlined } from '@ant-design/icons';
+// import styled from 'styled-components';
+import { Menu, Layout, Avatar, Row, Col, Divider } from 'antd';
 import { Route, Link } from 'react-router-dom';
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
@@ -22,6 +21,8 @@ import Report from './pages/report';
 import Contact from './pages/contact';
 import Household from './pages/household';
 import Plant from './pages/plant';
+import Document from './pages/document';
+import Banner from './pages/banner';
 
 import { MyInlineMenu, MyLink, UIcon } from '../../components/Style/index';
 
@@ -47,22 +48,28 @@ export function Admin() {
           collapsedWidth="0"
           style={{ backgroundColor: '#fff' }}
         >
-          <MyInlineMenu defaultSelectedKeys={['dashboard']} mode="inline">
-            <Menu.Item key="user">
-              <Row>
-                <Col span={8}>
-                  <Avatar icon={<UIcon />} />
-                </Col>
-                <Col span={16}>
-                  <p onClick={handleLogout}>
-                    <span style={{ display: 'block' }}>
-                      {localStorage.getItem('usrName')}
-                    </span>
-                    <span style={{ display: 'block' }}>Đăng xuất</span>
-                  </p>
-                </Col>
-              </Row>
-            </Menu.Item>
+          <Row>
+            <Col
+              span={8}
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+              <Avatar icon={<UIcon />} />
+            </Col>
+            <Col span={16}>
+              <span style={{ display: 'block' }}>
+                {localStorage.getItem('usrName')}
+              </span>
+              <MyLink onClick={handleLogout}>
+                <span style={{ display: 'block' }}>Đăng xuất</span>
+              </MyLink>
+            </Col>
+          </Row>
+          <Divider style={{ margin: '5px auto auto auto' }} />
+          <MyInlineMenu defaultOpenKeys={['households']} mode="inline">
             <Menu.Item key="dashboard">
               <Link to="/admin/dashboard">Dashboard</Link>
             </Menu.Item>
@@ -83,8 +90,14 @@ export function Admin() {
             <Menu.Item key="posts">
               <Link to="/admin/post">Bài viết</Link>
             </Menu.Item>
+            <Menu.Item key="documents">
+              <Link to="/admin/document">Văn bản hội</Link>
+            </Menu.Item>
             <Menu.Item key="contacts">
               <Link to="/admin/contact">Liên hệ</Link>
+            </Menu.Item>
+            <Menu.Item key="banners">
+              <Link to="/admin/banner">Banner</Link>
             </Menu.Item>
           </MyInlineMenu>
         </Sider>
@@ -104,6 +117,8 @@ export function Admin() {
             <Route exact path="/admin/contact" component={Contact} />
             <Route exact path="/admin/household" component={Household} />
             <Route exact path="/admin/plant" component={Plant} />
+            <Route exact path="/admin/document" component={Document} />
+            <Route exact path="/admin/banner" component={Banner} />
           </Content>
         </Layout>
       </Layout>

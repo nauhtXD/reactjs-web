@@ -1,4 +1,4 @@
-import React, { memo, useEffect } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
@@ -23,10 +23,7 @@ import { useInjectReducer } from 'utils/injectReducer';
 import makeSelect from './selectors';
 import reducer from './reducer';
 import saga from './saga';
-
 import makeSelectHome from '../Home/selectors';
-
-// import messages from './messages';
 import * as action from './actions';
 import * as hAction from '../Home/actions';
 
@@ -37,6 +34,7 @@ import {
   MyText,
   MyButton,
   API_KEY,
+  MyAntdForm,
 } from '../../components/Style/index';
 
 const dateFormat = 'DD/MM/YYYY';
@@ -46,7 +44,10 @@ export function News(props) {
   const { match } = props;
   useInjectReducer({ key: 'news', reducer });
   useInjectSaga({ key: 'news', saga });
+
+  const [isRerender, setIsRerender] = useState(false);
   const [form] = Form.useForm();
+  const postId = match.params.id;
 
   useEffect(() => {
     props.getPost(match.params.id);
@@ -68,9 +69,20 @@ export function News(props) {
       });
   }, [props.homeReducer.cityList]);
 
+  useEffect(() => {
+    props.getComments(match.params.id);
+    form.setFieldsValue({ content: '' });
+  }, [isRerender]);
+
   const handleSubmit = () => {
     form.validateFields().then(values => {
-      console.log(values);
+      const data = {
+        ...values,
+        postId: match.params.id,
+        userId: localStorage.getItem('usrId'),
+      };
+      props.createComment(data);
+      setIsRerender(!isRerender);
     });
   };
 
@@ -110,6 +122,7 @@ export function News(props) {
                         Nguồn:{' '}
                         <MyLink
                           href={`https://${props.newsReducer.post.source}`}
+                          style={{ textDecoration: 'underline' }}
                         >
                           {props.newsReducer.post.source}
                         </MyLink>
@@ -131,43 +144,52 @@ export function News(props) {
                 }
               />
 
-              <Form form={form}>
-                <Form.Item name="content">
-                  <Input.TextArea placeholder="Để lại bình luận" />
-                </Form.Item>
-                <Form.Item>
-                  <MyButton onClick={handleSubmit}>Bình luận</MyButton>
-                </Form.Item>
-              </Form>
-
-              {props.newsReducer.comments.length > 0 && (
-                <List
-                  bordered
-                  className="comment-list"
-                  header={`${props.newsReducer.comments.length} bình luận`}
-                  itemLayout="horizontal"
-                  dataSource={props.newsReducer.comments}
-                  style={{ margin: '10px auto' }}
-                  renderItem={item => (
-                    <List.Item key={item.id}>
-                      <Comment
-                        author={item.user.username}
-                        avatar="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-                        content={
-                          <div
-                            // eslint-disable-next-line react/no-danger
-                            dangerouslySetInnerHTML={{
-                              __html: item.content,
-                            }}
-                          />
-                        }
-                        datetime={moment(item.updatedAt).format(dateFormat)}
-                      />
-                    </List.Item>
-                  )}
-                />
+              {localStorage.getItem('authToken') && (
+                <div>
+                  <MyAntdForm form={form}>
+                    <Form.Item name="content" style={{ marginBottom: '5px' }}>
+                      <Input.TextArea placeholder="Để lại bình luận" />
+                    </Form.Item>
+                    <Form.Item style={{ marginBottom: '5px' }}>
+                      <MyButton
+                        style={{ float: 'right' }}
+                        onClick={handleSubmit}
+                      >
+                        Bình luận
+                      </MyButton>
+                    </Form.Item>
+                  </MyAntdForm>
+                </div>
               )}
 
+              {props.newsReducer.comments &&
+                props.newsReducer.comments.length > 0 && (
+                  <List
+                    bordered
+                    className="comment-list"
+                    header={`${props.newsReducer.comments.length} bình luận`}
+                    itemLayout="horizontal"
+                    dataSource={props.newsReducer.comments}
+                    renderItem={item => (
+                      <List.Item key={item.id}>
+                        <Comment
+                          author={item.user.username}
+                          avatar="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+                          content={
+                            <div
+                              // eslint-disable-next-line react/no-danger
+                              dangerouslySetInnerHTML={{
+                                __html: item.content,
+                              }}
+                            />
+                          }
+                          datetime={moment(item.createdAt).format(dateFormat)}
+                        />
+                      </List.Item>
+                    )}
+                  />
+                )}
+              <div style={{ height: '5px' }} />
               {props.homeReducer.lastestPosts.length > 0 && (
                 <List
                   bordered
@@ -175,7 +197,7 @@ export function News(props) {
                   dataSource={props.homeReducer.lastestPosts}
                   renderItem={(item, index) =>
                     index < 5 &&
-                    item.id !== match.params.id && (
+                    !item.id.toString().includes(postId) && (
                       <List.Item key={item.id}>
                         <MyText>
                           <Space>
@@ -219,6 +241,7 @@ News.propTypes = {
   getLastestDocuments: PropTypes.func,
   getWeathers: PropTypes.func,
   getCityList: PropTypes.func,
+  createComment: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -232,6 +255,9 @@ const mapDispatchToProps = dispatch => ({
   },
   getComments: data => {
     dispatch(action.getComments(data));
+  },
+  createComment: data => {
+    dispatch(action.createComment(data));
   },
   getCategories: data => {
     dispatch(hAction.getCategories(data));

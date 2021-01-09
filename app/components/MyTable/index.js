@@ -125,19 +125,25 @@ function MyTable(props) {
             />
           ),
         )}
-        <Column
-          key="action"
-          render={record => (
-            <Space>
-              <MyButton onClick={() => handleClick(record, 0)}>
-                Chỉnh sửa
-              </MyButton>
-              <Button type="danger" onClick={() => handleClick(record, 1)}>
-                Xóa
-              </Button>
-            </Space>
-          )}
-        />
+        {(props.mUpdate || props.mDelete) && (
+          <Column
+            key="action"
+            render={record => (
+              <Space>
+                {props.mUpdate && (
+                  <MyButton onClick={() => handleClick(record, 0)}>
+                    Chỉnh sửa
+                  </MyButton>
+                )}
+                {props.mDelete && (
+                  <Button type="danger" onClick={() => handleClick(record, 1)}>
+                    Xóa
+                  </Button>
+                )}
+              </Space>
+            )}
+          />
+        )}
       </MyAntdTable>
       <MyAntdModal
         title="Chỉnh sửa"

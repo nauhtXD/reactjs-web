@@ -18,6 +18,8 @@ export const API_ENDPOINT_DELETE_POST = 'posts/delete';
 // document
 export const API_ENDPOINT_GET_DOCUMENT = 'documents';
 export const API_ENDPOINT_GET_LASTEST_DOCUMENT = 'documents/lastest-docs';
+export const API_ENDPOINT_UPDATE_DOCUMENT = 'documents/update';
+export const API_ENDPOINT_DELETE_DOCUMENT = 'documents/delete';
 // crop
 export const API_ENDPOINT_GET_CROP = 'crops';
 // contact
@@ -45,6 +47,7 @@ export const API_ENDPOINT_DELETE_PROBLEM = 'problems/delete';
 export const API_ENDPOINT_GET_PROVINCE = 'provinces';
 // minio
 export const API_ENDPOINT_UPLOAD_IMG = 'upload';
+export const API_ENDPOINT_UPLOAD_PDF = 'upload-pdf';
 // comment
 export const API_ENDPOINT_GET_COMMENT = 'comments';
 // household
@@ -57,3 +60,10 @@ export const API_ENDPOINT_GET_LAND = 'lands';
 export const API_ENDPOINT_GET_PLANT = 'plants';
 export const API_ENDPOINT_UPDATE_PLANT = 'plants/update';
 export const API_ENDPOINT_DELETE_PLANT = 'plants/delete';
+// banner
+export const API_ENDPOINT_GET_BANNER = 'banners';
+export const API_ENDPOINT_UPDATE_BANNER = 'banners/update';
+// field
+export const API_ENDPOINT_GET_FIELD = 'fields';
+// documentType
+export const API_ENDPOINT_GET_DOCUMENT_TYPE = 'documentTypes';

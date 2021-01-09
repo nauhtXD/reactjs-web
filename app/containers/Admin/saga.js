@@ -696,6 +696,37 @@ export function* uploadImgSaga({ payload }) {
   }
 }
 
+export function* uploadPdfSaga({ payload }) {
+  try {
+    const response = yield call(api.uploadPdf, payload);
+    if (response && response.status === 200) {
+      yield put({
+        type: types.UPLOAD_PDF_SUCCESS,
+        url: response.data.data,
+      });
+    } else {
+      yield put({
+        type: types.UPLOAD_PDF_FAIL,
+        error: response && response.data ? response.data.messages : 'API Error',
+      });
+      notification.error({
+        message: 'Error',
+        description:
+          response && response.data ? response.data.messages : 'API Error',
+      });
+    }
+  } catch (err) {
+    yield put({
+      type: types.UPLOAD_PDF_FAIL,
+      error: err,
+    });
+    notification.error({
+      message: 'Error',
+      description: err,
+    });
+  }
+}
+
 export function* getLandSaga({ payload }) {
   try {
     const response = yield call(api.getLands, payload);
@@ -1028,6 +1059,274 @@ export function* getGenusFeatureSaga({ payload }) {
   }
 }
 
+// #region banner
+export function* getBannerSaga({ payload }) {
+  try {
+    const response = yield call(api.getBanners, payload);
+    if (response && response.status === 200) {
+      yield put({
+        type: types.GET_BANNER_SUCCESS,
+        banners: response.data.data,
+      });
+    } else {
+      yield put({
+        type: types.GET_BANNER_FAIL,
+        error: response && response.data ? response.data.messages : 'API Error',
+      });
+      notification.error({
+        message: 'Error',
+        description:
+          response && response.data ? response.data.messages : 'API Error',
+      });
+    }
+  } catch (err) {
+    yield put({
+      type: types.GET_BANNER_FAIL,
+      error: err,
+    });
+    notification.error({
+      message: 'Error',
+      description: err,
+    });
+  }
+}
+
+export function* updateBannerSaga({ payload }) {
+  try {
+    const response = yield call(api.updateBanner, payload);
+    if (response && response.status === 200) {
+      yield put({
+        type: types.UPDATE_BANNER_SUCCESS,
+      });
+      notification.success({
+        message: 'Success',
+        description: 'Chỉnh sửa thành công',
+      });
+    } else {
+      yield put({
+        type: types.UPDATE_BANNER_FAIL,
+        error: response && response.data ? response.data.messages : 'API Error',
+      });
+      notification.error({
+        message: 'Error',
+        description:
+          response && response.data ? response.data.messages : 'API Error',
+      });
+    }
+  } catch (err) {
+    yield put({
+      type: types.UPDATE_BANNER_FAIL,
+      error: err,
+    });
+    notification.error({
+      message: 'Error',
+      description: err,
+    });
+  }
+}
+// #endregion
+
+// #region document
+export function* getDocumentSaga({ payload }) {
+  try {
+    const response = yield call(api.getDocuments, payload);
+    if (response && response.status === 200) {
+      yield put({
+        type: types.GET_DOCUMENT_SUCCESS,
+        documents: response.data.data,
+      });
+    } else {
+      yield put({
+        type: types.GET_DOCUMENT_FAIL,
+        error: response && response.data ? response.data.messages : 'API Error',
+      });
+      notification.error({
+        message: 'Error',
+        description:
+          response && response.data ? response.data.messages : 'API Error',
+      });
+    }
+  } catch (err) {
+    yield put({
+      type: types.GET_DOCUMENT_FAIL,
+      error: err,
+    });
+    notification.error({
+      message: 'Error',
+      description: err,
+    });
+  }
+}
+
+export function* createDocumentSaga({ payload }) {
+  try {
+    const response = yield call(api.createDocument, payload);
+    if (response && response.status === 200) {
+      yield put({
+        type: types.CREATE_DOCUMENT_SUCCESS,
+      });
+      notification.success({
+        message: 'Success',
+        description: 'Thêm thành công',
+      });
+    } else {
+      yield put({
+        type: types.CREATE_DOCUMENT_FAIL,
+        error: response && response.data ? response.data.messages : 'API Error',
+      });
+      notification.error({
+        message: 'Error',
+        description:
+          response && response.data ? response.data.messages : 'API Error',
+      });
+    }
+  } catch (err) {
+    yield put({
+      type: types.CREATE_DOCUMENT_FAIL,
+      error: err,
+    });
+    notification.error({
+      message: 'Error',
+      description: err,
+    });
+  }
+}
+
+export function* updateDocumentSaga({ payload }) {
+  try {
+    const response = yield call(api.updateDocument, payload);
+    if (response && response.status === 200) {
+      yield put({
+        type: types.UPDATE_DOCUMENT_SUCCESS,
+      });
+      notification.success({
+        message: 'Success',
+        description: 'Chỉnh sửa thành công',
+      });
+    } else {
+      yield put({
+        type: types.UPDATE_DOCUMENT_FAIL,
+        error: response && response.data ? response.data.messages : 'API Error',
+      });
+      notification.error({
+        message: 'Error',
+        description:
+          response && response.data ? response.data.messages : 'API Error',
+      });
+    }
+  } catch (err) {
+    yield put({
+      type: types.UPDATE_DOCUMENT_FAIL,
+      error: err,
+    });
+    notification.error({
+      message: 'Error',
+      description: err,
+    });
+  }
+}
+
+export function* deleteDocumentSaga({ payload }) {
+  try {
+    const response = yield call(api.deleteDocument, payload);
+    if (response && response.status === 200) {
+      yield put({
+        type: types.DELETE_DOCUMENT_SUCCESS,
+      });
+      notification.success({
+        message: 'Success',
+        description: 'Xóa thành công',
+      });
+    } else {
+      yield put({
+        type: types.DELETE_DOCUMENT_FAIL,
+        error: response && response.data ? response.data.messages : 'API Error',
+      });
+      notification.error({
+        message: 'Error',
+        description:
+          response && response.data ? response.data.messages : 'API Error',
+      });
+    }
+  } catch (err) {
+    yield put({
+      type: types.DELETE_DOCUMENT_FAIL,
+      error: err,
+    });
+    notification.error({
+      message: 'Error',
+      description: err,
+    });
+  }
+}
+// #endregion
+
+// #region documentType
+export function* getDocumentTypeSaga({ payload }) {
+  try {
+    const response = yield call(api.getDocumentTypes, payload);
+    if (response && response.status === 200) {
+      yield put({
+        type: types.GET_DOCUMENT_TYPE_SUCCESS,
+        documentTypes: response.data.data,
+      });
+    } else {
+      yield put({
+        type: types.GET_DOCUMENT_TYPE_FAIL,
+        error: response && response.data ? response.data.messages : 'API Error',
+      });
+      notification.error({
+        message: 'Error',
+        description:
+          response && response.data ? response.data.messages : 'API Error',
+      });
+    }
+  } catch (err) {
+    yield put({
+      type: types.GET_DOCUMENT_TYPE_FAIL,
+      error: err,
+    });
+    notification.error({
+      message: 'Error',
+      description: err,
+    });
+  }
+}
+// #endregion
+
+// #region field
+export function* getFieldSaga({ payload }) {
+  try {
+    const response = yield call(api.getFields, payload);
+    if (response && response.status === 200) {
+      yield put({
+        type: types.GET_FIELD_SUCCESS,
+        fields: response.data.data,
+      });
+    } else {
+      yield put({
+        type: types.GET_FIELD_FAIL,
+        error: response && response.data ? response.data.messages : 'API Error',
+      });
+      notification.error({
+        message: 'Error',
+        description:
+          response && response.data ? response.data.messages : 'API Error',
+      });
+    }
+  } catch (err) {
+    yield put({
+      type: types.GET_FIELD_FAIL,
+      error: err,
+    });
+    notification.error({
+      message: 'Error',
+      description: err,
+    });
+  }
+}
+// #endregion
+
 export default function* rootSaga() {
   yield all([
     takeLatest(types.GET_USER, getUserSaga),
@@ -1051,6 +1350,7 @@ export default function* rootSaga() {
     takeLatest(types.UPDATE_CONTACT, updateContactSaga),
     takeLatest(types.DELETE_CONTACT, deleteContactSaga),
     takeLatest(types.UPLOAD_IMG, uploadImgSaga),
+    takeLatest(types.UPLOAD_PDF, uploadPdfSaga),
     takeLatest(types.GET_HOUSEHOLD, getHouseholdSaga),
     takeLatest(types.CREATE_HOUSEHOLD, createHouseholdSaga),
     takeLatest(types.UPDATE_HOUSEHOLD, updateHouseholdSaga),
@@ -1061,5 +1361,13 @@ export default function* rootSaga() {
     takeLatest(types.UPDATE_PLANT, updatePlantSaga),
     takeLatest(types.DELETE_PLANT, deletePlantSaga),
     takeLatest(types.GET_GENUS_FEATURE, getGenusFeatureSaga),
+    takeLatest(types.GET_BANNER, getBannerSaga),
+    takeLatest(types.UPDATE_BANNER, updateBannerSaga),
+    takeLatest(types.GET_DOCUMENT, getDocumentSaga),
+    takeLatest(types.CREATE_DOCUMENT, createDocumentSaga),
+    takeLatest(types.UPDATE_DOCUMENT, updateDocumentSaga),
+    takeLatest(types.DELETE_DOCUMENT, deleteDocumentSaga),
+    takeLatest(types.GET_DOCUMENT_TYPE, getDocumentTypeSaga),
+    takeLatest(types.GET_FIELD, getFieldSaga),
   ]);
 }

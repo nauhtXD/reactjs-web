@@ -39,6 +39,8 @@ import Report from '../Admin/pages/report';
 import Contact from '../Admin/pages/contact';
 import Household from '../Admin/pages/household';
 import Plant from '../Admin/pages/plant';
+import Document from '../Admin/pages/document';
+import Banner from '../Admin/pages/banner';
 
 import GlobalStyle from '../../global-styles';
 function App(props) {
@@ -78,14 +80,16 @@ function App(props) {
 
           <Route exact path="/login" component={Login} />
 
-          <Route path="/admin" component={Admin} />
-          <Route exact path="/admin/dashboard" component={Dashboard} />
-          <Route exact path="/admin/user" component={User} />
-          <Route exact path="/admin/post" component={Post} />
-          <Route exact path="/admin/report" component={Report} />
-          <Route exact path="/admin/contact" component={Contact} />
-          <Route exact path="/admin/household" component={Household} />
-          <Route exact path="/admin/plant" component={Plant} />
+          <PrivateRoute path="/admin" component={Admin} />
+          <PrivateRoute exact path="/admin/dashboard" component={Dashboard} />
+          <PrivateRoute exact path="/admin/user" component={User} />
+          <PrivateRoute exact path="/admin/post" component={Post} />
+          <PrivateRoute exact path="/admin/report" component={Report} />
+          <PrivateRoute exact path="/admin/contact" component={Contact} />
+          <PrivateRoute exact path="/admin/household" component={Household} />
+          <PrivateRoute exact path="/admin/plant" component={Plant} />
+          <PrivateRoute exact path="/admin/document" component={Document} />
+          <PrivateRoute exact path="/admin/banner" component={Banner} />
 
           <Route path="" component={NotFoundPage} />
         </Switch>

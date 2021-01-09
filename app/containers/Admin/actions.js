@@ -191,6 +191,13 @@ export function uploadImg(data) {
   };
 }
 
+export function uploadPdf(data) {
+  return {
+    type: types.UPLOAD_PDF,
+    payload: data,
+  };
+}
+
 export function getLands(data) {
   return {
     type: types.GET_LAND,
@@ -234,3 +241,63 @@ export function deletePlant(data) {
   };
 }
 // #endregion
+
+// #region BANNER
+export function getBanners(data) {
+  return {
+    type: types.GET_BANNER,
+    payload: data,
+  };
+}
+
+export function updateBanner(data) {
+  return {
+    type: types.UPDATE_BANNER,
+    payload: data,
+  };
+}
+// #endregion
+
+// #region Document
+export function getDocuments(data) {
+  return {
+    type: types.GET_DOCUMENT,
+    payload: data,
+  };
+}
+
+export function createDocument(data) {
+  return {
+    type: types.CREATE_DOCUMENT,
+    payload: data,
+  };
+}
+
+export function updateDocument(data) {
+  return {
+    type: types.UPDATE_DOCUMENT,
+    payload: data,
+  };
+}
+
+export function deleteDocument(data) {
+  return {
+    type: types.DELETE_DOCUMENT,
+    payload: data,
+  };
+}
+// #endregion
+
+export function getDocumentTypes(data) {
+  return {
+    type: types.GET_DOCUMENT_TYPE,
+    payload: data,
+  };
+}
+
+export function getFields(data) {
+  return {
+    type: types.GET_FIELD,
+    payload: data,
+  };
+}

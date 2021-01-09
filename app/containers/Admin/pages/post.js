@@ -9,27 +9,43 @@ import { Row, Col, DatePicker, Select, Input, Image, Form } from 'antd';
 import styled from 'styled-components';
 import moment from 'moment';
 
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
+
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
 import reducer from '../reducer';
 import saga from '../saga';
 import makeSelect from '../selectors';
 import * as action from '../actions';
-import { MyBox, layout } from '../../../components/Style/index';
+
 import AdminTable from '../../../components/AdminTable/index';
-import MyEditor from '../../../components/MyEditor/index';
 import MyUpload from '../../../components/MyUpload/index';
+import { MyBox, layout, ContentDiv } from '../../../components/Style/index';
 
 const dateFormat = 'DD/MM/YYYY';
 const { Option } = Select;
-const MyContentDiv = styled.div`
-  overflow: hidden;
-  text-overflow: ellipsis;
+
+const MyContentDiv = styled(ContentDiv)`
+  -webkit-line-clamp: 4;
   max-width: 300px;
   max-height: 100px;
 `;
+const Mrq = styled(ReactQuill)`
+  .ql-container {
+    height: 90% !important;
+    cursor: auto !important;
+  }
+`;
+
 let k = -1;
-const init = { content: '', subcategoryId: 1, publishAt: moment(), img: [] };
+const init = {
+  content: '',
+  subcategoryId: 1,
+  publishAt: moment(),
+  img: [],
+  author: localStorage.getItem('usrName'),
+};
 
 export function Post(props) {
   useInjectReducer({ key: 'admin', reducer });
@@ -55,10 +71,6 @@ export function Post(props) {
   useEffect(() => {
     setDefValue({ ...defValue, img: props.adminReducer.url });
   }, [props.adminReducer.url]);
-
-  const handleEditor = value => {
-    setDefValue({ ...defValue, content: value });
-  };
 
   const setNullPreview = () => {
     setDefValue({ ...defValue, img: null });
@@ -100,18 +112,23 @@ export function Post(props) {
   ];
 
   const handleCreate = record => {
-    const data = { ...record, author: localStorage.getItem('usrName') };
-    props.createPost(data);
+    props.createPost(record);
+    setIsRerender(!isRerender);
     return 0;
   };
 
   const handleClick = (record, key) => {
     if (key === 0) {
-      const realValue = { ...record, content: defValue.content };
-      props.updatePost(realValue);
+      props.updatePost(record);
     } else props.deletePost(record);
     setIsRerender(!isRerender);
   };
+
+  const handleSearch = (entry, currValue) =>
+    entry.title.toLowerCase().includes(currValue) ||
+    entry.content.toLowerCase().includes(currValue) ||
+    entry.subcategory.name.toLowerCase().includes(currValue) ||
+    entry.view.toString().includes(currValue);
 
   const myModal = [
     <div>
@@ -124,7 +141,12 @@ export function Post(props) {
           </MyBox>
           <MyBox>
             <Form.Item name="content">
-              <MyEditor mHeight="300px" mWidth="600px" mChange={handleEditor} />
+              <Mrq
+                theme="snow"
+                modules={Post.modules}
+                formats={Post.formats}
+                style={{ height: '300px', width: '600px' }}
+              />
             </Form.Item>
           </MyBox>
         </Col>
@@ -144,11 +166,14 @@ export function Post(props) {
                   ))}
               </Select>
             </Form.Item>
+            <Form.Item label="Ngày đăng" name="publishAt">
+              <DatePicker format={dateFormat} />
+            </Form.Item>
             <Form.Item label="Nguồn" name="source">
               <Input placeholder="Nguồn" />
             </Form.Item>
-            <Form.Item label="Ngày đăng" name="publishAt">
-              <DatePicker format={dateFormat} />
+            <Form.Item label="Tác giả" name="author">
+              <Input readOnly />
             </Form.Item>
           </MyBox>
         </Col>
@@ -172,11 +197,43 @@ export function Post(props) {
         mUpdate={handleClick}
         mTableModal={myModal}
         mInitialValues={defValue}
+        mSearch={handleSearch}
         mWidth={1000}
+        mCheckImg
       />
     </div>
   );
 }
+
+Post.modules = {
+  toolbar: [
+    [{ header: [1, 2, false] }],
+    ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+    [
+      { list: 'ordered' },
+      { list: 'bullet' },
+      { indent: '-1' },
+      { indent: '+1' },
+    ],
+    ['link', 'image', 'video'],
+    ['clean'],
+  ],
+};
+
+Post.formats = [
+  'header',
+  'bold',
+  'italic',
+  'underline',
+  'strike',
+  'blockquote',
+  'list',
+  'bullet',
+  'indent',
+  'link',
+  'image',
+  'video',
+];
 
 Post.propTypes = {
   adminReducer: PropTypes.any,

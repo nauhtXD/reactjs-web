@@ -75,16 +75,15 @@ export function NewsList(props) {
                             key={item.id}
                             extra={<Image width={160} src={item.img} />}
                           >
-                            <List.Item.Meta
-                              title={
-                                <MyLink href={`/news/${item.id}`}>
-                                  {item.title}
-                                </MyLink>
-                              }
-                              description={moment(item.publishAt).format(
-                                dateFormat,
-                              )}
-                            />
+                            <MyLink
+                              href={`/news/${item.id}`}
+                              style={{ fontSize: '17px' }}
+                            >
+                              {item.title}
+                            </MyLink>
+                            <p style={{ opacity: 0.6, fontSize: '13px' }}>
+                              {moment(item.publishAt).format(dateFormat)}
+                            </p>
                             <ContentDiv
                               dangerouslySetInnerHTML={{ __html: item.content }}
                             />

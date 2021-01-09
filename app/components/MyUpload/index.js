@@ -10,7 +10,7 @@ import styled from 'styled-components';
 import { Image } from 'antd';
 import { CloseSquareTwoTone } from '@ant-design/icons';
 import Upload from 'react-file-reader';
-import { PlusIcon } from '../Style/index';
+import { PlusIcon, primaryColor } from '../Style/index';
 
 const UploadDiv = styled.div`
   width: 50%;
@@ -19,7 +19,7 @@ const UploadDiv = styled.div`
   text-align: center;
   padding: 18px 0 8px 0;
   :hover {
-    border-color: #1890ff;
+    border-color: ${primaryColor};
     cursor: pointer;
   }
 `;
@@ -45,6 +45,7 @@ function MyUpload(props) {
       props.mUpload(data);
     }
   };
+
   return (
     <div>
       {props.value && props.value[0] ? (
