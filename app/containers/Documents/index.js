@@ -46,6 +46,7 @@ export function Documents(props) {
   const [defValue, setDefValue] = useState(null);
   const [searchValue, setSearchValue] = useState(null);
   const [dataSource, setDataSource] = useState(null);
+  const [usrName, setUsrName] = useState(null);
 
   useEffect(() => {
     props.getContacts();
@@ -72,6 +73,20 @@ export function Documents(props) {
   useEffect(() => {
     form.setFieldsValue(defValue);
   }, [form, defValue]);
+
+  useEffect(() => {
+    if (props.homeReducer.loginToken.token) {
+      localStorage.setItem('authToken', props.homeReducer.loginToken.token);
+      localStorage.setItem('usrId', props.homeReducer.loginToken.uid);
+      localStorage.setItem('usrName', usrName);
+      window.location.reload();
+    }
+  }, [props.homeReducer.loginToken]);
+
+  const handleLogin = values => {
+    setUsrName(values.username);
+    props.getLoginToken(values);
+  };
 
   const showModal = () => {
     setIsVisible(!isVisible);
@@ -182,6 +197,7 @@ export function Documents(props) {
           mCreateReport={props.createProblem}
           mDocuments={props.homeReducer.lastestDocuments}
           mWeathers={props.homeReducer.weathers}
+          mLogin={handleLogin}
         />
         <MyAntdModal
           title="Chi tiết"
@@ -230,6 +246,7 @@ Documents.propTypes = {
   getLastestDocuments: PropTypes.func,
   getWeathers: PropTypes.func,
   getCityList: PropTypes.func,
+  getLoginToken: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -238,6 +255,9 @@ const mapStateToProps = createStructuredSelector({
 });
 
 const mapDispatchToProps = dispatch => ({
+  getLoginToken: data => {
+    dispatch(hAction.getLoginToken(data));
+  },
   getCategories: data => {
     dispatch(hAction.getCategories(data));
   },

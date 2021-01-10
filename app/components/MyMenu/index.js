@@ -7,12 +7,13 @@
 import React, { memo, useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { Menu, Modal, Form, Input } from 'antd';
-import { layout, UIcon } from '../Style/index';
+import { Menu, Form, Input } from 'antd';
+import { layout, UIcon, MyAntdForm, MyAntdModal } from '../Style/index';
 
 const { SubMenu } = Menu;
 const mColor = '#000';
 const menuColor = '#77b81e';
+
 // #region styled
 const FMenu = styled(Menu)`
   background-color: ${menuColor} !important;
@@ -77,7 +78,9 @@ function MyMenu(props) {
   };
 
   const handleLogin = () => {
-    window.location.reload();
+    form.validateFields().then(values => {
+      props.mLogin(values);
+    });
   };
 
   return (
@@ -126,7 +129,7 @@ function MyMenu(props) {
           </NavItem>
         )}
       </FMenu>
-      <Modal
+      <MyAntdModal
         title="Đăng nhập"
         centered
         visible={isVisible}
@@ -135,7 +138,7 @@ function MyMenu(props) {
         okText="Đăng nhập"
         cancelText="Hủy"
       >
-        <Form form={form} {...layout}>
+        <MyAntdForm form={form} {...layout}>
           <Form.Item
             label="Tên đăng nhập"
             name="username"
@@ -152,8 +155,8 @@ function MyMenu(props) {
           >
             <Input.Password />
           </Form.Item>
-        </Form>
-      </Modal>
+        </MyAntdForm>
+      </MyAntdModal>
     </div>
   );
 }
@@ -161,6 +164,7 @@ function MyMenu(props) {
 MyMenu.propTypes = {
   mCategories: PropTypes.any,
   mSubCategories: PropTypes.any,
+  mLogin: PropTypes.func,
 };
 
 export default memo(MyMenu);

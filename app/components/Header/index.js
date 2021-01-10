@@ -27,6 +27,7 @@ function Header(props) {
       <MyMenu
         mCategories={props.mCategories}
         mSubCategories={props.mSubCategories}
+        mLogin={props.mLogin}
       />
       <div style={{ margin: '50px auto auto auto', width: '90%' }}>
         <Carousel autoplay effect="fade">
@@ -100,6 +101,7 @@ Header.propTypes = {
   mCategories: PropTypes.any,
   mSubCategories: PropTypes.any,
   mBreadcrumbs: PropTypes.any,
+  mLogin: PropTypes.func,
 };
 
 export default memo(Header);

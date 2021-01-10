@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
-import { Row, Col, Card, List } from 'antd';
+import { Row, Col, Card, List, Space } from 'antd';
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
 import reducer from '../reducer';
@@ -142,6 +142,66 @@ function WikiNews(props) {
                                 </ul>
                               ),
                             )}
+                          </div>
+                        }
+                      />
+                    )}
+                    {props.mangoWikiReducer.new.breedings &&
+                      props.mangoWikiReducer.new.breedings.length > 0 && (
+                      <DividerList
+                        mTitle="Cách trồng"
+                        mCont={
+                          <div>
+                            <ul>
+                              {props.mangoWikiReducer.new.breedings.map(i => (
+                                <li>
+                                  <Space>
+                                    <p>{i.methodName}:</p>
+                                    <p>{i.detail}</p>
+                                  </Space>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        }
+                      />
+                    )}
+                    {props.mangoWikiReducer.new.handleFlowers &&
+                      props.mangoWikiReducer.new.handleFlowers.length > 0 && (
+                      <DividerList
+                        mTitle="Xử lý ra hoa"
+                        mCont={
+                          <div>
+                            <ul>
+                              {props.mangoWikiReducer.new.handleFlowers.map(i => (
+                                <li>
+                                  <Space>
+                                    <p>{i.name}:</p>
+                                    <p>{i.detail}</p>
+                                  </Space>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        }
+                      />
+                    )}
+                    {props.mangoWikiReducer.new.manures &&
+                      props.mangoWikiReducer.new.manures.length > 0 && (
+                      <DividerList
+                        mTitle="Bón phân"
+                        mCont={
+                          <div>
+                            <ul>
+                              {props.mangoWikiReducer.new.manures.map(i => (
+                                <li>
+                                  <Space>
+                                    <p>{i.stage}:</p>
+                                    <p>{i.method}</p>
+                                  </Space>
+                                </li>
+                              ))}
+                            </ul>
                           </div>
                         }
                       />

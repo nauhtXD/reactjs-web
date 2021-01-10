@@ -24,6 +24,7 @@ function MyLayout(props) {
         mCategories={props.mCategories}
         mSubCategories={props.mSubCategories}
         mBreadcrumbs={props.mBreadcrumbs}
+        mLogin={props.mLogin}
       />
       <div style={{ width: '90%', margin: 'auto' }}>
         <Layout style={{ backgroundColor: '#fff' }}>
@@ -56,6 +57,7 @@ MyLayout.propTypes = {
   mWeathers: PropTypes.any,
   mCreateReport: PropTypes.func,
   mDocuments: PropTypes.any,
+  mLogin: PropTypes.func,
 };
 
 export default memo(MyLayout);

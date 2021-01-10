@@ -1,4 +1,4 @@
-import React, { memo, useEffect } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
@@ -30,6 +30,8 @@ export function NewsList(props) {
   useInjectReducer({ key: 'newsList', reducer });
   useInjectSaga({ key: 'newsList', saga });
 
+  const [usrName, setUsrName] = useState(null);
+
   useEffect(() => {
     props.getPostsBySCID(match.params.subId);
     props.getCategories();
@@ -47,6 +49,20 @@ export function NewsList(props) {
         key: API_KEY,
       });
   }, [props.homeReducer.cityList]);
+
+  useEffect(() => {
+    if (props.homeReducer.loginToken.token) {
+      localStorage.setItem('authToken', props.homeReducer.loginToken.token);
+      localStorage.setItem('usrId', props.homeReducer.loginToken.uid);
+      localStorage.setItem('usrName', usrName);
+      window.location.reload();
+    }
+  }, [props.homeReducer.loginToken]);
+
+  const handleLogin = values => {
+    setUsrName(values.username);
+    props.getLoginToken(values);
+  };
 
   return (
     <div>
@@ -103,6 +119,7 @@ export function NewsList(props) {
           mCreateReport={props.createProblem}
           mDocuments={props.homeReducer.lastestDocuments}
           mWeathers={props.homeReducer.weathers}
+          mLogin={handleLogin}
         />
       </div>
     </div>
@@ -120,6 +137,7 @@ NewsList.propTypes = {
   getLastestDocuments: PropTypes.func,
   getWeathers: PropTypes.func,
   getCityList: PropTypes.func,
+  getLoginToken: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -128,6 +146,9 @@ const mapStateToProps = createStructuredSelector({
 });
 
 const mapDispatchToProps = dispatch => ({
+  getLoginToken: data => {
+    dispatch(hAction.getLoginToken(data));
+  },
   getCategories: data => {
     dispatch(hAction.getCategories(data));
   },

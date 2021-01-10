@@ -64,6 +64,7 @@ export function WeatherMap(props) {
   useInjectReducer({ key: 'weatherMap', reducer });
   useInjectSaga({ key: 'weatherMap', saga });
 
+  const [usrName, setUsrName] = useState(null);
   const [history5D, setHis] = useState([]);
   const [center, setCenter] = useState(null);
   const [geo, setGeo] = useState({
@@ -101,6 +102,20 @@ export function WeatherMap(props) {
     const geoData = props.homeReducer.cityList.map(i => i.province.geo);
     if (geoData.length > 0) setGeo([...new Set(geoData)]);
   }, [props.homeReducer.cityList]);
+
+  useEffect(() => {
+    if (props.homeReducer.loginToken.token) {
+      localStorage.setItem('authToken', props.homeReducer.loginToken.token);
+      localStorage.setItem('usrId', props.homeReducer.loginToken.uid);
+      localStorage.setItem('usrName', usrName);
+      window.location.reload();
+    }
+  }, [props.homeReducer.loginToken]);
+
+  const handleLogin = values => {
+    setUsrName(values.username);
+    props.getLoginToken(values);
+  };
 
   const handleClick = (lat, lon) => {
     setHis([]);
@@ -194,6 +209,7 @@ export function WeatherMap(props) {
         mCreateReport={props.createProblem}
         mDocuments={props.homeReducer.lastestDocuments}
         mWeathers={props.homeReducer.weathers}
+        mLogin={handleLogin}
       />
     </div>
   );
@@ -209,6 +225,7 @@ WeatherMap.propTypes = {
   getCityList: PropTypes.func,
   createProblem: PropTypes.func,
   getLastestDocuments: PropTypes.func,
+  getLoginToken: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -217,6 +234,9 @@ const mapStateToProps = createStructuredSelector({
 });
 
 const mapDispatchToProps = dispatch => ({
+  getLoginToken: data => {
+    dispatch(hAction.getLoginToken(data));
+  },
   getCategories: data => {
     dispatch(hAction.getCategories(data));
   },

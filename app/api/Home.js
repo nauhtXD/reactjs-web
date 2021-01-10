@@ -24,3 +24,5 @@ export const getWeathers = data =>
   apiConfig2.get(`group?id=${data.data}&lang=vi&appid=${data.key}`);
 export const getCityList = () =>
   apiConfig.get(endpoint.API_ENDPOINT_GET_CITY_LIST);
+  export const getLoginToken = data =>
+  apiConfig.post(endpoint.API_ENDPOINT_GET_LOGIN_TOKEN, data);

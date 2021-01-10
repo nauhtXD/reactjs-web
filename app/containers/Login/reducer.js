@@ -4,7 +4,6 @@ import * as types from './constants';
 export const initialState = {
   loadingLoginToken: false,
   loginToken: [],
-  message: [],
 };
 
 /* eslint-disable default-case, no-param-reassign */

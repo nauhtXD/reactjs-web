@@ -46,6 +46,7 @@ export function News(props) {
   useInjectSaga({ key: 'news', saga });
 
   const [isRerender, setIsRerender] = useState(false);
+  const [usrName, setUsrName] = useState(null);
   const [form] = Form.useForm();
   const postId = match.params.id;
 
@@ -73,6 +74,20 @@ export function News(props) {
     props.getComments(match.params.id);
     form.setFieldsValue({ content: '' });
   }, [isRerender]);
+
+  useEffect(() => {
+    if (props.homeReducer.loginToken.token) {
+      localStorage.setItem('authToken', props.homeReducer.loginToken.token);
+      localStorage.setItem('usrId', props.homeReducer.loginToken.uid);
+      localStorage.setItem('usrName', usrName);
+      window.location.reload();
+    }
+  }, [props.homeReducer.loginToken]);
+
+  const handleLogin = values => {
+    setUsrName(values.username);
+    props.getLoginToken(values);
+  };
 
   const handleSubmit = () => {
     form.validateFields().then(values => {
@@ -222,6 +237,7 @@ export function News(props) {
           mCreateReport={props.createProblem}
           mDocuments={props.homeReducer.lastestDocuments}
           mWeathers={props.homeReducer.weathers}
+          mLogin={handleLogin}
         />
       </div>
     </div>
@@ -242,6 +258,7 @@ News.propTypes = {
   getWeathers: PropTypes.func,
   getCityList: PropTypes.func,
   createComment: PropTypes.func,
+  getLoginToken: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -282,6 +299,9 @@ const mapDispatchToProps = dispatch => ({
   },
   getLastestDocuments: data => {
     dispatch(hAction.getLastestDocuments(data));
+  },
+  getLoginToken: data => {
+    dispatch(hAction.getLoginToken(data));
   },
 });
 

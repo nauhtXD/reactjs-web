@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/no-distracting-elements */
 /* eslint-disable no-plusplus */
-import React, { memo, useEffect } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
 import { createStructuredSelector } from 'reselect';
@@ -20,6 +20,8 @@ import { MyLink, ContentDiv, API_KEY } from '../../components/Style/index';
 const dateFormat = 'DD/MM/YYYY';
 
 export function Home(props) {
+  const [usrName, setUsrName] = useState(null);
+
   useEffect(() => {
     props.getCityList();
     props.getCategories();
@@ -38,6 +40,20 @@ export function Home(props) {
         key: API_KEY,
       });
   }, [props.homeReducer.cityList]);
+
+  useEffect(() => {
+    if (props.homeReducer.loginToken.token) {
+      localStorage.setItem('authToken', props.homeReducer.loginToken.token);
+      localStorage.setItem('usrId', props.homeReducer.loginToken.uid);
+      localStorage.setItem('usrName', usrName);
+      window.location.reload();
+    }
+  }, [props.homeReducer.loginToken]);
+
+  const handleLogin = values => {
+    setUsrName(values.username);
+    props.getLoginToken(values);
+  };
 
   return (
     <div>
@@ -206,6 +222,7 @@ export function Home(props) {
         mCreateReport={props.createProblem}
         mDocuments={props.homeReducer.lastestDocuments}
         mWeathers={props.homeReducer.weathers}
+        mLogin={handleLogin}
       />
     </div>
   );
@@ -222,6 +239,7 @@ Home.propTypes = {
   getLastestDocuments: PropTypes.func,
   getWeathers: PropTypes.func,
   getCityList: PropTypes.func,
+  getLoginToken: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -229,6 +247,9 @@ const mapStateToProps = createStructuredSelector({
 });
 
 const mapDispatchToProps = dispatch => ({
+  getLoginToken: data => {
+    dispatch(action.getLoginToken(data));
+  },
   getCityList: data => {
     dispatch(action.getCityList(data));
   },

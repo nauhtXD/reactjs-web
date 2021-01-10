@@ -1,4 +1,4 @@
-import React, { memo, useEffect } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
@@ -35,6 +35,9 @@ const MyMI = styled(Menu.Item)`
 export function MangoWiki(props) {
   useInjectReducer({ key: 'mangoWiki', reducer });
   useInjectSaga({ key: 'mangoWiki', saga });
+
+  const [usrName, setUsrName] = useState(null);
+
   useEffect(() => {
     props.getCategories();
     props.getSubCategories();
@@ -43,6 +46,21 @@ export function MangoWiki(props) {
     props.getGenera();
     props.getGenusFeatures();
   }, []);
+
+  useEffect(() => {
+    if (props.homeReducer.loginToken.token) {
+      localStorage.setItem('authToken', props.homeReducer.loginToken.token);
+      localStorage.setItem('usrId', props.homeReducer.loginToken.uid);
+      localStorage.setItem('usrName', usrName);
+      window.location.reload();
+    }
+  }, [props.homeReducer.loginToken]);
+
+  const handleLogin = values => {
+    setUsrName(values.username);
+    props.getLoginToken(values);
+  };
+
   return (
     <div>
       <Helmet>
@@ -139,6 +157,7 @@ export function MangoWiki(props) {
         mSubCategories={props.homeReducer.subCategories}
         mContacts={props.homeReducer.contacts}
         mCheck
+        mLogin={handleLogin}
       />
     </div>
   );
@@ -153,6 +172,7 @@ MangoWiki.propTypes = {
   getFamilies: PropTypes.func,
   getGenera: PropTypes.func,
   getGenusFeatures: PropTypes.func,
+  getLoginToken: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -161,6 +181,9 @@ const mapStateToProps = createStructuredSelector({
 });
 
 const mapDispatchToProps = dispatch => ({
+  getLoginToken: data => {
+    dispatch(hAction.getLoginToken(data));
+  },
   getCategories: data => {
     dispatch(hAction.getCategories(data));
   },

@@ -82,3 +82,10 @@ export function getCityList(data) {
     payload: data,
   };
 }
+
+export function getLoginToken(data) {
+  return {
+    type: types.GET_LOGIN_TOKEN,
+    payload: data,
+  };
+}

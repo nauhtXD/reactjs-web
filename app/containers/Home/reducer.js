@@ -23,6 +23,8 @@ export const initialState = {
   lastestDocuments: [],
   loadingCityList: false,
   cityList: [],
+  loadingLoginToken: false,
+  loginToken: [],
 };
 
 /* eslint-disable default-case, no-param-reassign */
@@ -116,6 +118,17 @@ const homeReducer = (state = initialState, action) =>
       case types.GET_LASTEST_DOCUMENT_FAIL:
         draft.lastestDocuments = [];
         draft.loadingLastestDocuments = false;
+        break;
+      case types.GET_LOGIN_TOKEN:
+        draft.loadingLoginToken = true;
+        break;
+      case types.GET_LOGIN_TOKEN_SUCCESS:
+        draft.loginToken = action.loginToken;
+        draft.loadingLoginToken = false;
+        break;
+      case types.GET_LOGIN_TOKEN_FAIL:
+        draft.loginToken = [];
+        draft.loadingLoginToken = false;
         break;
     }
   });
