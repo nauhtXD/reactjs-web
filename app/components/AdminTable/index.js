@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 /**
  *
  * AdminTable
@@ -92,6 +93,15 @@ function AdminTable(props) {
           mModal={props.mTableModal}
           mWidth={props.mWidth}
           mPreview={props.mCheckImg ? props.mInitialValues.img : null}
+          mPreviewFile={props.mCheckFile ? props.mInitialValues.file : null}
+          mMap={
+            props.mCheckMap
+              ? {
+                  lat: props.mInitialValues.latitude,
+                  lng: props.mInitialValues.longitude,
+                }
+              : null
+          }
         />
       </MyBox>
       <MyAntdModal
@@ -125,6 +135,8 @@ AdminTable.propTypes = {
   mTableModal: PropTypes.any,
   mSearch: PropTypes.any,
   mCheckImg: PropTypes.bool,
+  mCheckFile: PropTypes.bool,
+  mCheckMap: PropTypes.bool,
 };
 
 export default memo(AdminTable);

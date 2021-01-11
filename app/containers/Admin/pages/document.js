@@ -16,7 +16,7 @@ import makeSelect from '../selectors';
 import * as action from '../actions';
 
 import AdminTable from '../../../components/AdminTable/Loadable';
-import MyUpload from '../../../components/MyUpload/index';
+import MyPdfUpload from '../../../components/MyPdfUpload/index';
 
 const { Option } = Select;
 const dateFormat = 'DD/MM/YYYY';
@@ -108,10 +108,28 @@ export function Document(props) {
 
   const mModal = [
     <div>
-      <Form.Item name="code" label="Số ký hiệu">
+      <Form.Item
+        name="code"
+        label="Số ký hiệu"
+        rules={[
+          {
+            required: true,
+            message: 'Vui lòng nhập số ký hiệu!',
+          },
+        ]}
+      >
         <Input />
       </Form.Item>
-      <Form.Item name="summary" label="Trích yếu">
+      <Form.Item
+        name="summary"
+        label="Trích yếu"
+        rules={[
+          {
+            required: true,
+            message: 'Vui lòng nhập trích yếu!',
+          },
+        ]}
+      >
         <Input />
       </Form.Item>
       <Form.Item name="publishAt" label="Ngày ban hành">
@@ -147,8 +165,17 @@ export function Document(props) {
             ))}
         </Select>
       </Form.Item>
-      <Form.Item name="file" label="File pdf">
-        <MyUpload mUpload={props.uploadPdf} mSetNull={setNullPreview} />
+      <Form.Item
+        name="file"
+        label="File pdf"
+        rules={[
+          {
+            required: true,
+            message: 'Vui lòng upload file pdf!',
+          },
+        ]}
+      >
+        <MyPdfUpload mUpload={props.uploadPdf} mSetNull={setNullPreview} />
       </Form.Item>
     </div>,
   ];
@@ -168,7 +195,7 @@ export function Document(props) {
         mCreate={handleCreate}
         mSearch={handleSearch}
         mInitialValues={defValue}
-        mCheckImg
+        mCheckFile
         mModal={mModal}
         mTableModal={mModal}
       />

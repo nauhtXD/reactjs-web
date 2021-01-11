@@ -79,6 +79,7 @@ export function WeatherMap(props) {
     props.getSubCategories();
     props.getContacts();
     props.getLastestDocuments(4);
+    props.getBanners();
   }, []);
 
   useEffect(() => {
@@ -210,6 +211,7 @@ export function WeatherMap(props) {
         mDocuments={props.homeReducer.lastestDocuments}
         mWeathers={props.homeReducer.weathers}
         mLogin={handleLogin}
+        mBanner={props.homeReducer.banners}
       />
     </div>
   );
@@ -226,6 +228,7 @@ WeatherMap.propTypes = {
   createProblem: PropTypes.func,
   getLastestDocuments: PropTypes.func,
   getLoginToken: PropTypes.func,
+  getBanners: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -234,6 +237,9 @@ const mapStateToProps = createStructuredSelector({
 });
 
 const mapDispatchToProps = dispatch => ({
+  getBanners: data => {
+    dispatch(hAction.getBanners(data));
+  },
   getLoginToken: data => {
     dispatch(hAction.getLoginToken(data));
   },

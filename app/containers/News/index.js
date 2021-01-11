@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import React, { memo, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -59,6 +60,7 @@ export function News(props) {
     props.getContacts();
     props.getCityList();
     props.getLastestDocuments(4);
+    props.getBanners();
   }, []);
 
   useEffect(() => {
@@ -142,6 +144,8 @@ export function News(props) {
                           {props.newsReducer.post.source}
                         </MyLink>
                       </p>
+
+                      <p>{`Người đăng: ${props.newsReducer.post.author}`}</p>
 
                       <Space>
                         <FacebookShareButton url={window.location.href}>
@@ -238,6 +242,7 @@ export function News(props) {
           mDocuments={props.homeReducer.lastestDocuments}
           mWeathers={props.homeReducer.weathers}
           mLogin={handleLogin}
+          mBanner={props.homeReducer.banners}
         />
       </div>
     </div>
@@ -259,6 +264,7 @@ News.propTypes = {
   getCityList: PropTypes.func,
   createComment: PropTypes.func,
   getLoginToken: PropTypes.func,
+  getBanners: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -302,6 +308,9 @@ const mapDispatchToProps = dispatch => ({
   },
   getLoginToken: data => {
     dispatch(hAction.getLoginToken(data));
+  },
+  getBanners: data => {
+    dispatch(hAction.getBanners(data));
   },
 });
 

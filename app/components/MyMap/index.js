@@ -22,6 +22,13 @@ function MyMap(props) {
     k = 0;
   }, [props.mCenter]);
 
+  useEffect(() => {
+    if (props.value && props.value.lat) {
+      setCurrPos(props.value);
+      setCurrCenter(props.value.center);
+    }
+  }, [props.value]);
+
   const handleClick = e => {
     setCurrPos(e.latlng);
     props.mPos(e.latlng);
@@ -31,8 +38,8 @@ function MyMap(props) {
     <div>
       <Map
         style={{
-          height: '400px',
-          width: '100%',
+          height: '350px',
+          width: '150%',
         }}
         zoom={mZoom}
         center={currCenter}
@@ -51,6 +58,7 @@ function MyMap(props) {
 MyMap.propTypes = {
   mCenter: PropTypes.any,
   mPos: PropTypes.func,
+  value: PropTypes.any,
 };
 
 export default memo(MyMap);

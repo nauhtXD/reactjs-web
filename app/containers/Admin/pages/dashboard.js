@@ -8,7 +8,7 @@ import React, { memo } from 'react';
 // import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
-import { Card, Row, Col } from 'antd';
+import { Card } from 'antd';
 import { BookOutlined } from '@ant-design/icons';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';

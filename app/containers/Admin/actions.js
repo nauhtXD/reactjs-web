@@ -242,7 +242,7 @@ export function deletePlant(data) {
 }
 // #endregion
 
-// #region BANNER
+// #region banner
 export function getBanners(data) {
   return {
     type: types.GET_BANNER,

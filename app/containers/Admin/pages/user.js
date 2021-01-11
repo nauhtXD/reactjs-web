@@ -4,7 +4,7 @@ import { Helmet } from 'react-helmet';
 import PropTypes from 'prop-types';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
-import { Select, Input, Form, notification } from 'antd';
+import { Select, Input, Form } from 'antd';
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
 import reducer from '../reducer';
@@ -15,13 +15,6 @@ import makeSelect from '../selectors';
 import * as action from '../actions';
 
 const { Option } = Select;
-
-const openNotiWIcon = (type, message, description) => {
-  notification[type]({
-    message,
-    description,
-  });
-};
 
 let k = -1;
 
@@ -70,21 +63,14 @@ export function User(props) {
 
   const handleClick = (record, key) => {
     if (key === 0) props.updateUser(record);
-    else props.deleteUser(record);
     setIsReRender(!isReRender);
   };
 
-  const handleCreate = record => {
-    if (record.password === record.retype) {
-      const userTypeId = 1;
-      const input = { ...record, userTypeId };
-      props.createUser(input);
-      setIsReRender(!isReRender);
-      return 0;
-    }
-    openNotiWIcon('error', 'Error', 'Mật khẩu nhập lại không trùng khớp');
-    return 1;
-  };
+  const handleSearch = (entry, currValue) =>
+    entry.username.toLowerCase().includes(currValue) ||
+    entry.password.toLowerCase().includes(currValue) ||
+    entry.email.toLowerCase().includes(currValue) ||
+    entry.phone.toString().includes(currValue);
 
   return (
     <div>
@@ -94,53 +80,9 @@ export function User(props) {
       </Helmet>
       <AdminTable
         mTitle="Danh sách thành viên"
-        mCreate={handleCreate}
-        mModal={
-          <div>
-            <Form.Item
-              label="Tên đăng nhập"
-              name="username"
-              rules={[
-                { required: true, message: 'Vui lòng nhập tên đăng nhập!' },
-              ]}
-            >
-              <Input placeholder="Nhập tên đăng nhập" />
-            </Form.Item>
-
-            <Form.Item
-              label="Mật khẩu"
-              name="password"
-              rules={[{ required: true, message: 'Vui lòng nhập mật khẩu!' }]}
-            >
-              <Input.Password placeholder="Nhập mật khẩu" />
-            </Form.Item>
-
-            <Form.Item
-              label="Nhập lại mật khẩu"
-              name="retype"
-              rules={[
-                { required: true, message: 'Vui lòng nhập lại mật khẩu!' },
-              ]}
-            >
-              <Input.Password placeholder="Nhập lại mật khẩu" />
-            </Form.Item>
-
-            <Form.Item
-              label="Email"
-              name="email"
-              rules={[{ required: true, message: 'Vui lòng nhập email!' }]}
-            >
-              <Input placeholder="Nhập email" />
-            </Form.Item>
-
-            <Form.Item label="Số điện thoại" name="phone">
-              <Input placeholder="Nhập số điện thoại" />
-            </Form.Item>
-          </div>
-        }
+        mSearch={handleSearch}
         mData={props.adminReducer.users}
         mPropertyNames={propertyNames}
-        mDelete={handleClick}
         mUpdate={handleClick}
         mTableModal={
           <div>
@@ -150,16 +92,23 @@ export function User(props) {
             <Form.Item
               label="Mật khẩu"
               name="password"
-              rules={[
-                { required: true, message: 'Mật khẩu không được trống!' },
-              ]}
+              rules={[{ required: true, message: 'Vui lòng nhập mật khẩu !' }]}
             >
               <Input.Password />
             </Form.Item>
             <Form.Item
               label="Email"
               name="email"
-              rules={[{ required: true, message: 'Email không được trống!' }]}
+              rules={[
+                {
+                  type: 'email',
+                  message: 'Vui lòng nhập đúng định dạng email!',
+                },
+                {
+                  required: true,
+                  message: 'Vui lòng nhập email hội quán!',
+                },
+              ]}
             >
               <Input />
             </Form.Item>
@@ -182,9 +131,7 @@ export function User(props) {
 User.propTypes = {
   adminReducer: PropTypes.any,
   getUsers: PropTypes.func,
-  createUser: PropTypes.func,
   updateUser: PropTypes.func,
-  deleteUser: PropTypes.func,
   getUserTypes: PropTypes.func,
 };
 

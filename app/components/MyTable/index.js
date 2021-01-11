@@ -7,7 +7,7 @@
 import React, { memo, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 // import styled from 'styled-components';
-import { Table, Space, Button, Modal, Form } from 'antd';
+import { Table, Space, Button, Form } from 'antd';
 import moment from 'moment';
 import {
   CheckIcon,
@@ -35,11 +35,14 @@ function MyTable(props) {
 
   useEffect(() => {
     let data = defValue;
-    if (defValue.province) {
+    if (data.province) {
       data = {
         ...defValue,
-        latitude: defValue.province.latitude,
-        longitude: defValue.province.longitude,
+        map: {
+          lat: defValue.latitude,
+          lng: defValue.longitude,
+          center: [defValue.province.latitude, defValue.province.longitude],
+        },
       };
     }
     form.setFieldsValue(data);
@@ -49,10 +52,24 @@ function MyTable(props) {
     setDefValue({ ...defValue, img: props.mPreview });
   }, [props.mPreview]);
 
+  useEffect(() => {
+    setDefValue({ ...defValue, file: props.mPreviewFile });
+  }, [props.mPreviewFile]);
+
+  useEffect(() => {
+    if (props.mMap && props.mMap.lat)
+      setDefValue({
+        ...defValue,
+        latitude: props.mMap.lat,
+        longitude: props.mMap.lng,
+        map: props.mMap,
+      });
+  }, [props.mMap]);
+
   const [form] = Form.useForm();
 
   const confirm = id => {
-    Modal.confirm({
+    MyAntdModal.confirm({
       title: 'Xóa',
       content: 'Bạn vẫn chắc chắn muốn xóa?',
       okText: 'Xác nhận',
@@ -171,6 +188,8 @@ MyTable.propTypes = {
   mDelete: PropTypes.func,
   mWidth: PropTypes.number,
   mPreview: PropTypes.any,
+  mPreviewFile: PropTypes.any,
+  mMap: PropTypes.any,
 };
 
 export default memo(MyTable);

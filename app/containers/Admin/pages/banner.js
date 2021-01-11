@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
-// import { Select, Input, Image, Form } from 'antd';
+import { Form, Image } from 'antd';
 // import styled from 'styled-components';
 // import moment from 'moment';
 
@@ -17,6 +17,7 @@ import saga from '../saga';
 import makeSelect from '../selectors';
 import * as action from '../actions';
 import AdminTable from '../../../components/AdminTable/index';
+import MyUpload from '../../../components/MyUpload/index';
 
 let k = -1;
 
@@ -25,6 +26,7 @@ export function Banner(props) {
   useInjectSaga({ key: 'admin', saga });
 
   const [isRerender, setIsRerender] = useState(null);
+  const [defValue, setDefValue] = useState({ img: [] });
 
   useEffect(() => {
     props.getBanners();
@@ -39,6 +41,14 @@ export function Banner(props) {
     props.getBanners();
   }, [isRerender]);
 
+  useEffect(() => {
+    setDefValue({ ...defValue, img: props.adminReducer.url });
+  }, [props.adminReducer.url]);
+
+  const setNullPreview = () => {
+    setDefValue({ ...defValue, img: null });
+  };
+
   const propertyNames = [
     {
       title: 'ID',
@@ -47,6 +57,7 @@ export function Banner(props) {
     {
       title: 'Hình ảnh',
       data: 'img',
+      render: record => <Image width={400} src={record} />,
     },
   ];
 
@@ -54,6 +65,9 @@ export function Banner(props) {
     if (key === 0) props.updateBanner(record);
     setIsRerender(!isRerender);
   };
+
+  const handleSearch = (entry, currValue) =>
+    entry.id.toString().includes(currValue);
 
   return (
     <div>
@@ -66,8 +80,16 @@ export function Banner(props) {
         mData={props.adminReducer.banners}
         mPropertyNames={propertyNames}
         mUpdate={handleClick}
-        mModal={<div>aaaaaaa</div>}
-        mTableModal={<div>aaaaaa</div>}
+        mSearch={handleSearch}
+        mTableModal={
+          <div>
+            <Form.Item label="Hình ảnh" name="img">
+              <MyUpload mUpload={props.uploadImg} mSetNull={setNullPreview} />
+            </Form.Item>
+          </div>
+        }
+        mInitialValues={defValue}
+        mCheckImg
       />
     </div>
   );
@@ -77,6 +99,7 @@ Banner.propTypes = {
   adminReducer: PropTypes.any,
   getBanners: PropTypes.func,
   updateBanner: PropTypes.func,
+  uploadImg: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -89,6 +112,9 @@ const mapDispatchToProps = dispatch => ({
   },
   updateBanner: data => {
     dispatch(action.updateBanner(data));
+  },
+  uploadImg: data => {
+    dispatch(action.uploadImg(data));
   },
 });
 

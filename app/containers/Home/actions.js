@@ -89,3 +89,10 @@ export function getLoginToken(data) {
     payload: data,
   };
 }
+
+export function getBanners(data) {
+  return {
+    type: types.GET_BANNER,
+    payload: data,
+  };
+}

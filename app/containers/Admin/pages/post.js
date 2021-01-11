@@ -39,6 +39,7 @@ const Mrq = styled(ReactQuill)`
 `;
 
 let k = -1;
+
 const init = {
   content: '',
   subcategoryId: 1,
@@ -135,12 +136,30 @@ export function Post(props) {
       <Row>
         <Col span={16}>
           <MyBox>
-            <Form.Item {...layout} name="title" label="Tiêu đề">
+            <Form.Item
+              {...layout}
+              name="title"
+              label="Tiêu đề"
+              rules={[
+                {
+                  required: true,
+                  message: 'Vui lòng nhập tiêu đề!',
+                },
+              ]}
+            >
               <Input placeholder="Tiêu đề" />
             </Form.Item>
           </MyBox>
           <MyBox>
-            <Form.Item name="content">
+            <Form.Item
+              name="content"
+              rules={[
+                {
+                  required: true,
+                  message: 'Vui lòng nhập nội dung!',
+                },
+              ]}
+            >
               <Mrq
                 theme="snow"
                 modules={Post.modules}
@@ -152,7 +171,16 @@ export function Post(props) {
         </Col>
         <Col span={8}>
           <MyBox>
-            <Form.Item label="Ảnh hiển thị" name="img">
+            <Form.Item
+              label="Ảnh hiển thị"
+              name="img"
+              rules={[
+                {
+                  required: true,
+                  message: 'Vui lòng upload ảnh!',
+                },
+              ]}
+            >
               <MyUpload mUpload={props.uploadImg} mSetNull={setNullPreview} />
             </Form.Item>
             <Form.Item label="Danh mục" name="subcategoryId">
@@ -170,7 +198,7 @@ export function Post(props) {
               <DatePicker format={dateFormat} />
             </Form.Item>
             <Form.Item label="Nguồn" name="source">
-              <Input placeholder="Nguồn" />
+              <Input />
             </Form.Item>
             <Form.Item label="Tác giả" name="author">
               <Input readOnly />

@@ -89,9 +89,7 @@ function WikiNews(props) {
                                 style={{ marginLeft: '5%' }}
                               >
                                 {'• '}
-                                {item.scienceName
-                                  ? item.scienceName
-                                  : item.name}
+                                {item.name}
                               </MyLink>
                             </List.Item>
                           )}
@@ -149,7 +147,7 @@ function WikiNews(props) {
                     {props.mangoWikiReducer.new.breedings &&
                       props.mangoWikiReducer.new.breedings.length > 0 && (
                       <DividerList
-                        mTitle="Cách trồng"
+                        mTitle="Nhân giống"
                         mCont={
                           <div>
                             <ul>
@@ -173,14 +171,16 @@ function WikiNews(props) {
                         mCont={
                           <div>
                             <ul>
-                              {props.mangoWikiReducer.new.handleFlowers.map(i => (
-                                <li>
-                                  <Space>
-                                    <p>{i.name}:</p>
-                                    <p>{i.detail}</p>
-                                  </Space>
-                                </li>
-                              ))}
+                              {props.mangoWikiReducer.new.handleFlowers.map(
+                                i => (
+                                  <li>
+                                    <Space>
+                                      <p>{i.name}:</p>
+                                      <p>{i.detail}</p>
+                                    </Space>
+                                  </li>
+                                ),
+                              )}
                             </ul>
                           </div>
                         }

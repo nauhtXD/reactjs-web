@@ -65,6 +65,11 @@ export function Report(props) {
     setIsRerender(!isRerender);
   };
 
+  const handleSearch = (entry, currValue) =>
+    entry.title.toLowerCase().includes(currValue) ||
+    entry.content.toLowerCase().includes(currValue) ||
+    entry.user.username.toLowerCase().includes(currValue);
+
   return (
     <div>
       <Helmet>
@@ -77,6 +82,7 @@ export function Report(props) {
         mPropertyNames={propertyNames}
         mDelete={handleClick}
         mUpdate={handleClick}
+        mSearch={handleSearch}
         mTableModal={
           <div>
             <Form.Item label="Tiêu đề" name="title">

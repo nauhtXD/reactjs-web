@@ -30,6 +30,7 @@ export function Home(props) {
     props.getLastestPosts();
     props.getSubCategoriesByCID(3);
     props.getLastestDocuments(4);
+    props.getBanners();
   }, []);
 
   useEffect(() => {
@@ -223,6 +224,7 @@ export function Home(props) {
         mDocuments={props.homeReducer.lastestDocuments}
         mWeathers={props.homeReducer.weathers}
         mLogin={handleLogin}
+        mBanner={props.homeReducer.banners}
       />
     </div>
   );
@@ -240,6 +242,7 @@ Home.propTypes = {
   getWeathers: PropTypes.func,
   getCityList: PropTypes.func,
   getLoginToken: PropTypes.func,
+  getBanners: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -276,6 +279,9 @@ const mapDispatchToProps = dispatch => ({
   },
   getLastestDocuments: data => {
     dispatch(action.getLastestDocuments(data));
+  },
+  getBanners: data => {
+    dispatch(action.getBanners(data));
   },
 });
 

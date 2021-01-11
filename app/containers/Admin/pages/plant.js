@@ -24,6 +24,7 @@ const init = {
   publishAt: moment(),
   householdId: 1,
   genusFeatureId: 1,
+  root: 1,
 };
 
 export function Plant(props) {
@@ -107,11 +108,15 @@ export function Plant(props) {
             ))}
         </Select>
       </Form.Item>
-      <Form.Item name="root" label="Số gốc cây">
+      <Form.Item
+        name="root"
+        label="Số gốc cây"
+        rules={[{ required: true, message: 'Vui lòng nhập số gốc cây!' }]}
+      >
         <Input type="number" />
       </Form.Item>
       <Form.Item name="publishAt" label="Thời gian trồng">
-        <DatePicker />
+        <DatePicker format={dateFormat} />
       </Form.Item>
     </div>,
   ];

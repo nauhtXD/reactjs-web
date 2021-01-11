@@ -69,7 +69,7 @@ function Sidebar(props) {
                 <NewDiv key={i.id}>
                   <MyText>
                     {`•  `}
-                    <MyLink href="/documents">{i.summary}</MyLink>
+                    <MyLink href={i.file}>{i.summary}</MyLink>
                   </MyText>
                 </NewDiv>
               ))}

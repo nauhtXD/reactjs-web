@@ -316,6 +316,37 @@ export function* getLoginTokenSaga({ payload }) {
   }
 }
 
+export function* getBannerSaga({ payload }) {
+  try {
+    const response = yield call(api.getBanners, payload);
+    if (response && response.status === 200) {
+      yield put({
+        type: types.GET_BANNER_SUCCESS,
+        banners: response.data.data,
+      });
+    } else {
+      yield put({
+        type: types.GET_BANNER_FAIL,
+        error: response && response.data ? response.data.messages : 'API Error',
+      });
+      notification.error({
+        message: 'Error',
+        description:
+          response && response.data ? response.data.messages : 'API Error',
+      });
+    }
+  } catch (err) {
+    yield put({
+      type: types.GET_BANNER_FAIL,
+      error: err,
+    });
+    notification.error({
+      message: 'Error',
+      description: err,
+    });
+  }
+}
+
 export default function* rootSaga() {
   yield all([
     takeLatest(types.GET_CATEGORY, getCategorySaga),
@@ -328,5 +359,6 @@ export default function* rootSaga() {
     takeLatest(types.GET_WEATHER, getWeatherSaga),
     takeLatest(types.GET_CITY_LIST, getCityListSaga),
     takeLatest(types.GET_LOGIN_TOKEN, getLoginTokenSaga),
+    takeLatest(types.GET_BANNER, getBannerSaga),
   ]);
 }

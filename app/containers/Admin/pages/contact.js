@@ -6,7 +6,7 @@ import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 // import styled from 'styled-component';
 import { Form, Input, Select, Row, Col } from 'antd';
-import { OpenStreetMapProvider } from 'leaflet-geosearch';
+// import { OpenStreetMapProvider } from 'leaflet-geosearch';
 
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
@@ -16,9 +16,10 @@ import saga from '../saga';
 import * as action from '../actions';
 
 import AdminTable from '../../../components/AdminTable';
+import MyMap from '../../../components/MyMap/index';
 
 const { Option } = Select;
-const provider = new OpenStreetMapProvider();
+
 let k = -1;
 const init = { provinceId: 79 };
 
@@ -27,8 +28,12 @@ export function Contact(props) {
   useInjectSaga({ key: 'admin', saga });
 
   const [isReRender, setIsReRender] = useState(false);
-  const [currPos, setCurrPos] = useState([{ x: 0, y: 0 }]);
+  const [currPos, setCurrPos] = useState({ lat: 0, lng: 0 });
   const [defValue, setDefValue] = useState(init);
+  const [center, setCenter] = useState({
+    longitude: 106.666672,
+    latitude: 10.83333,
+  });
 
   useEffect(() => {
     props.getProvinces();
@@ -45,12 +50,22 @@ export function Contact(props) {
   }, [isReRender]);
 
   useEffect(() => {
-    setDefValue({
-      ...defValue,
-      longitude: currPos[0].x,
-      latitude: currPos[0].y,
-    });
-  }, [currPos[0]]);
+    if (currPos.lat)
+      setDefValue({
+        ...defValue,
+        longitude: currPos.lng,
+        latitude: currPos.lat,
+      });
+  }, [currPos]);
+
+  useEffect(() => {
+    if (props.adminReducer.center.latitude) {
+      setCenter({
+        latitude: props.adminReducer.center.latitude,
+        longitude: props.adminReducer.center.longitude,
+      });
+    }
+  }, [props.adminReducer.center]);
 
   const handleCreate = record => {
     props.createContact(record);
@@ -64,8 +79,15 @@ export function Contact(props) {
     setIsReRender(!isReRender);
   };
 
-  const handleBlur = async e => {
-    setCurrPos(await provider.search({ query: e.target.value }));
+  const handleCenter = value => {
+    props.getCenter(value);
+  };
+
+  const handlePos = value => {
+    setCurrPos({
+      lat: value.lat,
+      lng: value.lng,
+    });
   };
 
   const handleSearch = (entry, currValue) =>
@@ -95,66 +117,84 @@ export function Contact(props) {
 
   const mModal = [
     <div>
-      <Form.Item
-        label="Tên"
-        name="name"
-        rules={[{ required: true, message: 'Vui lòng nhập tên hội quán!' }]}
-      >
-        <Input />
-      </Form.Item>
-      <Form.Item
-        label="Email"
-        name="email"
-        rules={[
-          {
-            type: 'email',
-            message: 'Vui lòng nhập đúng định dạng email!',
-          },
-          {
-            required: true,
-            message: 'Vui lòng nhập email hội quán!',
-          },
-        ]}
-      >
-        <Input />
-      </Form.Item>
-      <Form.Item label="Fax" name="fax">
-        <Input type="number" />
-      </Form.Item>
-      <Form.Item label="Số điện thoại" name="phone">
-        <Input type="number" />
-      </Form.Item>
-      <Form.Item
-        label="Địa chỉ"
-        name="address"
-        rules={[
-          {
-            required: true,
-            message: 'Vui lòng nhập địa chỉ hội quán!',
-          },
-        ]}
-      >
-        <Input onBlur={handleBlur} />
-      </Form.Item>
-      <Form.Item label="Tỉnh/TP" name="provinceId">
-        <Select>
-          {props.adminReducer.provinces &&
-            props.adminReducer.provinces.map(i => (
-              <Option key={i.id} value={i.id}>
-                {i.provinceName}
-              </Option>
-            ))}
-        </Select>
-      </Form.Item>
       <Row gutter={16}>
-        <Col span={12}>
-          <Form.Item key="longitude" label="Kinh độ" name="longitude">
-            <Input readOnly />
+        <Col span={14}>
+          <Form.Item
+            label="Tên"
+            name="name"
+            rules={[{ required: true, message: 'Vui lòng nhập tên hội quán!' }]}
+          >
+            <Input />
           </Form.Item>
+          <Form.Item
+            label="Email"
+            name="email"
+            rules={[
+              {
+                type: 'email',
+                message: 'Vui lòng nhập đúng định dạng email!',
+              },
+              {
+                required: true,
+                message: 'Vui lòng nhập email hội quán!',
+              },
+            ]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item label="Fax" name="fax">
+            <Input />
+          </Form.Item>
+          <Form.Item
+            label="Số điện thoại"
+            name="phone"
+            rules={[
+              {
+                required: true,
+                message: 'Vui lòng nhập số điện thoại!',
+              },
+            ]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            label="Địa chỉ"
+            name="address"
+            rules={[
+              {
+                required: true,
+                message: 'Vui lòng nhập địa chỉ hội quán!',
+              },
+            ]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item label="Tỉnh/TP" name="provinceId">
+            <Select onSelect={handleCenter}>
+              {props.adminReducer.provinces &&
+                props.adminReducer.provinces.map(i => (
+                  <Option key={i.id} value={i.id}>
+                    {i.provinceName}
+                  </Option>
+                ))}
+            </Select>
+          </Form.Item>
+          <Row gutter={16}>
+            <Col span={12}>
+              <Form.Item key="longitude" label="Kinh độ" name="longitude">
+                <Input readOnly />
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item key="latitude" label="Vĩ độ" name="latitude">
+                <Input readOnly />
+              </Form.Item>
+            </Col>
+          </Row>
         </Col>
-        <Col span={12}>
-          <Form.Item key="latitude" label="Vĩ độ" name="latitude">
-            <Input readOnly />
+        <Col span={10}>
+          <Form.Item name="map">
+            <MyMap mCenter={center} mPos={handlePos} />
           </Form.Item>
         </Col>
       </Row>
@@ -178,6 +218,8 @@ export function Contact(props) {
         mTableModal={mModal}
         mSearch={handleSearch}
         mInitialValues={defValue}
+        mWidth={1000}
+        mCheckMap
       />
     </div>
   );
@@ -190,6 +232,7 @@ Contact.propTypes = {
   createContact: PropTypes.func,
   updateContact: PropTypes.func,
   deleteContact: PropTypes.func,
+  getCenter: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -211,6 +254,9 @@ const mapDispatchToProps = dispatch => ({
   },
   deleteContact: data => {
     dispatch(action.deleteContact(data));
+  },
+  getCenter: data => {
+    dispatch(action.getCenter(data));
   },
 });
 

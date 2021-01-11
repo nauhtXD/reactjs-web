@@ -7,7 +7,7 @@ import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
-import { Form, Input, Select } from 'antd';
+import { Form, Input, Select, Row, Col } from 'antd';
 
 import reducer from '../reducer';
 import saga from '../saga';
@@ -19,6 +19,11 @@ import * as action from '../actions';
 const { Option } = Select;
 
 let k = -1;
+const init = {
+  landId: 1,
+  provinceId: 79,
+  landArea: 1,
+};
 
 export function Household(props) {
   useInjectReducer({ key: 'admin', reducer });
@@ -72,10 +77,138 @@ export function Household(props) {
   };
 
   const handleCreate = record => {
-    props.createHousehold(record);
+    const userTypeId = 2;
+    const input = { ...record, user: { ...record.user, userTypeId } };
+    props.createHousehold(input);
     setIsRerender(!isRerender);
     return 0;
   };
+
+  const handleSearch = (entry, currValue) =>
+    entry.name.toLowerCase().includes(currValue) ||
+    entry.landArea.toString().includes(currValue) ||
+    entry.user.username.toLowerCase().includes(currValue) ||
+    entry.land.name.toLowerCase().includes(currValue) ||
+    entry.province.provinceName.toLowerCase().includes(currValue);
+
+  const mModal = [
+    <div>
+      <Row gutter={16}>
+        <Col span={12}>
+          <Form.Item
+            name="name"
+            label="Chủ hộ"
+            rules={[{ required: true, message: 'Vui lòng nhập tên chủ hộ!' }]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            name="landArea"
+            label="Hecta đất"
+            rules={[{ required: true, message: 'Vui lòng nhập số hecta đất!' }]}
+          >
+            <Input type="number" />
+          </Form.Item>
+          <Form.Item name="landId" label="Loại đất">
+            <Select>
+              {props.adminReducer.lands.length > 0 &&
+                props.adminReducer.lands.map(i => (
+                  <Option key={i.id} value={i.id}>
+                    {i.name}
+                  </Option>
+                ))}
+            </Select>
+          </Form.Item>
+          <Form.Item name="provinceId" label="Tỉnh/TP">
+            <Select>
+              {props.adminReducer.provinces.length > 0 &&
+                props.adminReducer.provinces.map(i => (
+                  <Option key={i.id} value={i.id}>
+                    {i.provinceName}
+                  </Option>
+                ))}
+            </Select>
+          </Form.Item>
+        </Col>
+        <Col span={12}>
+          <Form.Item
+            label="Tên đăng nhập"
+            name={['user', 'username']}
+            rules={[
+              { required: true, message: 'Vui lòng nhập tên đăng nhập!' },
+            ]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            label="Mật khẩu"
+            name={['user', 'password']}
+            rules={[{ required: true, message: 'Vui lòng nhập mật khẩu!' }]}
+          >
+            <Input.Password />
+          </Form.Item>
+          <Form.Item
+            label="Email"
+            name={['user', 'email']}
+            rules={[
+              {
+                type: 'email',
+                message: 'Vui lòng nhập đúng định dạng email!',
+              },
+              {
+                required: true,
+                message: 'Vui lòng nhập email!',
+              },
+            ]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item label="Số điện thoại" name={['user', 'phone']}>
+            <Input />
+          </Form.Item>
+        </Col>
+      </Row>
+    </div>,
+  ];
+
+  const mModalUpdate = [
+    <div>
+      <Form.Item
+        name="name"
+        label="Chủ hộ"
+        rules={[{ required: true, message: 'Vui lòng nhập tên chủ hộ!' }]}
+      >
+        <Input />
+      </Form.Item>
+      <Form.Item
+        name="landArea"
+        label="Hecta đất"
+        rules={[{ required: true, message: 'Vui lòng nhập số hecta đất!' }]}
+      >
+        <Input type="number" />
+      </Form.Item>
+      <Form.Item name="landId" label="Loại đất">
+        <Select>
+          {props.adminReducer.lands.length > 0 &&
+            props.adminReducer.lands.map(i => (
+              <Option key={i.id} value={i.id}>
+                {i.name}
+              </Option>
+            ))}
+        </Select>
+      </Form.Item>
+      <Form.Item name="provinceId" label="Tỉnh/TP">
+        <Select>
+          {props.adminReducer.provinces.length > 0 &&
+            props.adminReducer.provinces.map(i => (
+              <Option key={i.id} value={i.id}>
+                {i.provinceName}
+              </Option>
+            ))}
+        </Select>
+      </Form.Item>
+    </div>,
+  ];
 
   return (
     <div>
@@ -90,86 +223,11 @@ export function Household(props) {
         mDelete={handleClick}
         mUpdate={handleClick}
         mCreate={handleCreate}
-        mModal={
-          <div>
-            <Form.Item name="name" label="Chủ hộ">
-              <Input />
-            </Form.Item>
-            <Form.Item name="userId" label="Tên tài khoản">
-              <Select>
-                {props.adminReducer.users.length > 0 &&
-                  props.adminReducer.users.map(i => (
-                    <Option key={i.id} value={i.id}>
-                      {i.username}
-                    </Option>
-                  ))}
-              </Select>
-            </Form.Item>
-            <Form.Item name="landArea" label="Hecta đất">
-              <Input type="number" />
-            </Form.Item>
-            <Form.Item name="landId" label="Loại đất">
-              <Select>
-                {props.adminReducer.lands.length > 0 &&
-                  props.adminReducer.lands.map(i => (
-                    <Option key={i.id} value={i.id}>
-                      {i.name}
-                    </Option>
-                  ))}
-              </Select>
-            </Form.Item>
-            <Form.Item name="provinceId" label="Tỉnh/TP">
-              <Select>
-                {props.adminReducer.provinces.length > 0 &&
-                  props.adminReducer.provinces.map(i => (
-                    <Option key={i.id} value={i.id}>
-                      {i.provinceName}
-                    </Option>
-                  ))}
-              </Select>
-            </Form.Item>
-          </div>
-        }
-        mTableModal={
-          <div>
-            <Form.Item name="name" label="Chủ hộ">
-              <Input />
-            </Form.Item>
-            <Form.Item name="userId" label="Tên tài khoản">
-              <Select>
-                {props.adminReducer.users.length > 0 &&
-                  props.adminReducer.users.map(i => (
-                    <Option key={i.id} value={i.id}>
-                      {i.username}
-                    </Option>
-                  ))}
-              </Select>
-            </Form.Item>
-            <Form.Item name="landArea" label="Hecta đất">
-              <Input type="number" />
-            </Form.Item>
-            <Form.Item name="landId" label="Loại đất">
-              <Select>
-                {props.adminReducer.lands.length > 0 &&
-                  props.adminReducer.lands.map(i => (
-                    <Option key={i.id} value={i.id}>
-                      {i.name}
-                    </Option>
-                  ))}
-              </Select>
-            </Form.Item>
-            <Form.Item name="provinceId" label="Tỉnh/TP">
-              <Select>
-                {props.adminReducer.provinces.length > 0 &&
-                  props.adminReducer.provinces.map(i => (
-                    <Option key={i.id} value={i.id}>
-                      {i.provinceName}
-                    </Option>
-                  ))}
-              </Select>
-            </Form.Item>
-          </div>
-        }
+        mSearch={handleSearch}
+        mModal={mModal}
+        mTableModal={mModalUpdate}
+        mWidth={900}
+        mInitialValues={init}
       />
     </div>
   );

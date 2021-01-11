@@ -55,6 +55,7 @@ export function Documents(props) {
     props.getDocuments();
     props.getCityList();
     props.getLastestDocuments(4);
+    props.getBanners();
   }, []);
 
   useEffect(() => {
@@ -198,6 +199,7 @@ export function Documents(props) {
           mDocuments={props.homeReducer.lastestDocuments}
           mWeathers={props.homeReducer.weathers}
           mLogin={handleLogin}
+          mBanner={props.homeReducer.banners}
         />
         <MyAntdModal
           title="Chi tiết"
@@ -247,6 +249,7 @@ Documents.propTypes = {
   getWeathers: PropTypes.func,
   getCityList: PropTypes.func,
   getLoginToken: PropTypes.func,
+  getBanners: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -255,6 +258,9 @@ const mapStateToProps = createStructuredSelector({
 });
 
 const mapDispatchToProps = dispatch => ({
+  getBanners: data => {
+    dispatch(hAction.getBanners(data));
+  },
   getLoginToken: data => {
     dispatch(hAction.getLoginToken(data));
   },

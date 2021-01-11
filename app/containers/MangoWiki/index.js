@@ -45,6 +45,7 @@ export function MangoWiki(props) {
     props.getFamilies();
     props.getGenera();
     props.getGenusFeatures();
+    props.getBanners();
   }, []);
 
   useEffect(() => {
@@ -76,7 +77,6 @@ export function MangoWiki(props) {
                   mCont={
                     <div>
                       <MyInlineMenu
-                        style={{ width: 230 }}
                         mode="inline"
                         defaultOpenKeys={['family1', 'genus1']}
                       >
@@ -158,6 +158,7 @@ export function MangoWiki(props) {
         mContacts={props.homeReducer.contacts}
         mCheck
         mLogin={handleLogin}
+        mBanner={props.homeReducer.banners}
       />
     </div>
   );
@@ -173,6 +174,7 @@ MangoWiki.propTypes = {
   getGenera: PropTypes.func,
   getGenusFeatures: PropTypes.func,
   getLoginToken: PropTypes.func,
+  getBanners: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -181,6 +183,9 @@ const mapStateToProps = createStructuredSelector({
 });
 
 const mapDispatchToProps = dispatch => ({
+  getBanners: data => {
+    dispatch(hAction.getBanners(data));
+  },
   getLoginToken: data => {
     dispatch(hAction.getLoginToken(data));
   },
