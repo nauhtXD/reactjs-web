@@ -51,6 +51,13 @@ export function getPosts(data) {
   };
 }
 
+export function countPosts(data) {
+  return {
+    type: types.COUNT_POST,
+    payload: data,
+  };
+}
+
 export function createPost(data) {
   return {
     type: types.CREATE_POST,
@@ -91,6 +98,13 @@ export function getStatuses(data) {
 export function getProblems(data) {
   return {
     type: types.GET_PROBLEM,
+    payload: data,
+  };
+}
+
+export function countProblems(data) {
+  return {
+    type: types.COUNT_PROBLEM,
     payload: data,
   };
 }
@@ -154,10 +168,17 @@ export function deleteContact(data) {
 }
 // #endregion
 
-// #region HOUSEHOLD
+// #region household
 export function getHouseholds(data) {
   return {
     type: types.GET_HOUSEHOLD,
+    payload: data,
+  };
+}
+
+export function countHouseholds(data) {
+  return {
+    type: types.COUNT_HOUSEHOLD,
     payload: data,
   };
 }

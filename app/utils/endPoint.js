@@ -11,6 +11,7 @@ export const API_ENDPOINT_GET_SUB_CATEGORY = 'subcategories';
 export const API_ENDPOINT_GET_SUB_CATEGORY_BY_CID = 'subcategories/category';
 // new, post
 export const API_ENDPOINT_GET_POST = 'posts';
+export const API_ENDPOINT_COUNT_POST = 'posts/count/all';
 export const API_ENDPOINT_GET_POST_BY_SCID = 'posts/list';
 export const API_ENDPOINT_GET_LASTEST_POST = 'posts/lastest-posts';
 export const API_ENDPOINT_UPDATE_POST = 'posts/update';
@@ -41,6 +42,7 @@ export const API_ENDPOINT_GET_GENUS_FEATURE = 'genusFeatures';
 export const API_ENDPOINT_GET_STATUS = 'statuses';
 // problem
 export const API_ENDPOINT_GET_PROBLEM = 'problems';
+export const API_ENDPOINT_COUNT_PROBLEM = 'problems/count/all';
 export const API_ENDPOINT_UPDATE_PROBLEM = 'problems/update';
 export const API_ENDPOINT_DELETE_PROBLEM = 'problems/delete';
 // province
@@ -52,6 +54,7 @@ export const API_ENDPOINT_UPLOAD_PDF = 'upload-pdf';
 export const API_ENDPOINT_GET_COMMENT = 'comments';
 // household
 export const API_ENDPOINT_GET_HOUSEHOLD = 'households';
+export const API_ENDPOINT_COUNT_HOUSEHOLD = 'households/count/all';
 export const API_ENDPOINT_UPDATE_HOUSEHOLD = 'households/update';
 export const API_ENDPOINT_DELETE_HOUSEHOLD = 'households/delete';
 // land

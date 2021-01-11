@@ -43,6 +43,12 @@ export const initialState = {
   documentTypes: [],
   loadingFields: false,
   fields: [],
+  loadingCountPosts: false,
+  countPosts: [],
+  loadingCountProblems: false,
+  countProblems: [],
+  loadingCountHouseholds: false,
+  countHouseholds: [],
 };
 
 /* eslint-disable default-case, no-param-reassign */
@@ -104,6 +110,17 @@ const adminReducer = (state = initialState, action) =>
         draft.problems = [];
         draft.loadingProblems = false;
         break;
+      case types.COUNT_PROBLEM:
+        draft.loadingCountProblems = true;
+        break;
+      case types.COUNT_PROBLEM_SUCCESS:
+        draft.countProblems = action.countProblems;
+        draft.loadingCountProblems = false;
+        break;
+      case types.COUNT_PROBLEM_FAIL:
+        draft.countProblems = [];
+        draft.loadingCountProblems = false;
+        break;
       case types.GET_POST:
         draft.loadingPosts = true;
         break;
@@ -114,6 +131,17 @@ const adminReducer = (state = initialState, action) =>
       case types.GET_POST_FAIL:
         draft.posts = [];
         draft.loadingPosts = false;
+        break;
+      case types.COUNT_POST:
+        draft.loadingCountPosts = true;
+        break;
+      case types.COUNT_POST_SUCCESS:
+        draft.countPosts = action.countPosts;
+        draft.loadingCountPosts = false;
+        break;
+      case types.COUNT_POST_FAIL:
+        draft.countPosts = [];
+        draft.loadingCountPosts = false;
         break;
       case types.GET_PROVINCE:
         draft.loadingProvinces = true;
@@ -181,6 +209,18 @@ const adminReducer = (state = initialState, action) =>
         draft.households = [];
         draft.loadingHouseholds = false;
         break;
+      case types.COUNT_HOUSEHOLD:
+        draft.loadingCountHouseholds = true;
+        break;
+      case types.COUNT_HOUSEHOLD_SUCCESS:
+        draft.countHouseholds = action.countHouseholds;
+        draft.loadingCountHouseholds = false;
+        break;
+      case types.COUNT_HOUSEHOLD_FAIL:
+        draft.countHouseholds = [];
+        draft.loadingCountHouseholds = false;
+        break;
+
       case types.GET_LAND:
         draft.loadingLands = true;
         break;

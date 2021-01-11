@@ -12,6 +12,7 @@ import {
   CheckSquareTwoTone,
   CloseSquareTwoTone,
   UserOutlined,
+  UpSquareTwoTone,
 } from '@ant-design/icons';
 
 const primaryColor = '#77B81E';
@@ -254,6 +255,12 @@ const UIcon = styled(UserOutlined)`
     vertical-align: baseline !important;
   }
 `;
+
+const UpIcon = styled(UpSquareTwoTone)`
+  &.anticon svg {
+    vertical-align: baseline !important;
+  }
+`;
 // #endregion
 
 export {
@@ -276,6 +283,7 @@ export {
   CheckIcon,
   CloseIcon,
   UIcon,
+  UpIcon,
   DownloadIcon,
   API_KEY,
 };

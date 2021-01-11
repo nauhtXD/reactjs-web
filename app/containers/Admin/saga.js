@@ -236,6 +236,37 @@ export function* getPostSaga({ payload }) {
   }
 }
 
+export function* countPostSaga({ payload }) {
+  try {
+    const response = yield call(api.countPosts, payload);
+    if (response && response.status === 200) {
+      yield put({
+        type: types.COUNT_POST_SUCCESS,
+        countPosts: response.data.data,
+      });
+    } else {
+      yield put({
+        type: types.COUNT_POST_FAIL,
+        error: response && response.data ? response.data.messages : 'API Error',
+      });
+      notification.error({
+        message: 'Error',
+        description:
+          response && response.data ? response.data.messages : 'API Error',
+      });
+    }
+  } catch (err) {
+    yield put({
+      type: types.COUNT_POST_FAIL,
+      error: err,
+    });
+    notification.error({
+      message: 'Error',
+      description: err,
+    });
+  }
+}
+
 export function* updatePostSaga({ payload }) {
   try {
     const response = yield call(api.updatePost, payload);
@@ -390,6 +421,37 @@ export function* getProblemSaga({ payload }) {
   } catch (err) {
     yield put({
       type: types.GET_PROBLEM_FAIL,
+      error: err,
+    });
+    notification.error({
+      message: 'Error',
+      description: err,
+    });
+  }
+}
+
+export function* countProblemSaga({ payload }) {
+  try {
+    const response = yield call(api.countProblems, payload);
+    if (response && response.status === 200) {
+      yield put({
+        type: types.COUNT_PROBLEM_SUCCESS,
+        countProblems: response.data.data,
+      });
+    } else {
+      yield put({
+        type: types.COUNT_PROBLEM_FAIL,
+        error: response && response.data ? response.data.messages : 'API Error',
+      });
+      notification.error({
+        message: 'Error',
+        description:
+          response && response.data ? response.data.messages : 'API Error',
+      });
+    }
+  } catch (err) {
+    yield put({
+      type: types.COUNT_PROBLEM_FAIL,
       error: err,
     });
     notification.error({
@@ -781,6 +843,37 @@ export function* getHouseholdSaga({ payload }) {
   } catch (err) {
     yield put({
       type: types.GET_HOUSEHOLD_FAIL,
+      error: err,
+    });
+    notification.error({
+      message: 'Error',
+      description: err,
+    });
+  }
+}
+
+export function* countHouseholdSaga({ payload }) {
+  try {
+    const response = yield call(api.countHouseholds, payload);
+    if (response && response.status === 200) {
+      yield put({
+        type: types.COUNT_HOUSEHOLD_SUCCESS,
+        countHouseholds: response.data.data,
+      });
+    } else {
+      yield put({
+        type: types.COUNT_HOUSEHOLD_FAIL,
+        error: response && response.data ? response.data.messages : 'API Error',
+      });
+      notification.error({
+        message: 'Error',
+        description:
+          response && response.data ? response.data.messages : 'API Error',
+      });
+    }
+  } catch (err) {
+    yield put({
+      type: types.COUNT_HOUSEHOLD_FAIL,
       error: err,
     });
     notification.error({
@@ -1369,5 +1462,8 @@ export default function* rootSaga() {
     takeLatest(types.DELETE_DOCUMENT, deleteDocumentSaga),
     takeLatest(types.GET_DOCUMENT_TYPE, getDocumentTypeSaga),
     takeLatest(types.GET_FIELD, getFieldSaga),
+    takeLatest(types.COUNT_POST, countPostSaga),
+    takeLatest(types.COUNT_HOUSEHOLD, countHouseholdSaga),
+    takeLatest(types.COUNT_PROBLEM, countProblemSaga),
   ]);
 }

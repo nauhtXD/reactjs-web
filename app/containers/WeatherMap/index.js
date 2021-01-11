@@ -133,6 +133,8 @@ export function WeatherMap(props) {
     }
   };
 
+  const handleEpidemic = (lat, lon) => {};
+
   return (
     <div>
       <Helmet>
@@ -190,9 +192,11 @@ export function WeatherMap(props) {
                       props.homeReducer.weathers.map(i => (
                         <EMarker
                           key={i.id}
-                          icon={<Epidemic />}
+                          icon={<Epidemic mName={i.name} />}
                           position={[i.coord.lat, i.coord.lon]}
-                          onClick={() => handleClick(i.coord.lat, i.coord.lon)}
+                          onClick={() =>
+                            handleEpidemic(i.coord.lat, i.coord.lon)
+                          }
                         />
                       ))}
                   </LayerGroup>

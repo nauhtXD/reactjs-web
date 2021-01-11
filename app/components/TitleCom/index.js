@@ -44,14 +44,14 @@ function TitleCom(props) {
       {!props.mCheck ? (
         <OSDiv
           title={props.mCategory}
-          extra={props.mLink && <a href={props.mLink}>Xem thêm</a>}
+          extra={props.mLink && <MyLink href={props.mLink}>Xem thêm</MyLink>}
         >
           {props.mCont}
         </OSDiv>
       ) : (
         <OSDivNoPadding
           title={props.mCategory}
-          extra={props.mLink && <a href={props.mLink}>Xem thêm</a>}
+          extra={props.mLink && <MyLink href={props.mLink}>Xem thêm</MyLink>}
         >
           {props.mCont}
         </OSDivNoPadding>

@@ -33,6 +33,8 @@ export const updateProblem = data =>
   apiConfig.put(`${endpoint.API_ENDPOINT_UPDATE_PROBLEM}/${data.id}`, data);
 export const deleteProblem = data =>
   apiConfig.put(`${endpoint.API_ENDPOINT_DELETE_PROBLEM}/${data}`, data);
+export const countProblems = () =>
+  apiConfig.get(endpoint.API_ENDPOINT_COUNT_PROBLEM);
 // province
 export const getProvinces = () =>
   apiConfig.get(endpoint.API_ENDPOINT_GET_PROVINCE);
@@ -47,6 +49,7 @@ export const updateContact = data =>
   apiConfig.put(`${endpoint.API_ENDPOINT_UPDATE_CONTACT}/${data.id}`, data);
 export const deleteContact = data =>
   apiConfig.put(`${endpoint.API_ENDPOINT_DELETE_CONTACT}/${data}`, data);
+export const countPosts = () => apiConfig.get(endpoint.API_ENDPOINT_COUNT_POST);
 // minio
 export const uploadImg = data =>
   apiConfig3.post(endpoint.API_ENDPOINT_UPLOAD_IMG, data);
@@ -61,6 +64,8 @@ export const updateHousehold = data =>
   apiConfig.put(`${endpoint.API_ENDPOINT_UPDATE_HOUSEHOLD}/${data.id}`, data);
 export const deleteHousehold = data =>
   apiConfig.put(`${endpoint.API_ENDPOINT_DELETE_HOUSEHOLD}/${data}`, data);
+export const countHouseholds = () =>
+  apiConfig.get(endpoint.API_ENDPOINT_COUNT_HOUSEHOLD);
 // land
 export const getLands = () => apiConfig.get(endpoint.API_ENDPOINT_GET_LAND);
 // plant
