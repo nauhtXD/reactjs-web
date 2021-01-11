@@ -72,6 +72,8 @@ export function WeatherMap(props) {
     geo: [],
   });
 
+  console.log
+
   useEffect(() => {
     props.getCityList();
     props.getCategories();
