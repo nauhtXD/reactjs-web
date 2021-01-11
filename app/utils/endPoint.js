@@ -70,3 +70,5 @@ export const API_ENDPOINT_UPDATE_BANNER = 'banners/update';
 export const API_ENDPOINT_GET_FIELD = 'fields';
 // documentType
 export const API_ENDPOINT_GET_DOCUMENT_TYPE = 'documentTypes';
+// epidemicHistory
+export const API_ENDPOINT_COUNT_EPIDEMIC = 'epidemicHistories/count';

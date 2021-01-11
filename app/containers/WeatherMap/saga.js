@@ -14,12 +14,12 @@ export function* getPosGeoSaga({ payload }) {
     } else {
       yield put({
         type: types.GET_POS_GEO_FAIL,
-        error: response && response.data ? response.data.messages : 'API Error',
+        error: response && response.data ? response.data.message : 'API Error',
       });
       notification.error({
         message: 'Error',
         description:
-          response && response.data ? response.data.messages : 'API Error',
+          response && response.data ? response.data.message : 'API Error',
       });
     }
   } catch (err) {
@@ -34,6 +34,40 @@ export function* getPosGeoSaga({ payload }) {
   }
 }
 
+export function* countEpidemicSaga({ payload }) {
+  try {
+    const response = yield call(api.countEpidemics, payload);
+    if (response && response.status === 200) {
+      yield put({
+        type: types.COUNT_EPIDEMIC_SUCCESS,
+        countEpidemics: response.data.data,
+      });
+    } else {
+      yield put({
+        type: types.COUNT_EPIDEMIC_FAIL,
+        error: response && response.data ? response.data.message : 'API Error',
+      });
+      notification.error({
+        message: 'Error',
+        description:
+          response && response.data ? response.data.message : 'API Error',
+      });
+    }
+  } catch (err) {
+    yield put({
+      type: types.COUNT_EPIDEMIC_FAIL,
+      error: err,
+    });
+    notification.error({
+      message: 'Error',
+      description: err,
+    });
+  }
+}
+
 export default function* rootSaga() {
-  yield all([takeLatest(types.GET_POS_GEO, getPosGeoSaga)]);
+  yield all([
+    takeLatest(types.GET_POS_GEO, getPosGeoSaga),
+    takeLatest(types.COUNT_EPIDEMIC, countEpidemicSaga),
+  ]);
 }

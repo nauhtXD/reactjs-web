@@ -27,12 +27,11 @@ import { useInjectReducer } from 'utils/injectReducer';
 import makeSelect from './selectors';
 import reducer from './reducer';
 import saga from './saga';
-// import * as action from './actions';
+import * as action from './actions';
 
 import makeSelectHome from '../Home/selectors';
 import * as hAction from '../Home/actions';
 
-// import messages from './messages';
 import MyLayout from '../../components/MyLayout/Loadable';
 import EnhancedMarker from '../../components/EnhancedMarker/index';
 import WeatherHistory from '../../components/WeatherHistory/index';
@@ -80,6 +79,7 @@ export function WeatherMap(props) {
     props.getContacts();
     props.getLastestDocuments(4);
     props.getBanners();
+    props.countEpidemics();
   }, []);
 
   useEffect(() => {
@@ -223,7 +223,7 @@ export function WeatherMap(props) {
 
 WeatherMap.propTypes = {
   homeReducer: PropTypes.any,
-  // weatherMapReducer: PropTypes.any,
+  weatherMapReducer: PropTypes.any,
   getWeathers: PropTypes.func,
   getContacts: PropTypes.func,
   getCategories: PropTypes.func,
@@ -233,6 +233,7 @@ WeatherMap.propTypes = {
   getLastestDocuments: PropTypes.func,
   getLoginToken: PropTypes.func,
   getBanners: PropTypes.func,
+  countEpidemics: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -241,6 +242,9 @@ const mapStateToProps = createStructuredSelector({
 });
 
 const mapDispatchToProps = dispatch => ({
+  countEpidemics: data => {
+    dispatch(action.countEpidemics(data));
+  },
   getBanners: data => {
     dispatch(hAction.getBanners(data));
   },

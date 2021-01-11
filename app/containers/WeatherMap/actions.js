@@ -6,3 +6,10 @@ export function getPosGeo(data) {
     payload: data,
   };
 }
+
+export function countEpidemics(data) {
+  return {
+    type: types.COUNT_EPIDEMIC,
+    payload: data,
+  };
+}
