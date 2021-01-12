@@ -58,29 +58,30 @@ export function Contact(props) {
       });
   }, [currPos]);
 
-  useEffect(() => {
-    if (props.adminReducer.center.latitude) {
-      setCenter({
-        latitude: props.adminReducer.center.latitude,
-        longitude: props.adminReducer.center.longitude,
-      });
-    }
-  }, [props.adminReducer.center]);
-
   const handleCreate = record => {
-    props.createContact(record);
+    const data = { ...record };
+    delete data.map;
+    props.createContact(data);
     setIsReRender(!isReRender);
     return 0;
   };
 
   const handleClick = (record, key) => {
-    if (key === 0) props.updateContact(record);
-    else props.deleteContact(record);
+    const data = { ...record };
+    delete data.map;
+    if (key === 0) props.updateContact(data);
+    else props.deleteContact(data);
     setIsReRender(!isReRender);
   };
 
   const handleCenter = value => {
-    props.getCenter(value);
+    // const province = props.adminReducer.provinces
+    //   .filter(i => i.id === value)
+    //   .map(i => i);
+    // setCenter({
+    //   latitude: province[0].latitude,
+    //   longitude: province[0].longitude,
+    // });
   };
 
   const handlePos = value => {
@@ -170,7 +171,7 @@ export function Contact(props) {
             <Input />
           </Form.Item>
           <Form.Item label="Tỉnh/TP" name="provinceId">
-            <Select onSelect={handleCenter}>
+            <Select onChange={handleCenter}>
               {props.adminReducer.provinces &&
                 props.adminReducer.provinces.map(i => (
                   <Option key={i.id} value={i.id}>
@@ -232,7 +233,6 @@ Contact.propTypes = {
   createContact: PropTypes.func,
   updateContact: PropTypes.func,
   deleteContact: PropTypes.func,
-  getCenter: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -254,9 +254,6 @@ const mapDispatchToProps = dispatch => ({
   },
   deleteContact: data => {
     dispatch(action.deleteContact(data));
-  },
-  getCenter: data => {
-    dispatch(action.getCenter(data));
   },
 });
 

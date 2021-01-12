@@ -187,11 +187,14 @@ export function Post(props) {
               <Select>
                 {mSC &&
                   mSC.length > 0 &&
-                  mSC.map(i => (
-                    <Option value={i.id} key={i.name}>
-                      {i.name}
-                    </Option>
-                  ))}
+                  mSC.map(
+                    i =>
+                      i.key.includes('list/') && (
+                        <Option value={i.id} key={i.name}>
+                          {i.name}
+                        </Option>
+                      ),
+                  )}
               </Select>
             </Form.Item>
             <Form.Item label="Ngày đăng" name="publishAt">
