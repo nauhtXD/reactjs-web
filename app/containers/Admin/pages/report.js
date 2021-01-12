@@ -46,10 +46,6 @@ export function Report(props) {
       data: 'title',
     },
     {
-      title: 'Nội dung',
-      data: 'content',
-    },
-    {
       title: 'Người gửi',
       data: ['user', 'username'],
     },

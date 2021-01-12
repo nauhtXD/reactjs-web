@@ -79,7 +79,7 @@ export function User(props) {
         <meta name="description" content="Description of user" />
       </Helmet>
       <AdminTable
-        mTitle="Danh sách thành viên"
+        mTitle="Danh sách tài khoản"
         mSearch={handleSearch}
         mData={props.adminReducer.users}
         mPropertyNames={propertyNames}
