@@ -28,3 +28,6 @@ export const getLoginToken = data =>
   apiConfig.post(endpoint.API_ENDPOINT_GET_LOGIN_TOKEN, data);
 // banner
 export const getBanners = () => apiConfig.get(endpoint.API_ENDPOINT_GET_BANNER);
+// token
+export const checkToken = data =>
+  apiConfig.get(`${endpoint.API_ENDPOINT_CHECK_TOKEN}/${data}`);

@@ -43,7 +43,7 @@ export function Dashboard(props) {
         <div>
           <Row gutter={16}>
             <Col span={8}>
-              {props.adminReducer.countPosts && (
+              {props.adminReducer.countPosts.all && (
                 <TitleCom
                   mCategory="Bài viết"
                   mCont={
@@ -60,7 +60,7 @@ export function Dashboard(props) {
               )}
             </Col>
             <Col span={8}>
-              {props.adminReducer.countHouseholds && (
+              {props.adminReducer.countHouseholds.all && (
                 <TitleCom
                   mCategory="Hộ dân"
                   mCont={
@@ -77,7 +77,7 @@ export function Dashboard(props) {
               )}
             </Col>
             <Col span={8}>
-              {props.adminReducer.countProblems && (
+              {props.adminReducer.countProblems.all && (
                 <TitleCom
                   mCategory="Báo cáo"
                   mCont={

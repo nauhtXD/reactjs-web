@@ -14,6 +14,9 @@ import reducer from './reducer';
 import saga from './saga';
 import * as action from './actions';
 
+import makeSelectHome from '../Home/selectors';
+import * as hAction from '../Home/actions';
+
 import {
   layout,
   tailLayout,
@@ -45,12 +48,19 @@ export function Login(props) {
 
   useEffect(() => {
     if (props.loginReducer.loginToken.token) {
+      props.checkToken(props.loginReducer.loginToken.token);
+    }
+  }, [props.loginReducer.loginToken]);
+
+  useEffect(() => {
+    if (props.homeReducer.checkToken.token) {
       localStorage.setItem('authToken', props.loginReducer.loginToken.token);
       localStorage.setItem('usrId', props.loginReducer.loginToken.uid);
       localStorage.setItem('usrName', usrName);
       window.location.href = '/admin';
     }
-  }, [props.loginReducer.loginToken]);
+  }, [props.homeReducer.checkToken]);
+
   const [form] = Form.useForm();
 
   const handleCLick = () => {
@@ -87,16 +97,22 @@ export function Login(props) {
 
 Login.propTypes = {
   loginReducer: PropTypes.any,
+  homeReducer: PropTypes.any,
   getLoginToken: PropTypes.func,
+  checkToken: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
   loginReducer: makeSelect(),
+  homeReducer: makeSelectHome(),
 });
 
 const mapDispatchToProps = dispatch => ({
   getLoginToken: data => {
     dispatch(action.getLoginToken(data));
+  },
+  checkToken: data => {
+    dispatch(hAction.checkToken(data));
   },
 });
 

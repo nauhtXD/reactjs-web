@@ -101,10 +101,10 @@ export function Document(props) {
 
   const handleSearch = (entry, currValue) =>
     entry.field.name.toLowerCase().includes(currValue) ||
-    entry.code.name.toLowerCase().includes(currValue) ||
-    entry.summary.name.toLowerCase().includes(currValue) ||
+    entry.code.toLowerCase().includes(currValue) ||
+    entry.summary.toLowerCase().includes(currValue) ||
     entry.documentType.name.toLowerCase().includes(currValue) ||
-    entry.contact.toLowerCase().includes(currValue);
+    entry.contact.name.toLowerCase().includes(currValue);
 
   const mModal = [
     <div>

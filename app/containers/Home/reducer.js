@@ -27,6 +27,8 @@ export const initialState = {
   loginToken: [],
   loadingBanners: false,
   banners: [],
+  loadingCheckToken: false,
+  checkToken: [],
 };
 
 /* eslint-disable default-case, no-param-reassign */
@@ -142,6 +144,17 @@ const homeReducer = (state = initialState, action) =>
       case types.GET_BANNER_FAIL:
         draft.banners = [];
         draft.loadingBanners = false;
+        break;
+      case types.CHECK_TOKEN:
+        draft.loadingCheckToken = true;
+        break;
+      case types.CHECK_TOKEN_SUCCESS:
+        draft.checkToken = action.checkToken;
+        draft.loadingCheckToken = false;
+        break;
+      case types.CHECK_TOKEN_FAIL:
+        draft.checkToken = [];
+        draft.loadingCheckToken = false;
         break;
     }
   });

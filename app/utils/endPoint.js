@@ -4,6 +4,7 @@ export const API_ENDPOINT_UPDATE_USER = 'users/update';
 export const API_ENDPOINT_DELETE_USER = 'users/delete';
 export const API_ENDPOINT_GET_USER_TYPE = 'userTypes';
 export const API_ENDPOINT_GET_LOGIN_TOKEN = 'users/login';
+export const API_ENDPOINT_CHECK_TOKEN = 'userTypes/token';
 // category
 export const API_ENDPOINT_GET_CATEGORY = 'categories';
 // subcategory

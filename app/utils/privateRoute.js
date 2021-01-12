@@ -20,6 +20,7 @@ export function PrivateRoute({ component: Component, ...rest }) {
 
 PrivateRoute.propTypes = {
   component: PropTypes.any,
+  mCheckToken: PropTypes.func,
 };
 
 export default PrivateRoute;

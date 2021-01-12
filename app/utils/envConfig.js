@@ -3,24 +3,24 @@ import env from '../env';
 const config = {
   develop: {
     apiUrl: 'http://localhost:8080/api/',
-    apiUrlMinio: 'http://localhost:9090/',
+    apiUrlMinio: 'https://hqndminio.herokuapp.com/',
     apiUrlWeather: 'https://api.openweathermap.org/data/2.5/',
     envTag: 'd',
   },
   staging: {
-    apiUrl: 'https://api.digihubs.vn/bpa/',
-    apiUrlMinio: 'http://localhost:9090/',
+    apiUrl: 'http://localhost:8080/api/',
+    apiUrlMinio: 'https://hqndminio.herokuapp.com/',
     apiUrlWeather: 'https://api.openweathermap.org/data/2.5/',
   },
   uat: {
-    apiUrl: 'https://api.digihubs.vn/bpa/',
-    apiUrlMinio: 'http://localhost:9090/',
+    apiUrl: 'http://localhost:8080/api/',
+    apiUrlMinio: 'https://hqndminio.herokuapp.com/',
     apiUrlWeather: 'https://api.openweathermap.org/data/2.5/',
     envTag: 'u',
   },
   production: {
-    apiUrl: 'https://api.digihubs.vn/bpa/',
-    apiUrlMinio: 'http://localhost:9090/',
+    apiUrl: 'http://localhost:8080/api/',
+    apiUrlMinio: 'https://hqndminio.herokuapp.com/',
     apiUrlWeather: 'https://api.openweathermap.org/data/2.5/',
     envTag: 'p',
   },

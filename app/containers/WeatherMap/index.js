@@ -20,6 +20,7 @@ import {
 
 import moment from 'moment';
 import EMarker from 'react-leaflet-enhanced-marker';
+import _ from 'lodash';
 
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
@@ -59,6 +60,8 @@ const bcrData = [
   },
 ];
 
+let test = [];
+
 export function WeatherMap(props) {
   useInjectReducer({ key: 'weatherMap', reducer });
   useInjectSaga({ key: 'weatherMap', saga });
@@ -71,8 +74,7 @@ export function WeatherMap(props) {
     lon: [],
     geo: [],
   });
-
-  console.log
+  const [epidemic, setEpidemic] = useState(null);
 
   useEffect(() => {
     props.getCityList();
@@ -105,6 +107,27 @@ export function WeatherMap(props) {
     const geoData = props.homeReducer.cityList.map(i => i.province.geo);
     if (geoData.length > 0) setGeo([...new Set(geoData)]);
   }, [props.homeReducer.cityList]);
+
+  useEffect(() => {
+    if (props.weatherMapReducer.countEpidemics.length > 0) {
+      const t = _(props.weatherMapReducer.countEpidemics)
+        .groupBy('province')
+        .map((value, province) => ({
+          province,
+          lat: [...new Set(_.map(value, 'lat'))],
+          lon: [...new Set(_.map(value, 'lon'))],
+          name: _(value)
+            .groupBy('name')
+            .map((v, name) => ({
+              name,
+              count: _.map(v, 'count'),
+            }))
+            .value(),
+        }))
+        .value();
+      setEpidemic(t);
+    }
+  }, [props.weatherMapReducer.countEpidemics]);
 
   useEffect(() => {
     if (props.homeReducer.loginToken.token) {
@@ -190,15 +213,13 @@ export function WeatherMap(props) {
                 </LayersControl.BaseLayer>
                 <LayersControl.BaseLayer name="Dịch bệnh">
                   <LayerGroup>
-                    {props.homeReducer.weathers.length > 0 &&
-                      props.homeReducer.weathers.map(i => (
+                    {epidemic &&
+                      epidemic.map((i, index) => (
                         <EMarker
-                          key={i.id}
-                          icon={<Epidemic mName={i.name} />}
-                          position={[i.coord.lat, i.coord.lon]}
-                          onClick={() =>
-                            handleEpidemic(i.coord.lat, i.coord.lon)
-                          }
+                          key={index}
+                          icon={<Epidemic mData={i} />}
+                          position={[i.lat[0], i.lon[0]]}
+                          onClick={() => handleEpidemic(i.lat[0], i.lon[0])}
                         />
                       ))}
                   </LayerGroup>

@@ -36,18 +36,23 @@ function Epidemic(props) {
       <Card
         style={cardStyle}
         size="small"
-        title={<MyP>{`${props.mName}, ${moment().format('DD/MM/YYYY')}`}</MyP>}
+        title={
+          <MyP>{`${props.mData && props.mData.province}, ${moment().format(
+            'DD/MM/YYYY',
+          )}`}</MyP>
+        }
       >
-        <MyCardGrid>{`${props.mIcon}: ${props.mCount}`}</MyCardGrid>
+        {props.mData &&
+          props.mData.name.map((i, index) => (
+            <MyP key={index}>{`${i.name}: ${i.count[0]}`}</MyP>
+          ))}
       </Card>
     </div>
   );
 }
 
 Epidemic.propTypes = {
-  mName: PropTypes.string,
-  mIcon: PropTypes.any,
-  mCount: PropTypes.number,
+  mData: PropTypes.any,
 };
 
 export default memo(Epidemic);

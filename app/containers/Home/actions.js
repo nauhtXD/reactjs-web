@@ -96,3 +96,10 @@ export function getBanners(data) {
     payload: data,
   };
 }
+
+export function checkToken(data) {
+  return {
+    type: types.CHECK_TOKEN,
+    payload: data,
+  };
+}

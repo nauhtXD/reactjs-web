@@ -1,8 +1,8 @@
 /* eslint-disable no-unused-vars */
-import React, { memo } from 'react';
+import React, { memo, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import { connect } from 'react-redux';
-
+import PropTypes from 'prop-types';
 import { Switch, Route } from 'react-router-dom';
 // import { Layout } from 'antd';
 import 'antd/dist/antd.css';
@@ -16,6 +16,9 @@ import { useInjectReducer } from 'utils/injectReducer';
 import PrivateRoute from 'utils/privateRoute';
 
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
+
+// import * as action from '../Home/actions';
+// import makeSelect from '../Home/selectors';
 
 import reducer from '../Home/reducer';
 import saga from '../Home/saga';
@@ -99,6 +102,7 @@ function App(props) {
   );
 }
 App.propTypes = {};
+
 const mapStateToProps = createStructuredSelector({});
 
 const mapDispatchToProps = dispatch => ({});
