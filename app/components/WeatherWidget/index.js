@@ -20,9 +20,17 @@ const OSDiv = styled(Card)`
     background-image: ${primaryColor} !important;
     text-align: center !important;
     height: 2.27vw;
+    font-size: 1.213vw;
   }
   color: ${fgColor} !important;
   background-image: ${primaryColor} !important;
+  .ant-card-head-title {
+    padding: 1.213vw 0;
+  }
+  .ant-card-body {
+    padding: 1.81956vw !important;
+    font-size: 1.14vw;
+  }
 `;
 
 const handleClick = () => {
@@ -42,6 +50,7 @@ function WeatherWidget(props) {
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
+            fontSize: '1.14vw',
           }}
         >
           <img
@@ -51,7 +60,7 @@ function WeatherWidget(props) {
           {props.mTemp && kToC(props.mTemp)}
           °C
         </div>
-        <div style={{ textAlign: 'center' }}>
+        <div style={{ textAlign: 'center', fontSize: '1.14vw' }}>
           {capitalizeFirstLetter(props.mDescription)}
         </div>
       </OSDiv>

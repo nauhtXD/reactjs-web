@@ -18,7 +18,7 @@ function DividerList(props) {
       >
         {props.mTitle}
       </Divider>
-      <div style={{ lineHeight: '0.114vw' }}>{props.mCont}</div>
+      <div style={{ lineHeight: 1.5, fontSize: '1.14vw' }}>{props.mCont}</div>
       {props.mListItem && (
         <List dataSource={props.mSource} renderItem={props.mListItem} />
       )}

@@ -16,6 +16,7 @@ import {
   Breadcrumb,
 } from 'antd';
 import {
+  DownOutlined,
   PlusOutlined,
   DownloadOutlined,
   CheckSquareTwoTone,
@@ -47,6 +48,7 @@ const MyRouterLink = styled(Link)`
 const MyBreadcrumb = styled(Breadcrumb)`
   .anticon svg {
     vertical-align: baseline !important;
+    font-size: 0.76vw;
   }
   .ant-breadcrumb-link {
     :hover {
@@ -75,6 +77,10 @@ const MyText = styled(Typography.Text)`
 const MyButton = styled(Button)`
   color: #fff;
   background-color: ${primaryColor};
+  font-size: 1.14vw;
+  height: 2.426vw;
+  padding: 0.30326vw 1.14vw;
+  line-height: 0.12vw;
   :hover,
   :focus {
     color: #fff !important;
@@ -152,6 +158,9 @@ const MyAntdSearch = styled(Input.Search)`
 `;
 
 const MyAntdForm = styled(Form)`
+  .ant-form-item-control-input {
+    min-height: 2.426vw;
+  }
   .ant-input,
   .ant-select-selector,
   .ant-picker {
@@ -181,6 +190,12 @@ const MyAntdForm = styled(Form)`
 `;
 
 const MyInlineMenu = styled(Menu)`
+  .anticon {
+    min-width: 1.06141vw;
+    margin-right: 0.76vw;
+    font-size: 0.76vw;
+  }
+  }
   .ant-menu-submenu-title a {
     color: #000 !important;
     font-size: 1.06141vw !important;
@@ -214,6 +229,7 @@ const MyInlineMenu = styled(Menu)`
       .ant-menu-submenu-arrow::after {
         background: ${primaryColor} !important;
       }
+      color: ${primaryColor} !important;
     }
   }
   .ant-menu-item {
@@ -274,6 +290,11 @@ const tailLayout = {
 // #endregion
 
 // #region icon
+const DownIcon = styled(DownOutlined)`
+  &.anticon svg {
+    vertical-align: baseline !important;
+  }
+`;
 const PlusIcon = styled(PlusOutlined)`
   margin-bottom: 0.6vw;
   &.anticon svg {
@@ -332,6 +353,7 @@ export {
   PlusIcon,
   CheckIcon,
   CloseIcon,
+  DownIcon,
   UIcon,
   UpIcon,
   DownloadIcon,

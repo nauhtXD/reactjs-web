@@ -39,6 +39,9 @@ const NavItem = styled(Menu.Item)`
 `;
 const SubItem = styled(Menu.Item)`
   color: ${mColor};
+  font-size: 1.06141vw;
+  height: 3.0326vw !important;
+  line-height: 3.0326vw !important;
   :hover,
   &.ant-menu-item-selected {
     color: ${menuColor} !important;

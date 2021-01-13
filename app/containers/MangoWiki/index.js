@@ -23,7 +23,11 @@ import WikiList from './pages/list';
 import WikiNews from './pages/news';
 import MyLayout from '../../components/MyLayout/Loadable';
 import TitleCom from '../../components/TitleCom/Loadable';
-import { MyInlineMenu, MyRouterLink } from '../../components/Style/index';
+import {
+  MyInlineMenu,
+  MyRouterLink,
+  DownIcon,
+} from '../../components/Style/index';
 
 const { SubMenu } = Menu;
 const MyMI = styled(Menu.Item)`
@@ -43,6 +47,7 @@ export function MangoWiki(props) {
   useInjectSaga({ key: 'mangoWiki', saga });
 
   const [usrName, setUsrName] = useState(null);
+  const [rotate, setRotate] = useState(null);
 
   useEffect(() => {
     props.getCategories();
@@ -68,6 +73,10 @@ export function MangoWiki(props) {
     props.getLoginToken(values);
   };
 
+  const handleClick = () => {
+    setRotate(rotate ? null : 180);
+  };
+
   return (
     <div>
       <Helmet>
@@ -91,10 +100,14 @@ export function MangoWiki(props) {
                             <SubMenu
                               key={`family${i.id}`}
                               title={
-                                <MyRouterLink to={`/mangowiki/news/${i.id}`}>
+                                <MyRouterLink
+                                  onClick={handleClick}
+                                  to={`/mangowiki/news/${i.id}`}
+                                >
                                   Họ {i.name}
                                 </MyRouterLink>
                               }
+                              icon={<DownIcon rotate={rotate} />}
                             >
                               {props.mangoWikiReducer.genera &&
                                 props.mangoWikiReducer.genera.map(j => (

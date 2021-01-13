@@ -62,7 +62,7 @@ function Footer(props) {
           span={12}
           style={{
             textAlign: 'left',
-            margin: '0.76vw auto',
+            margin: '1.14vw auto',
             color: '#fff',
           }}
         >

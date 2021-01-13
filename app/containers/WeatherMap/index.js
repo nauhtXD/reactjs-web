@@ -141,6 +141,7 @@ export function WeatherMap(props) {
         )
         .then(res => {
           setHis(j => [...j, res.data.current]);
+          window.location.href = '#weatherHistory';
         });
     }
   };
@@ -160,7 +161,7 @@ export function WeatherMap(props) {
           <div>
             <Map
               style={{
-                height: '30.326vw',
+                height: '40vw',
                 width: '100%',
               }}
               center={center && [center.latitude, center.longitude]}
@@ -217,6 +218,7 @@ export function WeatherMap(props) {
                 {geo.length > 0 && <GeoJSON data={geo} />}
               </LayersControl>
             </Map>
+            <div id="weatherHistory" />
             {history5D.length > 0 && <WeatherHistory mHistory={history5D} />}
           </div>
         }

@@ -29,12 +29,13 @@ function MyLayout(props) {
       />
       <div style={{ width: '90%', margin: 'auto' }}>
         <Layout style={{ backgroundColor: '#fff' }}>
-          <Content style={{ marginRight: '0.76vw' }}>{props.mCont}</Content>
+          <Content>{props.mCont}</Content>
           {!props.mCheck && (
             <Sider
               breakpoint="lg"
               collapsedWidth="0"
-              style={{ backgroundColor: '#fff' }}
+              trigger={null}
+              style={{ backgroundColor: '#fff', marginLeft: '0.76vw' }}
             >
               <Sidebar
                 mWeathers={props.mWeathers}

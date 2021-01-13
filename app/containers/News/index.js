@@ -6,7 +6,7 @@ import { Helmet } from 'react-helmet';
 // import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
-// import styled from 'styled-components';
+import styled from 'styled-components';
 import { List, Comment, Space, Form, Input } from 'antd';
 import moment from 'moment';
 import {
@@ -44,6 +44,32 @@ const bcrData = [
     name: 'Tin tức',
   },
 ];
+
+const MyComment = styled(Comment)`
+  .ant-comment-avatar img {
+    height: 2.426vw;
+    width: 2.426vw;
+  }
+  .ant-comment-content,
+  .ant-comment-content-author,
+  .ant-comment-content-author-name,
+  .ant-comment-content-author-time {
+    font-size: 1.14vw;
+  }
+  .ant-comment-inner {
+    padding: 1.213vw 0;
+  }
+`;
+
+const MyAntdList = styled(List)`
+  .ant-list-header {
+    font-size: 1.213vw;
+  }
+  .ant-list-item,
+  .ant-list-header {
+    padding: 0.9vw 1.81956vw;
+  }
+`;
 
 export function News(props) {
   // eslint-disable-next-line react/prop-types
@@ -125,21 +151,30 @@ export function News(props) {
                 }
                 mCont={
                   <div>
-                    <p style={{ textAlign: 'right', opacity: 0.6 }}>
+                    <p
+                      style={{
+                        textAlign: 'right',
+                        opacity: 0.6,
+                        fontSize: '1.14vw',
+                      }}
+                    >
                       Ngày đăng:{' '}
                       {moment(props.newsReducer.post.publishAt).format(
                         'DD-MM-YYYY',
                       )}
                     </p>
-                    <h2>{props.newsReducer.post.title}</h2>
+                    <p style={{ fontSize: '1.5163vm' }}>
+                      <b>{props.newsReducer.post.title}</b>
+                    </p>
                     <div
+                      style={{ lineHeight: 1.5, fontSize: '1.14vw' }}
                       // eslint-disable-next-line react/no-danger
                       dangerouslySetInnerHTML={{
                         __html: props.newsReducer.post.content,
                       }}
                     />
 
-                    <div style={{ textAlign: 'right' }}>
+                    <div style={{ textAlign: 'right', fontSize: '1.14vw' }}>
                       <p>
                         Nguồn:{' '}
                         <MyLink
@@ -150,17 +185,19 @@ export function News(props) {
                         </MyLink>
                       </p>
 
-                      <p>{`Người đăng: ${props.newsReducer.post.author}`}</p>
+                      <p style={{ fontSize: '1.14vw' }}>{`Người đăng: ${
+                        props.newsReducer.post.author
+                      }`}</p>
 
                       <Space>
                         <FacebookShareButton url={window.location.href}>
-                          <FacebookIcon size={32} round />
+                          <FacebookIcon size="2.426vw" round />
                         </FacebookShareButton>
                         <TelegramShareButton url={window.location.href}>
-                          <TelegramIcon size={32} round />
+                          <TelegramIcon size="2.426vw" round />
                         </TelegramShareButton>
                         <TwitterShareButton url={window.location.href}>
-                          <TwitterIcon size={32} round />
+                          <TwitterIcon size="2.426vw" round />
                         </TwitterShareButton>
                       </Space>
                     </div>
@@ -175,7 +212,10 @@ export function News(props) {
                       name="content"
                       style={{ marginBottom: '0.379vw' }}
                     >
-                      <Input.TextArea placeholder="Để lại bình luận" />
+                      <Input.TextArea
+                        placeholder="Để lại bình luận"
+                        style={{ fontSize: '1.14vw' }}
+                      />
                     </Form.Item>
                     <Form.Item style={{ marginBottom: '0.379vw' }}>
                       <MyButton
@@ -191,7 +231,7 @@ export function News(props) {
 
               {props.newsReducer.comments &&
                 props.newsReducer.comments.length > 0 && (
-                <List
+                <MyAntdList
                   bordered
                   className="comment-list"
                   header={`${props.newsReducer.comments.length} bình luận`}
@@ -199,17 +239,10 @@ export function News(props) {
                   dataSource={props.newsReducer.comments}
                   renderItem={item => (
                     <List.Item key={item.id}>
-                      <Comment
+                      <MyComment
                         author={item.user.username}
                         avatar="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-                        content={
-                          <div
-                            // eslint-disable-next-line react/no-danger
-                            dangerouslySetInnerHTML={{
-                              __html: item.content,
-                            }}
-                          />
-                        }
+                        content={item.content}
                         datetime={moment(item.createdAt).format(dateFormat)}
                       />
                     </List.Item>
@@ -218,7 +251,7 @@ export function News(props) {
               )}
               <div style={{ height: '0.379vw' }} />
               {props.homeReducer.lastestPosts.length > 0 && (
-                <List
+                <MyAntdList
                   bordered
                   header="Tin liên quan"
                   dataSource={props.homeReducer.lastestPosts}
@@ -231,9 +264,11 @@ export function News(props) {
                             <MyLink href={`/news/${item.id}`}>
                               {item.title}
                             </MyLink>
-                            <MyText style={{ opacity: 0.6 }}>{`[${moment(
-                              item.publishAt,
-                            ).format(dateFormat)}]`}</MyText>
+                            <MyText
+                              style={{ opacity: 0.6, fontSize: '1.14vw' }}
+                            >{`[${moment(item.publishAt).format(
+                                dateFormat,
+                              )}]`}</MyText>
                           </Space>
                         </MyText>
                       </List.Item>

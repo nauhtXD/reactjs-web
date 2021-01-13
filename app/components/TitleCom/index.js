@@ -15,7 +15,7 @@ const fgColor = '#325700';
 const bgColor = '#e4f1d2';
 
 const OSDiv = styled(Card)`
-  margin-bottom: 0.76 !important;
+  margin-bottom: 0.76vw !important;
   .ant-card-head {
     color: ${fgColor} !important;
     background-color: ${bgColor} !important;
