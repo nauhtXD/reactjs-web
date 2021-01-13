@@ -6,19 +6,14 @@
 
 import React, { memo } from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
+// import styled from 'styled-components';
 import { Carousel, Breadcrumb, Row, Col, Menu, Image } from 'antd';
 import moment from 'moment';
 import 'moment/locale/vi';
 // import { FormattedMessage } from 'react-intl';
 // import messages from './messages';
 import MyMenu from '../MyMenu/Loadable';
-
-const MyBreadcrumb = styled(Breadcrumb)`
-  .anticon svg {
-    vertical-align: baseline !important;
-  }
-`;
+import { MyBreadcrumb } from '../Style/index';
 
 moment().locale('vi');
 function Header(props) {

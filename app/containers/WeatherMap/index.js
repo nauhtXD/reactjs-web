@@ -112,7 +112,6 @@ export function WeatherMap(props) {
         _.groupBy(props.weatherMapReducer.countEpidemics, 'province'),
         (value, i) => i % 2 === 0,
       );
-      console.log(t);
       setEpidemic(t);
     }
   }, [props.weatherMapReducer.countEpidemics]);
@@ -146,7 +145,9 @@ export function WeatherMap(props) {
     }
   };
 
-  const handleEpidemic = (lat, lon) => {};
+  const handleEpidemic = (lat, lon) => {
+    console.log(lat, lon);
+  };
 
   return (
     <div>
@@ -204,6 +205,7 @@ export function WeatherMap(props) {
                     {epidemic &&
                       epidemic[1].map((i, index) => (
                         <EMarker
+                          // eslint-disable-next-line react/no-array-index-key
                           key={index}
                           icon={<Epidemic mData={i} />}
                           position={[i[0].lat, i[0].lon]}

@@ -32,6 +32,12 @@ const MyMI = styled(Menu.Item)`
   }
 `;
 
+const bcrData = [
+  {
+    name: 'Thư viện',
+  },
+];
+
 export function MangoWiki(props) {
   useInjectReducer({ key: 'mangoWiki', reducer });
   useInjectSaga({ key: 'mangoWiki', saga });
@@ -159,6 +165,7 @@ export function MangoWiki(props) {
         mCheck
         mLogin={handleLogin}
         mBanner={props.homeReducer.banners}
+        mBreadcrumbs={bcrData}
       />
     </div>
   );

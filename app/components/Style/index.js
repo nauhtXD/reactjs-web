@@ -5,7 +5,16 @@
  */
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import { Typography, Button, Modal, Table, Input, Form, Menu } from 'antd';
+import {
+  Typography,
+  Button,
+  Modal,
+  Table,
+  Input,
+  Form,
+  Menu,
+  Breadcrumb,
+} from 'antd';
 import {
   PlusOutlined,
   DownloadOutlined,
@@ -30,6 +39,17 @@ const MyRouterLink = styled(Link)`
   color: #000;
   :hover {
     color: ${primaryColor};
+  }
+`;
+
+const MyBreadcrumb = styled(Breadcrumb)`
+  .anticon svg {
+    vertical-align: baseline !important;
+  }
+  .ant-breadcrumb-link {
+    :hover {
+      color: ${primaryColor} !important;
+    }
   }
 `;
 // #region antd
@@ -267,6 +287,7 @@ export {
   primaryColor,
   MyLink,
   MyRouterLink,
+  MyBreadcrumb,
   MyText,
   MyButton,
   MyAntdModal,

@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
-import { Row, Col, Card, List, Space } from 'antd';
+import { Row, Col, Card, List } from 'antd';
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
 import reducer from '../reducer';
@@ -153,10 +153,7 @@ function WikiNews(props) {
                             <ul>
                               {props.mangoWikiReducer.new.breedings.map(i => (
                                 <li>
-                                  <Space>
-                                    <p>{i.methodName}:</p>
-                                    <p>{i.detail}</p>
-                                  </Space>
+                                  <p>{`${i.methodName}: ${i.detail}`}</p>
                                 </li>
                               ))}
                             </ul>
@@ -174,10 +171,7 @@ function WikiNews(props) {
                               {props.mangoWikiReducer.new.handleFlowers.map(
                                 i => (
                                   <li>
-                                    <Space>
-                                      <p>{i.name}:</p>
-                                      <p>{i.detail}</p>
-                                    </Space>
+                                    <p>{`${i.name}: ${i.detail}`}</p>
                                   </li>
                                 ),
                               )}
@@ -195,10 +189,7 @@ function WikiNews(props) {
                             <ul>
                               {props.mangoWikiReducer.new.manures.map(i => (
                                 <li>
-                                  <Space>
-                                    <p>{i.stage}:</p>
-                                    <p>{i.method}</p>
-                                  </Space>
+                                  <p>{`${i.stage}: ${i.method}`}</p>
                                 </li>
                               ))}
                             </ul>

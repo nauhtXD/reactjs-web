@@ -37,6 +37,12 @@ const { Column } = Table;
 
 const dateFormat = 'DD/MM/YYYY';
 
+const bcrData = [
+  {
+    name: 'Văn bản hội',
+  },
+];
+
 export function Documents(props) {
   useInjectReducer({ key: 'documents', reducer });
   useInjectSaga({ key: 'documents', saga });
@@ -200,6 +206,7 @@ export function Documents(props) {
           mWeathers={props.homeReducer.weathers}
           mLogin={handleLogin}
           mBanner={props.homeReducer.banners}
+          mBreadcrumbs={bcrData}
         />
         <MyAntdModal
           title="Chi tiết"

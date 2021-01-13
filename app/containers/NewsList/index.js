@@ -31,6 +31,7 @@ export function NewsList(props) {
   useInjectSaga({ key: 'newsList', saga });
 
   const [usrName, setUsrName] = useState(null);
+  const [bcrData, setBcrData] = useState(null);
 
   useEffect(() => {
     props.getPostsBySCID(match.params.subId);
@@ -50,6 +51,11 @@ export function NewsList(props) {
         key: API_KEY,
       });
   }, [props.homeReducer.cityList]);
+
+  useEffect(() => {
+    if (props.newsListReducer.posts.length > 0)
+      setBcrData([{ name: props.newsListReducer.posts[0].subcategory.name }]);
+  }, [props.newsListReducer.posts]);
 
   useEffect(() => {
     if (props.homeReducer.loginToken.token) {
@@ -122,6 +128,7 @@ export function NewsList(props) {
           mWeathers={props.homeReducer.weathers}
           mLogin={handleLogin}
           mBanner={props.homeReducer.banners}
+          mBreadcrumbs={bcrData}
         />
       </div>
     </div>

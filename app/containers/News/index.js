@@ -39,6 +39,11 @@ import {
 } from '../../components/Style/index';
 
 const dateFormat = 'DD/MM/YYYY';
+const bcrData = [
+  {
+    name: 'Tin tức',
+  },
+];
 
 export function News(props) {
   // eslint-disable-next-line react/prop-types
@@ -183,31 +188,31 @@ export function News(props) {
 
               {props.newsReducer.comments &&
                 props.newsReducer.comments.length > 0 && (
-                  <List
-                    bordered
-                    className="comment-list"
-                    header={`${props.newsReducer.comments.length} bình luận`}
-                    itemLayout="horizontal"
-                    dataSource={props.newsReducer.comments}
-                    renderItem={item => (
-                      <List.Item key={item.id}>
-                        <Comment
-                          author={item.user.username}
-                          avatar="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-                          content={
-                            <div
-                              // eslint-disable-next-line react/no-danger
-                              dangerouslySetInnerHTML={{
-                                __html: item.content,
-                              }}
-                            />
-                          }
-                          datetime={moment(item.createdAt).format(dateFormat)}
-                        />
-                      </List.Item>
-                    )}
-                  />
-                )}
+                <List
+                  bordered
+                  className="comment-list"
+                  header={`${props.newsReducer.comments.length} bình luận`}
+                  itemLayout="horizontal"
+                  dataSource={props.newsReducer.comments}
+                  renderItem={item => (
+                    <List.Item key={item.id}>
+                      <Comment
+                        author={item.user.username}
+                        avatar="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+                        content={
+                          <div
+                            // eslint-disable-next-line react/no-danger
+                            dangerouslySetInnerHTML={{
+                              __html: item.content,
+                            }}
+                          />
+                        }
+                        datetime={moment(item.createdAt).format(dateFormat)}
+                      />
+                    </List.Item>
+                  )}
+                />
+              )}
               <div style={{ height: '5px' }} />
               {props.homeReducer.lastestPosts.length > 0 && (
                 <List
@@ -243,6 +248,7 @@ export function News(props) {
           mWeathers={props.homeReducer.weathers}
           mLogin={handleLogin}
           mBanner={props.homeReducer.banners}
+          mBreadcrumbs={bcrData}
         />
       </div>
     </div>

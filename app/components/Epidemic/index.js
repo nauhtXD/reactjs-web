@@ -37,6 +37,7 @@ function Epidemic(props) {
       >
         {props.mData[0] &&
           props.mData.map((i, index) => (
+            // eslint-disable-next-line react/no-array-index-key
             <MyP key={index}>{`${i.name}: ${i.count}`}</MyP>
           ))}
       </Card>

@@ -92,8 +92,8 @@ function AdminTable(props) {
           mUpdate={props.mUpdate}
           mModal={props.mTableModal}
           mWidth={props.mWidth}
-          mPreview={props.mCheckImg ? props.mInitialValues.img : []}
-          mPreviewFile={props.mCheckFile ? props.mInitialValues.file : []}
+          mPreview={props.mCheckImg ? props.mInitialValues.img : null}
+          mPreviewFile={props.mCheckFile ? props.mInitialValues.file : null}
           mMap={
             props.mCheckMap
               ? {
