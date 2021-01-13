@@ -24,7 +24,7 @@ function Header(props) {
         mSubCategories={props.mSubCategories}
         mLogin={props.mLogin}
       />
-      <div style={{ margin: '50px auto auto auto', width: '90%' }}>
+      <div style={{ margin: '3.79vw auto auto auto', width: '90%' }}>
         {props.mBanner && (
           <Carousel autoplay effect="fade">
             {props.mBanner.map(i => (
@@ -66,13 +66,20 @@ function Header(props) {
                 ])}
             </MyBreadcrumb>
           </Col>
-          <Col span={4} style={{ textAlign: 'center' }}>
+          <Col
+            span={4}
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
             <p
               style={{
                 color: '#325700',
-                fontSize: '14px',
-                lineHeight: 1.5715,
-                marginBottom: '5px',
+                fontSize: '1.06141vw',
+                lineHeight: '0.119vw',
+                margin: '0.379vw 0',
               }}
             >
               {moment().format('llll')}

@@ -14,12 +14,12 @@ import { Card } from 'antd';
 // import messages from './messages';
 
 const cardStyle = {
-  minWidth: '220px',
+  minWidth: '16.6793vw',
   backgroundImage: 'linear-gradient(to bottom, #feb020, #ffd05c)',
 };
 
 const MyP = styled.p`
-  font-size: 10px;
+  font-size: 0.76vw;
   margin: 0;
   padding: 0;
 `;

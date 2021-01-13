@@ -19,7 +19,7 @@ const OSDiv = styled(Card)`
     color: ${fgColor} !important;
     background-image: ${primaryColor} !important;
     text-align: center !important;
-    height: 30px;
+    height: 2.27vw;
   }
   color: ${fgColor} !important;
   background-image: ${primaryColor} !important;
@@ -35,7 +35,7 @@ function capitalizeFirstLetter(string) {
 
 function WeatherWidget(props) {
   return (
-    <div style={{ marginBottom: '10px' }}>
+    <div style={{ marginBottom: '0.76vw' }}>
       <OSDiv title={props.mName} size="small" onClick={handleClick}>
         <div
           style={{
@@ -55,7 +55,7 @@ function WeatherWidget(props) {
           {capitalizeFirstLetter(props.mDescription)}
         </div>
       </OSDiv>
-      <div style={{ backgroundImage: `${primaryColor}`, height: '30px' }} />
+      <div style={{ backgroundImage: `${primaryColor}`, height: '2.27vw' }} />
     </div>
   );
 }

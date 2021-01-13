@@ -14,7 +14,7 @@ import { Row, Col, Image, Button } from 'antd';
 
 function ListImgCom(props) {
   return (
-    <div style={{ marginBottom: '15px' }}>
+    <div style={{ marginBottom: '1.14vw' }}>
       <Row>
         <Col span={5}>
           <Image width={props.mWidth} src={props.mSrc} />

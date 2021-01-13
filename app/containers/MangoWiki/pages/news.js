@@ -1,6 +1,7 @@
 /* eslint-disable prettier/prettier */
 import React, { memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
 import { createStructuredSelector } from 'reselect';
@@ -17,7 +18,16 @@ import TitleCom from '../../../components/TitleCom';
 import DividerList from '../../../components/DividerList';
 import { MyLink } from '../../../components/Style/index';
 
-const { Meta } = Card;
+const MyCardMeta = styled(Card.Meta)`
+  line-height: 1.5;
+  font-size: 1.14vw;
+  .ant-card-meta-detail > div:not(:last-child) {
+    margin-bottom: 0.60652vw;
+  }
+  .ant-card-meta-title {
+    font-size: 1.213vw;
+  }
+`;
 
 function WikiNews(props) {
   // eslint-disable-next-line react/prop-types
@@ -53,8 +63,11 @@ function WikiNews(props) {
             mCategory={props.mangoWikiReducer.new.data.name}
             mCont={
               <div>
-                <Row gutter={16}>
-                  <Col span={16} style={{ lineHeight: 1.5 }}>
+                <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
+                  <Col
+                    span={16}
+                    style={{ lineHeight: 1.5, fontSize: '1.06141vw' }}
+                  >
                     {props.mangoWikiReducer.new.data.define}
                     {props.mangoWikiReducer.new.genera &&
                       props.mangoWikiReducer.new.genera.length > 0 && (
@@ -63,7 +76,7 @@ function WikiNews(props) {
                           mTitle="Các chi"
                           mSource={props.mangoWikiReducer.new.genera}
                           mListItem={item => (
-                            <List.Item>
+                            <List.Item style={{ padding: '0.9vw 0' }}>
                               <MyLink
                                 href={`${window.location.href}/${item.id}`}
                                 style={{ marginLeft: '5%' }}
@@ -83,7 +96,7 @@ function WikiNews(props) {
                           mTitle="Các loài"
                           mSource={props.mangoWikiReducer.new.genusFeatures}
                           mListItem={item => (
-                            <List.Item>
+                            <List.Item style={{ padding: '0.9vw 0' }}>
                               <MyLink
                                 href={`${window.location.href}/${item.id}`}
                                 style={{ marginLeft: '5%' }}
@@ -128,7 +141,7 @@ function WikiNews(props) {
                               (i, index) => (
                                 <ul>
                                   <p
-                                    style={{ fontSize: '15px' }}
+                                    style={{ fontSize: '1.14vw' }}
                                   >{`Cách ${index + 1}:`}</p>
                                   <li>{`Chọn giống: ${i.seed}`}</li>
                                   <li>{`Chuẩn bị đất: ${
@@ -201,7 +214,7 @@ function WikiNews(props) {
                   <Col span={8}>
                     <Card
                       hoverable
-                      style={{ width: '280px' }}
+                      style={{ width: '21.2282vw' }}
                       cover={
                         <img
                           alt="example"
@@ -209,7 +222,7 @@ function WikiNews(props) {
                         />
                       }
                     >
-                      <Meta
+                      <MyCardMeta
                         title={props.mangoWikiReducer.new.data.scienceName}
                         description={props.mangoWikiReducer.new.data.name}
                       />

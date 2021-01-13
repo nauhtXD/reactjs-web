@@ -41,7 +41,7 @@ export function Dashboard(props) {
       </Helmet>
       <div>
         <div>
-          <Row gutter={16}>
+          <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
             <Col span={8}>
               {props.adminReducer.countPosts.all && (
                 <TitleCom

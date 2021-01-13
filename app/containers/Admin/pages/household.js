@@ -93,7 +93,7 @@ export function Household(props) {
 
   const mModal = [
     <div>
-      <Row gutter={16}>
+      <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
         <Col span={12}>
           <Form.Item
             name="name"

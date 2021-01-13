@@ -15,26 +15,39 @@ const fgColor = '#325700';
 const bgColor = '#e4f1d2';
 
 const OSDiv = styled(Card)`
-  margin-bottom: 10px !important;
-  line-height: 1;
+  margin-bottom: 0.76 !important;
   .ant-card-head {
     color: ${fgColor} !important;
     background-color: ${bgColor} !important;
+    font-size: 1.213vw;
+    min-height: 3.62vw;
+  }
+  .ant-card-head-title {
+    padding: 1.213vw 0;
+  }
+  .ant-card-body {
+    line-height: 0.22vw;
+    padding: 1.81956vw !important;
   }
 `;
 
 const OSDivNoPadding = styled(Card)`
-  line-height: 1;
   .ant-card-head,
   .ant-card-head a {
     color: ${fgColor} !important;
     background-color: ${bgColor} !important;
+    font-size: 1.213vw;
+    min-height: 3.62vw;
   }
   .ant-card-head a {
     text-decoration: underline !important;
   }
   .ant-card-body {
-    padding: 10px 0 0 0 !important;
+    padding: 0.76vw 0 0 0 !important;
+    line-height: 0.22vw;
+  }
+  .ant-card-head-title {
+    padding: 1.213vw 0;
   }
 `;
 

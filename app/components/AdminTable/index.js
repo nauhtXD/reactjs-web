@@ -55,7 +55,7 @@ function AdminTable(props) {
   return (
     <div>
       <div style={{ textAlign: 'center' }}>
-        <p style={{ fontSize: '30px', margin: '10px 0 10px 0' }}>
+        <p style={{ fontSize: '2.27445vw', margin: '0.76vw 0 0.76vw 0' }}>
           {props.mTitle}
         </p>
         <MyBox>
@@ -83,7 +83,7 @@ function AdminTable(props) {
           </Row>
         </MyBox>
       </div>
-      <div style={{ clear: 'both', height: '10px' }} />
+      <div style={{ clear: 'both', height: '0.76vw' }} />
       <MyBox>
         <MyTable
           mData={dataSource}

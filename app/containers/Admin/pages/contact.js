@@ -118,7 +118,7 @@ export function Contact(props) {
 
   const mModal = [
     <div>
-      <Row gutter={16}>
+      <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
         <Col span={14}>
           <Form.Item
             label="Tên"
@@ -180,7 +180,7 @@ export function Contact(props) {
                 ))}
             </Select>
           </Form.Item>
-          <Row gutter={16}>
+          <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
             <Col span={12}>
               <Form.Item key="longitude" label="Kinh độ" name="longitude">
                 <Input readOnly />

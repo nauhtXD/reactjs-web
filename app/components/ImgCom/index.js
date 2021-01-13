@@ -9,7 +9,7 @@ import PropTypes from 'prop-types';
 // import styled from 'styled-components';
 import { Image, Row, Col } from 'antd';
 
-import { MyLink } from '../Style/index';
+import { MyLink, ContentDiv } from '../Style/index';
 
 function ImgCom(props) {
   const myStyle = props.mStyle;
@@ -17,17 +17,28 @@ function ImgCom(props) {
     <Image
       width={props.mWidth}
       src={props.mSrc}
-      style={{ display: 'block', margin: '2px auto', width: '50%' }}
+      style={{ display: 'block', margin: '0.15vw auto', width: '50%' }}
     />,
   ];
   const imgCol = [<Col span={10}>{myImg}</Col>];
   const contentCol = [
     <Col span={14}>
-      <MyLink href={props.mLink} style={{ fontSize: '17px' }}>
+      <MyLink href={props.mLink} style={{ fontSize: '1.3vw' }}>
         <b>{props.mTitle}</b>
       </MyLink>
-      <p style={{ fontSize: '13px', opacity: 0.6 }}>{props.mDay}</p>
-      {props.mContent && <p style={{ fontSize: '15px' }}>{props.mContent}</p>}
+      <p style={{ fontSize: '1vw', opacity: 0.6 }}>{props.mDay}</p>
+      {props.mContent && (
+        <ContentDiv
+          style={{
+            WebkitLineClamp: 4,
+            fontSize: '1.14vw',
+          }}
+          // eslint-disable-next-line react/no-danger
+          dangerouslySetInnerHTML={{
+            __html: props.mContent,
+          }}
+        />
+      )}
     </Col>,
   ];
 

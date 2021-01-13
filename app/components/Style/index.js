@@ -30,6 +30,7 @@ const API_KEY = 'f9b8a21d57e020513b5c7e50113dd4ea';
 
 const MyLink = styled.a`
   color: #000;
+  font-size: 1.06141vw !important;
   :hover {
     color: ${primaryColor};
   }
@@ -37,6 +38,7 @@ const MyLink = styled.a`
 
 const MyRouterLink = styled(Link)`
   color: #000;
+  font-size: 1.06141vw !important;
   :hover {
     color: ${primaryColor};
   }
@@ -51,7 +53,12 @@ const MyBreadcrumb = styled(Breadcrumb)`
       color: ${primaryColor} !important;
     }
   }
+  &.ant-breadcrumb {
+    font-size: 1.06141vw;
+    line-height: 0.119vw;
+  }
 `;
+
 // #region antd
 const MyText = styled(Typography.Text)`
   &.ant-typography a {
@@ -176,8 +183,27 @@ const MyAntdForm = styled(Form)`
 const MyInlineMenu = styled(Menu)`
   .ant-menu-submenu-title a {
     color: #000 !important;
+    font-size: 1.06141vw !important;
+  }
+  .ant-menu-submenu-arrow {
+    right: 1.213vw !important;
+    width: 0.76vw !important;
+  }
+  .ant-menu-submenu {
+    .ant-menu-submenu-title {
+      padding-left: 1.81956vw !important;
+      padding-right: 2.57771vw !important;
+    }
+    .ant-menu-sub .ant-menu-submenu-title {
+      padding-left: 3.63912vw !important;
+    }
+    .ant-menu-sub .ant-menu-item {
+      padding-left: 5.45868vw !important;
+    }
   }
   .ant-menu-submenu-title {
+    height: 3.0326vw !important;
+    line-height: 3.0326vw !important;
     :hover,
     :active,
     :focus {
@@ -192,12 +218,15 @@ const MyInlineMenu = styled(Menu)`
   }
   .ant-menu-item {
     a {
+      font-size: 1.06141vw !important;
       :hover,
       :active,
       :focus {
         color: ${primaryColor} !important;
       }
     }
+    height: 3.0326vw !important;
+    line-height: 3.0326vw !important;
   }
   .ant-menu-submenu-selected,
   .ant-menu-item-selected a {
@@ -216,19 +245,19 @@ const ContentDiv = styled.div`
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
-  font-size: 15px;
+  font-size: 1.14vw;
 `;
 
 const CenterDiv = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 10px;
+  margin-bottom: 0.76vw;
 `;
 
 const MyBox = styled.div`
-  padding: 10px;
-  margin: 10px 10px 0 10px;
+  padding: 0.76vw;
+  margin: 0.76vw 0.76vw 0 0.76vw;
   height: auto;
 `;
 // #endregion
@@ -246,7 +275,7 @@ const tailLayout = {
 
 // #region icon
 const PlusIcon = styled(PlusOutlined)`
-  margin-bottom: 8px;
+  margin-bottom: 0.6vw;
   &.anticon svg {
     vertical-align: baseline !important;
   }

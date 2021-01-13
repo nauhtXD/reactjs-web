@@ -20,7 +20,7 @@ function DashboardCard(props) {
 
   return (
     <div>
-      <p style={{ fontSize: '20px' }}>
+      <p style={{ fontSize: '1.5163vw' }}>
         <b>{`${props.mIncreaseNum} / tuần`}</b>
       </p>
       <p>

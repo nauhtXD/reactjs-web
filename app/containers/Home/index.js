@@ -73,18 +73,18 @@ export function Home(props) {
                     <Row>
                       <Col span={15}>
                         <Image
-                          height={300}
+                          height="22.75vw"
                           src={props.homeReducer.lastestPosts[0].img}
                         />
-                        <div style={{ height: '10px' }} />
+                        <div style={{ height: '0.76vw' }} />
                         <MyLink
                           href={`/news/${props.homeReducer.lastestPosts[0].id}`}
                         >
-                          <b style={{ fontSize: '19px' }}>
+                          <b style={{ fontSize: '1.44vw' }}>
                             {props.homeReducer.lastestPosts[0].title}
                           </b>
                         </MyLink>
-                        <p style={{ fontSize: '13px', opacity: 0.6 }}>
+                        <p style={{ fontSize: '1vw', opacity: 0.6 }}>
                           {moment(
                             props.homeReducer.lastestPosts[0].publishAt,
                           ).format(dateFormat)}
@@ -92,6 +92,7 @@ export function Home(props) {
                         <ContentDiv
                           style={{
                             WebkitLineClamp: 4,
+                            fontSize: '1.2vw',
                           }}
                           // eslint-disable-next-line react/no-danger
                           dangerouslySetInnerHTML={{
@@ -108,19 +109,12 @@ export function Home(props) {
                                 <ImgCom
                                   key={i.id}
                                   mStyle="left"
-                                  mWidth="128px"
+                                  mWidth="9.7vw"
                                   mSrc={i.img}
                                   mLink={`/news/${i.id}`}
                                   mTitle={i.title}
                                   mDay={moment(i.publishAt).format(dateFormat)}
-                                  mContent={
-                                    <ContentDiv
-                                      // eslint-disable-next-line react/no-danger
-                                      dangerouslySetInnerHTML={{
-                                        __html: i.content,
-                                      }}
-                                    />
-                                  }
+                                  mContent={i.content}
                                 />
                               ),
                           )}
@@ -151,19 +145,12 @@ export function Home(props) {
                               <ImgCom
                                 key={i.id}
                                 mStyle="left"
-                                mWidth="128px"
+                                mWidth="9.7vw"
                                 mSrc={i.img}
                                 mLink={`/news/${i.id}`}
                                 mTitle={i.title}
                                 mDay={moment(i.publishAt).format(dateFormat)}
-                                mContent={
-                                  <ContentDiv
-                                    // eslint-disable-next-line react/no-danger
-                                    dangerouslySetInnerHTML={{
-                                      __html: i.content,
-                                    }}
-                                  />
-                                }
+                                mContent={i.content}
                               />
                             </Col>
                           ),
@@ -172,7 +159,7 @@ export function Home(props) {
               }
               mCheck
             />
-            <Row gutter={16}>
+            <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
               {props.homeReducer.subCategoriesByCID.length > 0 &&
                 props.homeReducer.subCategoriesByCID.map(i => (
                   <Col span={8}>
@@ -189,21 +176,14 @@ export function Home(props) {
                                     <ImgCom
                                       key={j.id}
                                       mStyle="left"
-                                      mWidth="128px"
+                                      mWidth="9.7vw"
                                       mSrc={j.img}
                                       mLink={`/news/${j.id}`}
                                       mTitle={j.title}
                                       mDay={moment(j.publishAt).format(
                                         dateFormat,
                                       )}
-                                      mContent={
-                                        <ContentDiv
-                                          // eslint-disable-next-line react/no-danger
-                                          dangerouslySetInnerHTML={{
-                                            __html: j.content,
-                                          }}
-                                        />
-                                      }
+                                      mContent={j.content}
                                     />
                                   ),
                               )}

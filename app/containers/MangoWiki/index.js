@@ -77,7 +77,7 @@ export function MangoWiki(props) {
       <MyLayout
         mCont={
           <div>
-            <Row gutter={16}>
+            <Row gutter={{ xs: 4, sm: 8, md: 12, lg: 16 }}>
               <Col span={5}>
                 <TitleCom
                   mCont={

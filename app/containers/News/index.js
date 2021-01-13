@@ -171,10 +171,13 @@ export function News(props) {
               {localStorage.getItem('authToken') && (
                 <div>
                   <MyAntdForm form={form}>
-                    <Form.Item name="content" style={{ marginBottom: '5px' }}>
+                    <Form.Item
+                      name="content"
+                      style={{ marginBottom: '0.379vw' }}
+                    >
                       <Input.TextArea placeholder="Để lại bình luận" />
                     </Form.Item>
-                    <Form.Item style={{ marginBottom: '5px' }}>
+                    <Form.Item style={{ marginBottom: '0.379vw' }}>
                       <MyButton
                         style={{ float: 'right' }}
                         onClick={handleSubmit}
@@ -213,7 +216,7 @@ export function News(props) {
                   )}
                 />
               )}
-              <div style={{ height: '5px' }} />
+              <div style={{ height: '0.379vw' }} />
               {props.homeReducer.lastestPosts.length > 0 && (
                 <List
                   bordered

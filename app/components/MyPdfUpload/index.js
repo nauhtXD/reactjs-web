@@ -15,9 +15,9 @@ import { PlusIcon, primaryColor } from '../Style/index';
 const UploadDiv = styled.div`
   width: 50%;
   height: 100%;
-  border: 2px dashed silver;
+  border: 0.15vw dashed silver;
   text-align: center;
-  padding: 18px 0 8px 0;
+  padding: 1.36vw 0 0.6vw 0;
   :hover {
     border-color: ${primaryColor};
     cursor: pointer;

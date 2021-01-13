@@ -26,7 +26,7 @@ const NewDiv = styled.div`
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
-  line-height: 1.8;
+  line-height: 0.14vw;
 `;
 
 function Sidebar(props) {
@@ -64,7 +64,7 @@ function Sidebar(props) {
         <TitleCom
           mCategory="Văn bản hội"
           mCont={
-            <div style={{ height: '115px', margin: 'auto 10px' }}>
+            <div style={{ height: '8.72vw', margin: 'auto 0.76vw' }}>
               {props.mDocuments.map(i => (
                 <NewDiv key={i.id}>
                   <MyText>
@@ -78,13 +78,14 @@ function Sidebar(props) {
           mCheck
         />
       )}
+      <div style={{ height: '0.30326vw' }} />
       {localStorage.getItem('authToken') && (
         <TitleCom
           mCategory="Báo cáo sự cố"
           mCont={
             <div>
               <MyText>Bạn gặp sự cố?</MyText>
-              <div style={{ height: '15px' }} />
+              <div style={{ height: '1.2vw' }} />
               <MyLink
                 onClick={showModal}
                 style={{ textDecoration: 'underline' }}

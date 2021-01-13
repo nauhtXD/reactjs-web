@@ -14,8 +14,8 @@ import moment from 'moment';
 // import messages from './messages';
 
 const MyStyle = styled.div`
-  height: 30px;
-  width: 200px;
+  height: 2.27445vw;
+  width: 15.163vw;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -23,7 +23,7 @@ const MyStyle = styled.div`
 `;
 
 const MyP = styled.p`
-  font-size: 10px;
+  font-size: 0.76vw;
   margin: 0;
   padding: 0;
 `;

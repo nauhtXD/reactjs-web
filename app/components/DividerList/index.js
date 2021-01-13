@@ -12,8 +12,13 @@ import { Divider, List } from 'antd';
 function DividerList(props) {
   return (
     <div>
-      <Divider orientation="left">{props.mTitle}</Divider>
-      <div style={{ lineHeight: 1.5 }}>{props.mCont}</div>
+      <Divider
+        orientation="left"
+        style={{ fontSize: '1.213vw', margin: '1.213vw auto' }}
+      >
+        {props.mTitle}
+      </Divider>
+      <div style={{ lineHeight: '0.114vw' }}>{props.mCont}</div>
       {props.mListItem && (
         <List dataSource={props.mSource} renderItem={props.mListItem} />
       )}

@@ -160,7 +160,7 @@ export function WeatherMap(props) {
           <div>
             <Map
               style={{
-                height: '400px',
+                height: '30.326vw',
                 width: '100%',
               }}
               center={center && [center.latitude, center.longitude]}

@@ -22,13 +22,19 @@ const FMenu = styled(Menu)`
   overflow: hidden;
   top: 0;
   width: 100%;
+  line-height: 3.48749vw;
+  font-size: 1.06141vw;
 `;
 const NavItem = styled(Menu.Item)`
   color: #fff;
+  margin-top: -0.076vw !important;
+  margin-bottom: 0 !important;
+  margin-left: 1.5163vw !important;
+  margin-right: 1.5163vw !important;
   :hover,
   &.ant-menu-item-selected {
     color: ${mColor} !important;
-    border-bottom: 1px solid ${mColor} !important;
+    border-bottom: 0.076vw solid ${mColor} !important;
   }
 `;
 const SubItem = styled(Menu.Item)`
@@ -47,7 +53,7 @@ const SubNav = styled(SubMenu)`
   }
   &.ant-menu-submenu-active {
     color: ${mColor} !important;
-    border-bottom: 1px solid ${mColor} !important;
+    border-bottom: 0.076vw solid ${mColor} !important;
   }
 `;
 const MLink = styled.a`

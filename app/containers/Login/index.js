@@ -27,17 +27,17 @@ import {
 const CenterDiv = styled.div`
   background-color: #eee;
   height: 100vh;
-  padding: 30px;
+  padding: 2.27445vw;
 `;
 
 const FormDiv = styled.div`
   margin: auto;
   background: #fff;
-  padding: 30px;
+  padding: 2.27445vw;
   width: 90%;
-  max-width: 450px;
-  -webkit-box-shadow: 0 30px 60px 0 rgba(0, 0, 0, 0.3);
-  box-shadow: 0 30px 60px 0 rgba(0, 0, 0, 0.3);
+  max-width: 34.117vw;
+  -webkit-box-shadow: 0 2.27445vw 4.5489vw 0 rgba(0, 0, 0, 0.3);
+  box-shadow: 0 2.27445vw 4.5489vw 0 rgba(0, 0, 0, 0.3);
 `;
 
 export function Login(props) {

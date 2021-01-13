@@ -32,16 +32,16 @@ function Footer(props) {
   }, [props.mContacts]);
 
   return (
-    <div style={{ marginTop: '20px', backgroundColor: `${primaryColor}` }}>
+    <div style={{ marginTop: '1.5163vw', backgroundColor: `${primaryColor}` }}>
       <Row>
         <Col span={12}>
           <Row>
             <Map
               style={{
-                height: '300px',
+                height: '22.7445vw',
                 width: '95%',
                 float: 'right',
-                margin: '15px auto',
+                margin: '1.14vw auto',
               }}
               center={center && [center.latitude, center.longitude]}
               zoom={mZoom}
@@ -62,17 +62,21 @@ function Footer(props) {
           span={12}
           style={{
             textAlign: 'left',
-            margin: '10px auto',
+            margin: '0.76vw auto',
             color: '#fff',
           }}
         >
           {center && (
             <div>
-              <h2 style={{ color: '#ffff00' }}>{center.name}</h2>
-              <p>Địa chỉ: {center.address}</p>
-              <p>Điện thoại: {center.phone}</p>
-              <p>Fax: {center.fax}</p>
-              <p>Email: {center.email}</p>
+              <p style={{ color: '#ffff00', fontSize: '1.213vw' }}>
+                <b>{center.name}</b>
+              </p>
+              <div style={{ fontSize: '1.06141vw' }}>
+                <p>Địa chỉ: {center.address}</p>
+                <p>Điện thoại: {center.phone}</p>
+                <p>Fax: {center.fax}</p>
+                <p>Email: {center.email}</p>
+              </div>
             </div>
           )}
         </Col>
