@@ -24,12 +24,6 @@ const MyP = styled.p`
   padding: 0;
 `;
 
-const MyCardGrid = styled(Card.Grid)`
-  text-align: center;
-  border-radius: 50%;
-  width: 33.33%;
-`;
-
 function Epidemic(props) {
   return (
     <div>
@@ -37,14 +31,13 @@ function Epidemic(props) {
         style={cardStyle}
         size="small"
         title={
-          <MyP>{`${props.mData && props.mData.province}, ${moment().format(
-            'DD/MM/YYYY',
-          )}`}</MyP>
+          <MyP>{`${props.mData[0] &&
+            props.mData[0].province}, ${moment().format('DD/MM/YYYY')}`}</MyP>
         }
       >
-        {props.mData &&
-          props.mData.name.map((i, index) => (
-            <MyP key={index}>{`${i.name}: ${i.count[0]}`}</MyP>
+        {props.mData[0] &&
+          props.mData.map((i, index) => (
+            <MyP key={index}>{`${i.name}: ${i.count}`}</MyP>
           ))}
       </Card>
     </div>

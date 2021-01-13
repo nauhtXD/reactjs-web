@@ -60,8 +60,6 @@ const bcrData = [
   },
 ];
 
-let test = [];
-
 export function WeatherMap(props) {
   useInjectReducer({ key: 'weatherMap', reducer });
   useInjectSaga({ key: 'weatherMap', saga });
@@ -110,21 +108,11 @@ export function WeatherMap(props) {
 
   useEffect(() => {
     if (props.weatherMapReducer.countEpidemics.length > 0) {
-      const t = _(props.weatherMapReducer.countEpidemics)
-        .groupBy('province')
-        .map((value, province) => ({
-          province,
-          lat: [...new Set(_.map(value, 'lat'))],
-          lon: [...new Set(_.map(value, 'lon'))],
-          name: _(value)
-            .groupBy('name')
-            .map((v, name) => ({
-              name,
-              count: _.map(v, 'count'),
-            }))
-            .value(),
-        }))
-        .value();
+      const t = _.partition(
+        _.groupBy(props.weatherMapReducer.countEpidemics, 'province'),
+        (value, i) => i % 2 === 0,
+      );
+      console.log(t);
       setEpidemic(t);
     }
   }, [props.weatherMapReducer.countEpidemics]);
@@ -214,12 +202,12 @@ export function WeatherMap(props) {
                 <LayersControl.BaseLayer name="Dịch bệnh">
                   <LayerGroup>
                     {epidemic &&
-                      epidemic.map((i, index) => (
+                      epidemic[1].map((i, index) => (
                         <EMarker
                           key={index}
                           icon={<Epidemic mData={i} />}
-                          position={[i.lat[0], i.lon[0]]}
-                          onClick={() => handleEpidemic(i.lat[0], i.lon[0])}
+                          position={[i[0].lat, i[0].lon]}
+                          onClick={() => handleEpidemic(i[0].lat, i[0].lon)}
                         />
                       ))}
                   </LayerGroup>
