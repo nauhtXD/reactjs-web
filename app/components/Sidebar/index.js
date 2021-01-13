@@ -26,7 +26,7 @@ const NewDiv = styled.div`
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
-  line-height: 0.14vw;
+  line-height: 1.5;
 `;
 
 function Sidebar(props) {

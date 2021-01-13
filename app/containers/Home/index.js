@@ -77,8 +77,6 @@ export function Home(props) {
                           src={props.homeReducer.lastestPosts[0].img}
                           style={{
                             display: 'block',
-                            margin: '0.2vw auto',
-                            width: '90%',
                           }}
                         />
                         <div style={{ height: '0.76vw' }} />
