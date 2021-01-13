@@ -203,6 +203,7 @@ const MyInlineMenu = styled(Menu)`
   .ant-menu-submenu-arrow {
     right: 1.213vw !important;
     width: 0.76vw !important;
+    display: none;
   }
   .ant-menu-submenu {
     .ant-menu-submenu-title {
@@ -293,8 +294,10 @@ const tailLayout = {
 const DownIcon = styled(DownOutlined)`
   &.anticon svg {
     vertical-align: baseline !important;
+    width: 0.76vw !important;
   }
 `;
+
 const PlusIcon = styled(PlusOutlined)`
   margin-bottom: 0.6vw;
   &.anticon svg {
@@ -323,6 +326,7 @@ const CloseIcon = styled(CloseSquareTwoTone)`
 const UIcon = styled(UserOutlined)`
   &.anticon svg {
     vertical-align: baseline !important;
+    width: 0.76vw !important;
   }
 `;
 

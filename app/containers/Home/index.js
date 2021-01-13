@@ -75,6 +75,11 @@ export function Home(props) {
                         <Image
                           height="22.75vw"
                           src={props.homeReducer.lastestPosts[0].img}
+                          style={{
+                            display: 'block',
+                            margin: '0.2vw auto',
+                            width: '90%',
+                          }}
                         />
                         <div style={{ height: '0.76vw' }} />
                         <MyLink
@@ -145,7 +150,7 @@ export function Home(props) {
                               <ImgCom
                                 key={i.id}
                                 mStyle="left"
-                                mWidth="9.7vw"
+                                mWidth="11vw"
                                 mSrc={i.img}
                                 mLink={`/news/${i.id}`}
                                 mTitle={i.title}
@@ -176,7 +181,7 @@ export function Home(props) {
                                     <ImgCom
                                       key={j.id}
                                       mStyle="left"
-                                      mWidth="9.7vw"
+                                      mWidth="11vw"
                                       mSrc={j.img}
                                       mLink={`/news/${j.id}`}
                                       mTitle={j.title}

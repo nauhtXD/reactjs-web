@@ -65,8 +65,8 @@ export function Login(props) {
 
   const handleCLick = () => {
     form.validateFields().then(values => {
-      setUsrName(values.username);
       props.getLoginToken(values);
+      setUsrName(values.username);
     });
   };
 

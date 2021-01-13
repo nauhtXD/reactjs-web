@@ -48,6 +48,7 @@ export function MangoWiki(props) {
 
   const [usrName, setUsrName] = useState(null);
   const [rotate, setRotate] = useState(null);
+  const [rotate1, setRotate1] = useState(null);
 
   useEffect(() => {
     props.getCategories();
@@ -77,6 +78,9 @@ export function MangoWiki(props) {
     setRotate(rotate ? null : 180);
   };
 
+  const handleClick1 = () => {
+    setRotate1(rotate1 ? null : 180);
+  };
   return (
     <div>
       <Helmet>
@@ -115,11 +119,13 @@ export function MangoWiki(props) {
                                     key={`genus${j.id}`}
                                     title={
                                       <MyRouterLink
+                                        onClick={handleClick1}
                                         to={`/mangowiki/news/${i.id}/${j.id}`}
                                       >
                                         Chi {j.name}
                                       </MyRouterLink>
                                     }
+                                    icon={<DownIcon rotate={rotate1} />}
                                   >
                                     {props.mangoWikiReducer.genusFeatures &&
                                       props.mangoWikiReducer.genusFeatures.map(

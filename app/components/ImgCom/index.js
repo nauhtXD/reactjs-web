@@ -17,7 +17,7 @@ function ImgCom(props) {
     <Image
       width={props.mWidth}
       src={props.mSrc}
-      style={{ display: 'block', margin: '0.15vw auto', width: '50%' }}
+      style={{ display: 'block', margin: '0.2vw auto', width: '90%' }}
     />,
   ];
   const imgCol = [<Col span={10}>{myImg}</Col>];
