@@ -81,6 +81,7 @@ export function MangoWiki(props) {
   const handleClick1 = () => {
     setRotate1(rotate1 ? null : 180);
   };
+
   return (
     <div>
       <Helmet>
