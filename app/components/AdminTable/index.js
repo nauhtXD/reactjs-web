@@ -42,6 +42,7 @@ function AdminTable(props) {
   }, [form, props.mInitialValues]);
 
   const showModal = () => {
+    form.setFieldsValue(props.mInitialValues);
     setIsVisible(!isVisible);
   };
 
@@ -113,8 +114,9 @@ function AdminTable(props) {
         okText="Thêm"
         cancelText="Hủy"
         width={props.mWidth && props.mWidth}
+        destroyOnClose
       >
-        <MyAntdForm form={form} {...layout}>
+        <MyAntdForm preserve={false} form={form} {...layout}>
           {props.mModal}
         </MyAntdForm>
       </MyAntdModal>

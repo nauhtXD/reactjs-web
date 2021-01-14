@@ -63,7 +63,8 @@ export function Report(props) {
 
   const handleSearch = (entry, currValue) =>
     entry.title.toLowerCase().includes(currValue) ||
-    entry.user.username.toLowerCase().includes(currValue);
+    entry.user.username.toLowerCase().includes(currValue) ||
+    entry.status.name.toLowerCase().includes(currValue);
 
   return (
     <div>

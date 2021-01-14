@@ -8,11 +8,12 @@ export function PrivateRoute({ component: Component, ...rest }) {
     <Route
       {...rest}
       render={props =>
-        localStorage.getItem('authToken') ? (
-          <Component {...props} />
-        ) : (
-          <Redirect to="/login" />
-        )
+        localStorage.getItem('authToken') &&
+        localStorage.getItem('authToken').includes('QjMeFzYjMZssWfvow5JQ') ? (
+            <Component {...props} />
+          ) : (
+            <Redirect to="/login" />
+          )
       }
     />
   );
