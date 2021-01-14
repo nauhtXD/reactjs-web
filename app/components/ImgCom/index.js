@@ -52,7 +52,7 @@ function ImgCom(props) {
           {props.mContent && <p>{props.mContent}</p>}
         </div>
       ) : (
-        <div>
+        <div style={{ marginBottom: '0.76vw' }}>
           {myStyle === 'left' ? (
             <Row>
               {imgCol}
