@@ -2,7 +2,7 @@ import env from '../env';
 
 const config = {
   develop: {
-    apiUrl: 'https://hqndapi.herokuapp.com/api/',
+    apiUrl: 'http://localhost:8080/api/',
     apiUrlMinio: 'https://hqndminio.herokuapp.com/',
     apiUrlWeather: 'https://api.openweathermap.org/data/2.5/',
     envTag: 'd',
