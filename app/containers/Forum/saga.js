@@ -41,6 +41,10 @@ export function* createForumPostSaga({ payload }) {
       yield put({
         type: types.CREATE_FORUM_POST_SUCCESS,
       });
+      notification.success({
+        message: 'Success',
+        description: 'Tạo thành công',
+      });
     } else {
       yield put({
         type: types.CREATE_FORUM_POST_FAIL,

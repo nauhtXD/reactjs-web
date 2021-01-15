@@ -1,4 +1,4 @@
-/* eslint-disable prettier/prettier */
+/* eslint-disable indent */
 import React, { memo, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -36,22 +36,22 @@ const dateFormat = 'DD/MM/YYYY';
 export function ForumPost(props) {
   // eslint-disable-next-line react/prop-types
   const { match } = props;
-  useInjectReducer({ key: 'forum', reducer });
-  useInjectSaga({ key: 'forum', saga });
+  useInjectReducer({ key: 'forumPost', reducer });
+  useInjectSaga({ key: 'forumPost', saga });
 
   const [usrName, setUsrName] = useState(null);
   const [isRerender, setIsRerender] = useState(false);
   const forumPostId = match.params.id;
 
   useEffect(() => {
+    props.getForumPost(forumPostId);
+    props.getForumComments(forumPostId);
     props.getCategories();
     props.getSubCategories();
     props.getContacts();
     props.getCityList();
     props.getLastestDocuments(4);
     props.getBanners();
-    props.getForumPost(forumPostId);
-    props.getForumComments(forumPostId);
   }, []);
 
   useEffect(() => {
@@ -100,12 +100,8 @@ export function ForumPost(props) {
       <MyLayout
         mCont={
           <div>
-            {
-              <div>
-                <p>{props.forumPostReducer.title}</p>
-                <p>{props.forumPostReducer.content}</p>
-              </div>
-            }
+            <p>{props.forumPostReducer.forumPost.title}</p>
+            <p>{props.forumPostReducer.forumPost.content}</p>
 
             {localStorage.getItem('authToken') && (
               <CommentForm mCreateComment={handleSubmit} />
@@ -113,26 +109,26 @@ export function ForumPost(props) {
 
             {props.forumPostReducer.forumComments &&
               props.forumPostReducer.forumComments.length > 0 && (
-              <MyAntdList
-                bordered
-                className="comment-list"
-                header={`${
-                  props.forumPostReducer.forumComments.length
-                } câu trả lời`}
-                itemLayout="horizontal"
-                dataSource={props.forumPostReducer.forumComments}
-                renderItem={item => (
-                  <List.Item key={item.id}>
-                    <MyComment
-                      author={item.user.username}
-                      avatar="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-                      content={item.content}
-                      datetime={moment(item.createdAt).format(dateFormat)}
-                    />
-                  </List.Item>
-                )}
-              />
-            )}
+                <MyAntdList
+                  bordered
+                  className="comment-list"
+                  header={`${
+                    props.forumPostReducer.forumComments.length
+                  } câu trả lời`}
+                  itemLayout="horizontal"
+                  dataSource={props.forumPostReducer.forumComments}
+                  renderItem={item => (
+                    <List.Item key={item.id}>
+                      <MyComment
+                        author={item.user.username}
+                        avatar="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+                        content={item.content}
+                        datetime={moment(item.createdAt).format(dateFormat)}
+                      />
+                    </List.Item>
+                  )}
+                />
+              )}
           </div>
         }
         mCategories={props.homeReducer.categories}
@@ -204,6 +200,9 @@ const mapDispatchToProps = dispatch => ({
   },
   getForumComments: data => {
     dispatch(action.getForumComments(data));
+  },
+  createForumComment: data => {
+    dispatch(action.createForumComment(data));
   },
 });
 

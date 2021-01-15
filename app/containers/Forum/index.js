@@ -24,7 +24,7 @@ import {
   MyAntdList,
   MyAntdModal,
   MyAntdForm,
-  layout,
+  MyLink,
 } from '../../components/Style/index';
 
 const bcrData = [
@@ -87,6 +87,7 @@ export function Forum(props) {
     form.validateFields().then(values => {
       const data = { ...values, userId: localStorage.getItem('usrId') };
       props.createForumPost(data);
+      showModal();
       setIsRerender(!isRerender);
     });
   };
@@ -110,7 +111,9 @@ export function Forum(props) {
                     dataSource={props.forumReducer.forumPosts}
                     renderItem={item => (
                       <List.Item key={item.id}>
-                        <p>{item.title}</p>
+                        <MyLink href={`/forumPost/${item.id}`}>
+                          <b>{item.title}</b>
+                        </MyLink>
                         <p>{item.content}</p>
                       </List.Item>
                     )}
@@ -141,12 +144,12 @@ export function Forum(props) {
         cancelText="Hủy"
         width={1000}
       >
-        <MyAntdForm form={form} {...layout}>
+        <MyAntdForm form={form}>
           <Form.Item name="title">
             <Input placeholder="Tiêu đề" />
           </Form.Item>
           <Form.Item name="content">
-            <Input.Area placeholder="Nội dung" />
+            <Input.TextArea placeholder="Nội dung" style={{ minHeight: 250 }} />
           </Form.Item>
         </MyAntdForm>
       </MyAntdModal>

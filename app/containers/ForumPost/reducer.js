@@ -16,12 +16,12 @@ const forumPostReducer = (state = initialState, action) =>
         draft.loadingForumComments = true;
         break;
       case types.GET_FORUM_COMMENT_SUCCESS:
-        draft.loadingForumComments = false;
         draft.forumComments = action.forumComments;
+        draft.loadingForumComments = false;
         break;
       case types.GET_FORUM_COMMENT_FAIL:
-        draft.loadingForumComments = false;
         draft.forumComments = [];
+        draft.loadingForumComments = false;
         break;
       case types.GET_FORUM_POST:
         draft.loadingForumPost = true;
