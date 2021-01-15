@@ -104,8 +104,9 @@ function Sidebar(props) {
         onOk={handleCreate}
         okText="Gửi"
         cancelText="Hủy"
+        destroyOnClose
       >
-        <MyAntdForm form={form} {...layout}>
+        <MyAntdForm preserve={false} form={form} {...layout}>
           <Form.Item label="Tiêu đề" name="title">
             <Input />
           </Form.Item>

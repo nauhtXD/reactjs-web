@@ -5,7 +5,7 @@ import { Helmet } from 'react-helmet';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 // import styled from 'styled-component';
-// import { Layout } from 'antd';
+import { Form, List, Input } from 'antd';
 
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
@@ -13,12 +13,19 @@ import makeSelect from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 
-// import * as action from './actions';
+import * as action from './actions';
 import * as hAction from '../Home/actions';
 import makeSelectHome from '../Home/selectors';
 
 import MyLayout from '../../components/MyLayout/index';
-import { API_KEY } from '../../components/Style/index';
+import TitleCom from '../../components/TitleCom/index';
+import {
+  API_KEY,
+  MyAntdList,
+  MyAntdModal,
+  MyAntdForm,
+  layout,
+} from '../../components/Style/index';
 
 const bcrData = [
   {
@@ -31,8 +38,12 @@ export function Forum(props) {
   useInjectSaga({ key: 'forum', saga });
 
   const [usrName, setUsrName] = useState(null);
+  const [isRerender, setIsRerender] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
+  const [form] = Form.useForm();
 
   useEffect(() => {
+    props.getForumPosts();
     props.getCategories();
     props.getSubCategories();
     props.getContacts();
@@ -59,9 +70,25 @@ export function Forum(props) {
     }
   }, [props.homeReducer.loginToken]);
 
+  useEffect(() => {
+    props.getForumPosts();
+  }, [isRerender]);
+
+  const showModal = () => {
+    setIsVisible(!isVisible);
+  };
+
   const handleLogin = values => {
     setUsrName(values.username);
     props.getLoginToken(values);
+  };
+
+  const handleSubmit = () => {
+    form.validateFields().then(values => {
+      const data = { ...values, userId: localStorage.getItem('usrId') };
+      props.createForumPost(data);
+      setIsRerender(!isRerender);
+    });
   };
 
   return (
@@ -71,7 +98,29 @@ export function Forum(props) {
         <meta name="description" content="Description of Forum" />
       </Helmet>
       <MyLayout
-        mCont={<div />}
+        mCont={
+          <div>
+            <TitleCom
+              mCategory="Danh sách thảo luận"
+              mCont={
+                <div>
+                  <MyAntdList
+                    itemLayout="vertical"
+                    size="large"
+                    dataSource={props.forumReducer.forumPosts}
+                    renderItem={item => (
+                      <List.Item key={item.id}>
+                        <p>{item.title}</p>
+                        <p>{item.content}</p>
+                      </List.Item>
+                    )}
+                  />
+                </div>
+              }
+              mCreate={localStorage.getItem('authToken') ? showModal : null}
+            />
+          </div>
+        }
         mCategories={props.homeReducer.categories}
         mSubCategories={props.homeReducer.subCategories}
         mContacts={props.homeReducer.contacts}
@@ -82,13 +131,32 @@ export function Forum(props) {
         mBanner={props.homeReducer.banners}
         mBreadcrumbs={bcrData}
       />
+      <MyAntdModal
+        title="Thảo luận mới"
+        centered
+        visible={isVisible}
+        onCancel={showModal}
+        onOk={handleSubmit}
+        okText="Tạo"
+        cancelText="Hủy"
+        width={1000}
+      >
+        <MyAntdForm form={form} {...layout}>
+          <Form.Item name="title">
+            <Input placeholder="Tiêu đề" />
+          </Form.Item>
+          <Form.Item name="content">
+            <Input.Area placeholder="Nội dung" />
+          </Form.Item>
+        </MyAntdForm>
+      </MyAntdModal>
     </div>
   );
 }
 
 Forum.propTypes = {
   homeReducer: PropTypes.any,
-  // forumReducer: PropTypes.any,
+  forumReducer: PropTypes.any,
   getCategories: PropTypes.func,
   getSubCategories: PropTypes.func,
   getContacts: PropTypes.func,
@@ -98,6 +166,8 @@ Forum.propTypes = {
   getCityList: PropTypes.func,
   getLoginToken: PropTypes.func,
   getBanners: PropTypes.func,
+  getForumPosts: PropTypes.func,
+  createForumPost: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -132,6 +202,12 @@ const mapDispatchToProps = dispatch => ({
   },
   getLastestDocuments: data => {
     dispatch(hAction.getLastestDocuments(data));
+  },
+  getForumPosts: data => {
+    dispatch(action.getForumPosts(data));
+  },
+  createForumPost: data => {
+    dispatch(action.createForumPost(data));
   },
 });
 

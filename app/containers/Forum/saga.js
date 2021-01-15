@@ -3,17 +3,17 @@ import * as api from 'api/Forum';
 import { notification } from 'antd';
 import * as types from './constants';
 
-export function* getForumSaga({ data }) {
+export function* getForumPostSaga({ payload }) {
   try {
-    const response = yield call(api.getForumPage, data);
-    if (response && response.status === 200 && response.data.code === 200) {
+    const response = yield call(api.getForumPosts, payload);
+    if (response && response.status === 200) {
       yield put({
-        type: types.DEFAULT_ACTION_SUCCESS,
-        data: response.data.data,
+        type: types.GET_FORUM_POST_SUCCESS,
+        forumPosts: response.data.data,
       });
     } else {
       yield put({
-        type: types.DEFAULT_ACTION_FAIL,
+        type: types.GET_FORUM_POST_FAIL,
         error: response && response.data ? response.data.messages : 'API Error',
       });
       notification.error({
@@ -24,7 +24,37 @@ export function* getForumSaga({ data }) {
     }
   } catch (err) {
     yield put({
-      type: types.DEFAULT_ACTION_FAIL,
+      type: types.GET_FORUM_POST_FAIL,
+      error: err,
+    });
+    notification.error({
+      message: 'Error',
+      description: err,
+    });
+  }
+}
+
+export function* createForumPostSaga({ payload }) {
+  try {
+    const response = yield call(api.createForumPost, payload);
+    if (response && response.status === 200) {
+      yield put({
+        type: types.CREATE_FORUM_POST_SUCCESS,
+      });
+    } else {
+      yield put({
+        type: types.CREATE_FORUM_POST_FAIL,
+        error: response && response.data ? response.data.messages : 'API Error',
+      });
+      notification.error({
+        message: 'Error',
+        description:
+          response && response.data ? response.data.messages : 'API Error',
+      });
+    }
+  } catch (err) {
+    yield put({
+      type: types.CREATE_FORUM_POST_FAIL,
       error: err,
     });
     notification.error({
@@ -35,5 +65,8 @@ export function* getForumSaga({ data }) {
 }
 
 export default function* rootSaga() {
-  yield all([takeLatest(types.DEFAULT_ACTION, getForumSaga)]);
+  yield all([
+    takeLatest(types.GET_FORUM_POST, getForumPostSaga),
+    takeLatest(types.CREATE_FORUM_POST, createForumPostSaga),
+  ]);
 }

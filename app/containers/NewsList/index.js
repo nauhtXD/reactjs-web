@@ -102,7 +102,7 @@ export function NewsList(props) {
                               href={`/news/${item.id}`}
                               style={{ fontSize: '1.3vw' }}
                             >
-                              {item.title}
+                              <b>{item.title}</b>
                             </MyLink>
                             <p style={{ opacity: 0.6, fontSize: '1vw' }}>
                               {moment(item.publishAt).format(dateFormat)}

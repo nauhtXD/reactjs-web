@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import apiConfig from 'utils/apiConfig';
 import * as endpoint from 'utils/endPoint';
 export const getPost = data =>

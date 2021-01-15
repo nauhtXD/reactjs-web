@@ -14,6 +14,8 @@ import {
   Form,
   Menu,
   Breadcrumb,
+  Comment,
+  List,
 } from 'antd';
 import {
   DownOutlined,
@@ -45,6 +47,7 @@ const MyRouterLink = styled(Link)`
   }
 `;
 
+// #region antd
 const MyBreadcrumb = styled(Breadcrumb)`
   .anticon svg {
     vertical-align: baseline !important;
@@ -61,7 +64,32 @@ const MyBreadcrumb = styled(Breadcrumb)`
   }
 `;
 
-// #region antd
+const MyComment = styled(Comment)`
+  .ant-comment-avatar img {
+    height: 2.426vw;
+    width: 2.426vw;
+  }
+  .ant-comment-content,
+  .ant-comment-content-author,
+  .ant-comment-content-author-name,
+  .ant-comment-content-author-time {
+    font-size: 1.14vw;
+  }
+  .ant-comment-inner {
+    padding: 1.213vw 0;
+  }
+`;
+
+const MyAntdList = styled(List)`
+  .ant-list-header {
+    font-size: 1.213vw;
+  }
+  .ant-list-item,
+  .ant-list-header {
+    padding: 0.9vw 1.81956vw;
+  }
+`;
+
 const MyText = styled(Typography.Text)`
   &.ant-typography a {
     color: #000 !important;
@@ -342,6 +370,8 @@ export {
   MyLink,
   MyRouterLink,
   MyBreadcrumb,
+  MyComment,
+  MyAntdList,
   MyText,
   MyButton,
   MyAntdModal,

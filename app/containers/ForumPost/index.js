@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import React, { memo, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -5,7 +6,8 @@ import { Helmet } from 'react-helmet';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 // import styled from 'styled-component';
-// import { Layout } from 'antd';
+import { List } from 'antd';
+import moment from 'moment';
 
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
@@ -13,12 +15,13 @@ import makeSelect from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 
-// import * as action from './actions';
+import * as action from './actions';
 import * as hAction from '../Home/actions';
 import makeSelectHome from '../Home/selectors';
 
 import MyLayout from '../../components/MyLayout/index';
-import { API_KEY } from '../../components/Style/index';
+import CommentForm from '../../components/CommentForm/index';
+import { API_KEY, MyAntdList, MyComment } from '../../components/Style/index';
 
 const bcrData = [
   {
@@ -28,12 +31,17 @@ const bcrData = [
     name: 'Bài viết',
   },
 ];
+const dateFormat = 'DD/MM/YYYY';
 
 export function ForumPost(props) {
+  // eslint-disable-next-line react/prop-types
+  const { match } = props;
   useInjectReducer({ key: 'forum', reducer });
   useInjectSaga({ key: 'forum', saga });
 
   const [usrName, setUsrName] = useState(null);
+  const [isRerender, setIsRerender] = useState(false);
+  const forumPostId = match.params.id;
 
   useEffect(() => {
     props.getCategories();
@@ -42,6 +50,8 @@ export function ForumPost(props) {
     props.getCityList();
     props.getLastestDocuments(4);
     props.getBanners();
+    props.getForumPost(forumPostId);
+    props.getForumComments(forumPostId);
   }, []);
 
   useEffect(() => {
@@ -62,6 +72,20 @@ export function ForumPost(props) {
     }
   }, [props.homeReducer.loginToken]);
 
+  useEffect(() => {
+    props.getForumComments(forumPostId);
+  }, [isRerender]);
+
+  const handleSubmit = values => {
+    const data = {
+      ...values,
+      forumPostId,
+      userId: localStorage.getItem('usrId'),
+    };
+    props.createForumComment(data);
+    setIsRerender(!isRerender);
+  };
+
   const handleLogin = values => {
     setUsrName(values.username);
     props.getLoginToken(values);
@@ -74,7 +98,43 @@ export function ForumPost(props) {
         <meta name="description" content="Description of ForumPost" />
       </Helmet>
       <MyLayout
-        mCont={<div />}
+        mCont={
+          <div>
+            {
+              <div>
+                <p>{props.forumPostReducer.title}</p>
+                <p>{props.forumPostReducer.content}</p>
+              </div>
+            }
+
+            {localStorage.getItem('authToken') && (
+              <CommentForm mCreateComment={handleSubmit} />
+            )}
+
+            {props.forumPostReducer.forumComments &&
+              props.forumPostReducer.forumComments.length > 0 && (
+              <MyAntdList
+                bordered
+                className="comment-list"
+                header={`${
+                  props.forumPostReducer.forumComments.length
+                } câu trả lời`}
+                itemLayout="horizontal"
+                dataSource={props.forumPostReducer.forumComments}
+                renderItem={item => (
+                  <List.Item key={item.id}>
+                    <MyComment
+                      author={item.user.username}
+                      avatar="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+                      content={item.content}
+                      datetime={moment(item.createdAt).format(dateFormat)}
+                    />
+                  </List.Item>
+                )}
+              />
+            )}
+          </div>
+        }
         mCategories={props.homeReducer.categories}
         mSubCategories={props.homeReducer.subCategories}
         mContacts={props.homeReducer.contacts}
@@ -91,7 +151,7 @@ export function ForumPost(props) {
 
 ForumPost.propTypes = {
   homeReducer: PropTypes.any,
-  // forumPostReducer: PropTypes.any,
+  forumPostReducer: PropTypes.any,
   getCategories: PropTypes.func,
   getSubCategories: PropTypes.func,
   getContacts: PropTypes.func,
@@ -101,6 +161,9 @@ ForumPost.propTypes = {
   getCityList: PropTypes.func,
   getLoginToken: PropTypes.func,
   getBanners: PropTypes.func,
+  getForumPost: PropTypes.func,
+  getForumComments: PropTypes.func,
+  createForumComment: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -135,6 +198,12 @@ const mapDispatchToProps = dispatch => ({
   },
   getLastestDocuments: data => {
     dispatch(hAction.getLastestDocuments(data));
+  },
+  getForumPost: data => {
+    dispatch(action.getForumPost(data));
+  },
+  getForumComments: data => {
+    dispatch(action.getForumComments(data));
   },
 });
 

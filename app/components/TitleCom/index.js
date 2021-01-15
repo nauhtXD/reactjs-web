@@ -57,14 +57,26 @@ function TitleCom(props) {
       {!props.mCheck ? (
         <OSDiv
           title={props.mCategory}
-          extra={props.mLink && <MyLink href={props.mLink}>Xem thêm</MyLink>}
+          extra={
+            props.mLink ? (
+              <MyLink href={props.mLink}>Xem thêm</MyLink>
+            ) : (
+              props.mCreate && <MyLink onClick={props.mCreate}>Tạo mới</MyLink>
+            )
+          }
         >
           {props.mCont}
         </OSDiv>
       ) : (
         <OSDivNoPadding
           title={props.mCategory}
-          extra={props.mLink && <MyLink href={props.mLink}>Xem thêm</MyLink>}
+          extra={
+            props.mLink ? (
+              <MyLink href={props.mLink}>Xem thêm</MyLink>
+            ) : (
+              props.mCreate && <MyLink onClick={props.mCreate}>Tạo mới</MyLink>
+            )
+          }
         >
           {props.mCont}
         </OSDivNoPadding>
@@ -78,6 +90,7 @@ TitleCom.propTypes = {
   mCont: PropTypes.any,
   mLink: PropTypes.string,
   mCheck: PropTypes.bool,
+  mCreate: PropTypes.func,
 };
 
 export default memo(TitleCom);

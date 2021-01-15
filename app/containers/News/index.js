@@ -6,8 +6,8 @@ import { Helmet } from 'react-helmet';
 // import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
-import styled from 'styled-components';
-import { List, Comment, Space, Form, Input } from 'antd';
+// import styled from 'styled-components';
+import { List, Space } from 'antd';
 import moment from 'moment';
 import {
   FacebookShareButton,
@@ -30,12 +30,13 @@ import * as hAction from '../Home/actions';
 
 import MyLayout from '../../components/MyLayout/Loadable';
 import TitleCom from '../../components/TitleCom/Loadable';
+import CommentForm from '../../components/CommentForm/index';
 import {
   MyLink,
   MyText,
-  MyButton,
   API_KEY,
-  MyAntdForm,
+  MyAntdList,
+  MyComment,
 } from '../../components/Style/index';
 
 const dateFormat = 'DD/MM/YYYY';
@@ -45,32 +46,6 @@ const bcrData = [
   },
 ];
 
-const MyComment = styled(Comment)`
-  .ant-comment-avatar img {
-    height: 2.426vw;
-    width: 2.426vw;
-  }
-  .ant-comment-content,
-  .ant-comment-content-author,
-  .ant-comment-content-author-name,
-  .ant-comment-content-author-time {
-    font-size: 1.14vw;
-  }
-  .ant-comment-inner {
-    padding: 1.213vw 0;
-  }
-`;
-
-const MyAntdList = styled(List)`
-  .ant-list-header {
-    font-size: 1.213vw;
-  }
-  .ant-list-item,
-  .ant-list-header {
-    padding: 0.9vw 1.81956vw;
-  }
-`;
-
 export function News(props) {
   // eslint-disable-next-line react/prop-types
   const { match } = props;
@@ -79,12 +54,11 @@ export function News(props) {
 
   const [isRerender, setIsRerender] = useState(false);
   const [usrName, setUsrName] = useState(null);
-  const [form] = Form.useForm();
   const postId = match.params.id;
 
   useEffect(() => {
-    props.getPost(match.params.id);
-    props.getComments(match.params.id);
+    props.getPost(postId);
+    props.getComments(postId);
     props.getLastestPosts();
     props.getCategories();
     props.getSubCategories();
@@ -104,8 +78,7 @@ export function News(props) {
   }, [props.homeReducer.cityList]);
 
   useEffect(() => {
-    props.getComments(match.params.id);
-    form.setFieldsValue({ content: '' });
+    props.getComments(postId);
   }, [isRerender]);
 
   useEffect(() => {
@@ -122,16 +95,14 @@ export function News(props) {
     props.getLoginToken(values);
   };
 
-  const handleSubmit = () => {
-    form.validateFields().then(values => {
-      const data = {
-        ...values,
-        postId: match.params.id,
-        userId: localStorage.getItem('usrId'),
-      };
-      props.createComment(data);
-      setIsRerender(!isRerender);
-    });
+  const handleSubmit = values => {
+    const data = {
+      ...values,
+      postId,
+      userId: localStorage.getItem('usrId'),
+    };
+    props.createComment(data);
+    setIsRerender(!isRerender);
   };
 
   return (
@@ -206,49 +177,29 @@ export function News(props) {
               />
 
               {localStorage.getItem('authToken') && (
-                <div>
-                  <MyAntdForm form={form}>
-                    <Form.Item
-                      name="content"
-                      style={{ marginBottom: '0.379vw' }}
-                    >
-                      <Input.TextArea
-                        placeholder="Để lại bình luận"
-                        style={{ fontSize: '1.14vw' }}
-                      />
-                    </Form.Item>
-                    <Form.Item style={{ marginBottom: '0.379vw' }}>
-                      <MyButton
-                        style={{ float: 'right' }}
-                        onClick={handleSubmit}
-                      >
-                        Bình luận
-                      </MyButton>
-                    </Form.Item>
-                  </MyAntdForm>
-                </div>
+                <CommentForm mCreateComment={handleSubmit} />
               )}
 
               {props.newsReducer.comments &&
                 props.newsReducer.comments.length > 0 && (
-                <MyAntdList
-                  bordered
-                  className="comment-list"
-                  header={`${props.newsReducer.comments.length} bình luận`}
-                  itemLayout="horizontal"
-                  dataSource={props.newsReducer.comments}
-                  renderItem={item => (
-                    <List.Item key={item.id}>
-                      <MyComment
-                        author={item.user.username}
-                        avatar="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-                        content={item.content}
-                        datetime={moment(item.createdAt).format(dateFormat)}
-                      />
-                    </List.Item>
-                  )}
-                />
-              )}
+                  <MyAntdList
+                    bordered
+                    className="comment-list"
+                    header={`${props.newsReducer.comments.length} bình luận`}
+                    itemLayout="horizontal"
+                    dataSource={props.newsReducer.comments}
+                    renderItem={item => (
+                      <List.Item key={item.id}>
+                        <MyComment
+                          author={item.user.username}
+                          avatar="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+                          content={item.content}
+                          datetime={moment(item.createdAt).format(dateFormat)}
+                        />
+                      </List.Item>
+                    )}
+                  />
+                )}
               <div style={{ height: '0.379vw' }} />
               {props.homeReducer.lastestPosts.length > 0 && (
                 <MyAntdList
@@ -267,8 +218,8 @@ export function News(props) {
                             <MyText
                               style={{ opacity: 0.6, fontSize: '1.14vw' }}
                             >{`[${moment(item.publishAt).format(
-                                dateFormat,
-                              )}]`}</MyText>
+                              dateFormat,
+                            )}]`}</MyText>
                           </Space>
                         </MyText>
                       </List.Item>

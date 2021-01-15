@@ -1,18 +1,25 @@
 import produce from 'immer';
 import * as types from './constants';
 
-export const initialState = {};
+export const initialState = {
+  loadingForumPosts: false,
+  forumPosts: [],
+};
 
 /* eslint-disable default-case, no-param-reassign */
 const forumReducer = (state = initialState, action) =>
   produce(state, draft => {
-    const { data, error } = action;
     switch (action.type) {
-      case types.DEFAULT_REQUEST:
+      case types.GET_FORUM_POST:
+        draft.loadingForumPosts = true;
         break;
-      case types.DEFAULT_SUCCESS:
+      case types.GET_FORUM_POST_SUCCESS:
+        draft.loadingForumPosts = false;
+        draft.forumPosts = action.forumPosts;
         break;
-      case types.DEFAULT_FAILURE:
+      case types.GET_FORUM_POST_FAIL:
+        draft.loadingForumPosts = false;
+        draft.forumPosts = [];
         break;
     }
   });

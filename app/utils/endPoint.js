@@ -73,3 +73,7 @@ export const API_ENDPOINT_GET_FIELD = 'fields';
 export const API_ENDPOINT_GET_DOCUMENT_TYPE = 'documentTypes';
 // epidemicHistory
 export const API_ENDPOINT_COUNT_EPIDEMIC = 'epidemicHistories/count';
+// forumComment
+export const API_ENDPOINT_GET_FORUM_COMMENT = 'forumComments';
+// forumPost
+export const API_ENDPOINT_GET_FORUM_POST = 'forumPosts';
