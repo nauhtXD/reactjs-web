@@ -149,7 +149,10 @@ export function Forum(props) {
             <Input placeholder="Tiêu đề" />
           </Form.Item>
           <Form.Item name="content">
-            <Input.TextArea placeholder="Nội dung" style={{ minHeight: 250 }} />
+            <Input.TextArea
+              placeholder="Nội dung"
+              style={{ minHeight: '19vw' }}
+            />
           </Form.Item>
         </MyAntdForm>
       </MyAntdModal>
