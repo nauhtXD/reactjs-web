@@ -6,6 +6,7 @@ import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 // import styled from 'styled-component';
 import { Form, List, Input } from 'antd';
+import moment from 'moment';
 
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
@@ -111,13 +112,33 @@ export function Forum(props) {
                   <MyAntdList
                     itemLayout="vertical"
                     size="large"
+                    bordered
+                    pagination={{
+                      defaultPageSize: 5,
+                      showSizeChanger: true,
+                      pageSizeOptions: ['5', '10', '20'],
+                    }}
                     dataSource={props.forumReducer.forumPosts}
                     renderItem={item => (
-                      <List.Item key={item.id}>
+                      <List.Item
+                        key={item.id}
+                        extra={
+                          <div>
+                            <p>Lượt trả lời: {item.replies}</p>
+                            <p>Lượt xem: {item.views}</p>
+                            <p>
+                              Cập nhật: {moment(item.updatedAt).format('llll')}
+                            </p>
+                          </div>
+                        }
+                      >
                         <MyLink href={`/forumPost/${item.id}`}>
-                          <b>{item.title}</b>
+                          <b style={{ fontSize: 19 }}>{item.title}</b>
                         </MyLink>
-                        <p>{item.content}</p>
+                        <p style={{ opacity: 0.6 }}>
+                          {`${item.user.username} - 
+                          ${moment(item.createdAt).format('llll')}`}
+                        </p>
                       </List.Item>
                     )}
                   />

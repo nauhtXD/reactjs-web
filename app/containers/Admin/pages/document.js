@@ -19,7 +19,7 @@ import AdminTable from '../../../components/AdminTable/Loadable';
 import MyPdfUpload from '../../../components/MyPdfUpload/index';
 
 const { Option } = Select;
-const dateFormat = 'DD/MM/YYYY';
+const dateFormat = 'L';
 let k = -1;
 const init = {
   publishAt: moment(),

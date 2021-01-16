@@ -16,7 +16,7 @@ import ImgCom from '../../components/ImgCom/Loadable';
 import TitleCom from '../../components/TitleCom/Loadable';
 import { MyLink, ContentDiv, API_KEY } from '../../components/Style/index';
 
-const dateFormat = 'DD/MM/YYYY';
+const dateFormat = 'L';
 
 export function Home(props) {
   useEffect(() => {
@@ -70,13 +70,16 @@ export function Home(props) {
                   {props.homeReducer.lastestPosts[0] && (
                     <Row>
                       <Col span={15}>
-                        <Image
-                          height="22.75vw"
-                          src={props.homeReducer.lastestPosts[0].img}
-                          style={{
-                            display: 'block',
-                          }}
-                        />
+                        <div style={{ textAlign: 'center' }}>
+                          <Image
+                            height="22.75vw"
+                            src={props.homeReducer.lastestPosts[0].img}
+                            style={{
+                              display: 'block',
+                            }}
+                          />
+                        </div>
+
                         <div style={{ height: '0.76vw' }} />
                         <MyLink
                           href={`/news/${props.homeReducer.lastestPosts[0].id}`}
@@ -110,7 +113,7 @@ export function Home(props) {
                                 <ImgCom
                                   key={i.id}
                                   mStyle="left"
-                                  mWidth="9.7vw"
+                                  mWidth="10vw"
                                   mSrc={i.img}
                                   mLink={`/news/${i.id}`}
                                   mTitle={i.title}

@@ -18,7 +18,7 @@ import makeSelect from '../selectors';
 import * as action from '../actions';
 
 const { Option } = Select;
-const dateFormat = 'DD/MM/YYYY';
+const dateFormat = 'L';
 let k = -1;
 const init = {
   publishAt: moment(),

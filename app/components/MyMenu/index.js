@@ -109,21 +109,18 @@ function MyMenu(props) {
         id: JSON.parse(localStorage.getItem('usr')).id,
       };
       props.mUpdate(data);
-      setTimeout(
-        MyAntdModal.info({
-          title: 'Cập nhật thành công',
-          content: (
-            <div>
-              <p>Vui lòng đăng nhập lại để tiếp tục</p>
-            </div>
-          ),
-          onOk() {
-            localStorage.clear();
-            window.location.reload();
-          },
-        }),
-        3000,
-      );
+      MyAntdModal.info({
+        title: 'Cập nhật thành công',
+        content: (
+          <div>
+            <p>Vui lòng đăng nhập lại để tiếp tục</p>
+          </div>
+        ),
+        onOk() {
+          localStorage.clear();
+          window.location.reload();
+        },
+      });
     });
   };
 

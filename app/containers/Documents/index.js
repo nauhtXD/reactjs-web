@@ -35,7 +35,7 @@ import {
 
 const { Column } = Table;
 
-const dateFormat = 'DD/MM/YYYY';
+const dateFormat = 'L';
 
 const bcrData = [
   {

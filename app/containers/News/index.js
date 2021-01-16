@@ -40,7 +40,7 @@ import {
   MyComment,
 } from '../../components/Style/index';
 
-const dateFormat = 'DD/MM/YYYY';
+const dateFormat = 'L';
 const bcrData = [
   {
     name: 'Tin tức',

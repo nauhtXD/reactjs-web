@@ -20,7 +20,11 @@ function ImgCom(props) {
       style={{ display: 'block', margin: '0.2vw auto', width: '90%' }}
     />,
   ];
-  const imgCol = [<Col span={10}>{myImg}</Col>];
+  const imgCol = [
+    <Col span={10} style={{ textAlign: 'center' }}>
+      {myImg}
+    </Col>,
+  ];
   const contentCol = [
     <Col span={14}>
       <MyLink href={props.mLink} style={{ fontSize: '1.3vw' }}>

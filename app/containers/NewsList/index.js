@@ -22,7 +22,7 @@ import MyLayout from '../../components/MyLayout/index';
 import TitleCom from '../../components/TitleCom/index';
 import { MyLink, ContentDiv, API_KEY } from '../../components/Style/index';
 
-const dateFormat = 'DD/MM/YYYY';
+const dateFormat = 'L';
 
 export function NewsList(props) {
   // eslint-disable-next-line react/prop-types
@@ -92,6 +92,11 @@ export function NewsList(props) {
                       <List
                         itemLayout="vertical"
                         size="large"
+                        pagination={{
+                          defaultPageSize: 5,
+                          showSizeChanger: true,
+                          pageSizeOptions: ['5', '10', '20'],
+                        }}
                         dataSource={props.newsListReducer.posts}
                         renderItem={item => (
                           <List.Item

@@ -6,7 +6,7 @@ import { Helmet } from 'react-helmet';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 // import styled from 'styled-component';
-import { List } from 'antd';
+import { List, Row, Col, Divider, Image } from 'antd';
 import moment from 'moment';
 
 import { useInjectSaga } from 'utils/injectSaga';
@@ -21,6 +21,7 @@ import makeSelectHome from '../Home/selectors';
 
 import MyLayout from '../../components/MyLayout/index';
 import CommentForm from '../../components/CommentForm/index';
+import TitleCom from '../../components/TitleCom/index';
 import { API_KEY, MyAntdList, MyComment } from '../../components/Style/index';
 
 const bcrData = [
@@ -31,7 +32,7 @@ const bcrData = [
     name: 'Bài viết',
   },
 ];
-const dateFormat = 'DD/MM/YYYY';
+const dateFormat = 'L';
 
 export function ForumPost(props) {
   // eslint-disable-next-line react/prop-types
@@ -100,13 +101,53 @@ export function ForumPost(props) {
       <MyLayout
         mCont={
           <div>
-            <p>{props.forumPostReducer.forumPost.title}</p>
-            <p>{props.forumPostReducer.forumPost.content}</p>
-
+            {props.forumPostReducer.forumPost && (
+              <TitleCom
+                mCategory={props.forumPostReducer.forumPost.title}
+                mCont={
+                  <div>
+                    <Row>
+                      <Col span={4}>
+                        <div style={{ textAlign: 'center' }}>
+                          <Image
+                            width="50%"
+                            src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+                            style={{ borderRadius: '50%' }}
+                          />
+                          <p style={{ fontSize: '1.14vw' }}>
+                            {props.forumPostReducer.forumPost.user &&
+                              props.forumPostReducer.forumPost.user.username}
+                          </p>
+                        </div>
+                      </Col>
+                      <Col span={20}>
+                        <Divider
+                          orientation="left"
+                          style={{
+                            margin: '0.379vw',
+                            fontSize: '1vw',
+                            opacity: 0.6,
+                          }}
+                        >
+                          {moment(
+                            props.forumPostReducer.forumPost.createdAt,
+                          ).format('L')}
+                        </Divider>
+                        <p style={{ fontSize: '1.14vw' }}>
+                          {props.forumPostReducer.forumPost.content}
+                        </p>
+                      </Col>
+                    </Row>
+                  </div>
+                }
+                mCheck
+              />
+            )}
+            <div style={{ height: '0.379vw' }} />
             {localStorage.getItem('authToken') && (
               <CommentForm mCreateComment={handleSubmit} />
             )}
-
+            <div style={{ height: '0.379vw' }} />
             {props.forumPostReducer.forumComments &&
               props.forumPostReducer.forumComments.length > 0 && (
                 <MyAntdList

@@ -53,7 +53,7 @@ const OSDivNoPadding = styled(Card)`
 
 function TitleCom(props) {
   return (
-    <div>
+    <div style={{ height: '100%' }}>
       {!props.mCheck ? (
         <OSDiv
           title={props.mCategory}

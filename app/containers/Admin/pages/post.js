@@ -23,7 +23,7 @@ import AdminTable from '../../../components/AdminTable/index';
 import MyUpload from '../../../components/MyUpload/index';
 import { MyBox, layout, ContentDiv } from '../../../components/Style/index';
 
-const dateFormat = 'DD/MM/YYYY';
+const dateFormat = 'L';
 const { Option } = Select;
 
 const MyContentDiv = styled(ContentDiv)`
