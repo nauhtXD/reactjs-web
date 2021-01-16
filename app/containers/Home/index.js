@@ -1,6 +1,5 @@
 /* eslint-disable jsx-a11y/no-distracting-elements */
-/* eslint-disable no-plusplus */
-import React, { memo, useEffect, useState } from 'react';
+import React, { memo, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
 import { createStructuredSelector } from 'reselect';
@@ -20,8 +19,6 @@ import { MyLink, ContentDiv, API_KEY } from '../../components/Style/index';
 const dateFormat = 'DD/MM/YYYY';
 
 export function Home(props) {
-  const [usrName, setUsrName] = useState(null);
-
   useEffect(() => {
     props.getCityList();
     props.getCategories();
@@ -45,14 +42,15 @@ export function Home(props) {
   useEffect(() => {
     if (props.homeReducer.loginToken.token) {
       localStorage.setItem('authToken', props.homeReducer.loginToken.token);
-      localStorage.setItem('usrId', props.homeReducer.loginToken.uid);
-      localStorage.setItem('usrName', usrName);
+      localStorage.setItem(
+        'usr',
+        JSON.stringify(props.homeReducer.loginToken.user),
+      );
       window.location.reload();
     }
   }, [props.homeReducer.loginToken]);
 
   const handleLogin = values => {
-    setUsrName(values.username);
     props.getLoginToken(values);
   };
 
@@ -208,6 +206,7 @@ export function Home(props) {
         mWeathers={props.homeReducer.weathers}
         mLogin={handleLogin}
         mBanner={props.homeReducer.banners}
+        mUpdate={props.updateUser}
       />
     </div>
   );
@@ -226,6 +225,7 @@ Home.propTypes = {
   getCityList: PropTypes.func,
   getLoginToken: PropTypes.func,
   getBanners: PropTypes.func,
+  updateUser: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -265,6 +265,9 @@ const mapDispatchToProps = dispatch => ({
   },
   getBanners: data => {
     dispatch(action.getBanners(data));
+  },
+  updateUser: data => {
+    dispatch(action.updateUser(data));
   },
 });
 

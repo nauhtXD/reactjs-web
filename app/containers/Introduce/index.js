@@ -1,4 +1,4 @@
-import React, { memo, useState, useEffect } from 'react';
+import React, { memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
@@ -31,8 +31,6 @@ export function Introduce(props) {
   useInjectReducer({ key: 'introduce', reducer });
   useInjectSaga({ key: 'introduce', saga });
 
-  const [usrName, setUsrName] = useState(null);
-
   useEffect(() => {
     props.getCategories();
     props.getSubCategories();
@@ -54,14 +52,15 @@ export function Introduce(props) {
   useEffect(() => {
     if (props.homeReducer.loginToken.token) {
       localStorage.setItem('authToken', props.homeReducer.loginToken.token);
-      localStorage.setItem('usrId', props.homeReducer.loginToken.uid);
-      localStorage.setItem('usrName', usrName);
+      localStorage.setItem(
+        'usr',
+        JSON.stringify(props.homeReducer.loginToken.user),
+      );
       window.location.reload();
     }
   }, [props.homeReducer.loginToken]);
 
   const handleLogin = values => {
-    setUsrName(values.username);
     props.getLoginToken(values);
   };
 
@@ -112,6 +111,7 @@ export function Introduce(props) {
         mLogin={handleLogin}
         mBanner={props.homeReducer.banners}
         mBreadcrumbs={bcrData}
+        mUpdate={props.updateUser}
       />
     </div>
   );
@@ -129,6 +129,7 @@ Introduce.propTypes = {
   getCityList: PropTypes.func,
   getLoginToken: PropTypes.func,
   getBanners: PropTypes.func,
+  updateUser: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -137,6 +138,9 @@ const mapStateToProps = createStructuredSelector({
 });
 
 const mapDispatchToProps = dispatch => ({
+  updateUser: data => {
+    dispatch(hAction.updateUser(data));
+  },
   getBanners: data => {
     dispatch(hAction.getBanners(data));
   },

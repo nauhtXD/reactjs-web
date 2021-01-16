@@ -39,7 +39,6 @@ export function ForumPost(props) {
   useInjectReducer({ key: 'forumPost', reducer });
   useInjectSaga({ key: 'forumPost', saga });
 
-  const [usrName, setUsrName] = useState(null);
   const [isRerender, setIsRerender] = useState(false);
   const forumPostId = match.params.id;
 
@@ -66,8 +65,10 @@ export function ForumPost(props) {
   useEffect(() => {
     if (props.homeReducer.loginToken.token) {
       localStorage.setItem('authToken', props.homeReducer.loginToken.token);
-      localStorage.setItem('usrId', props.homeReducer.loginToken.uid);
-      localStorage.setItem('usrName', usrName);
+      localStorage.setItem(
+        'usr',
+        JSON.stringify(props.homeReducer.loginToken.user),
+      );
       window.location.reload();
     }
   }, [props.homeReducer.loginToken]);
@@ -80,14 +81,13 @@ export function ForumPost(props) {
     const data = {
       ...values,
       forumPostId,
-      userId: localStorage.getItem('usrId'),
+      userId: JSON.parse(localStorage.getItem('usr')).id,
     };
     props.createForumComment(data);
     setIsRerender(!isRerender);
   };
 
   const handleLogin = values => {
-    setUsrName(values.username);
     props.getLoginToken(values);
   };
 
@@ -140,6 +140,7 @@ export function ForumPost(props) {
         mLogin={handleLogin}
         mBanner={props.homeReducer.banners}
         mBreadcrumbs={bcrData}
+        mUpdate={props.updateUser}
       />
     </div>
   );
@@ -160,6 +161,7 @@ ForumPost.propTypes = {
   getForumPost: PropTypes.func,
   getForumComments: PropTypes.func,
   createForumComment: PropTypes.func,
+  updateUser: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -168,6 +170,9 @@ const mapStateToProps = createStructuredSelector({
 });
 
 const mapDispatchToProps = dispatch => ({
+  updateUser: data => {
+    dispatch(hAction.updateUser(data));
+  },
   getBanners: data => {
     dispatch(hAction.getBanners(data));
   },

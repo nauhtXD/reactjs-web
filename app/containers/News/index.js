@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 /* eslint-disable prettier/prettier */
 import React, { memo, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
@@ -53,7 +54,6 @@ export function News(props) {
   useInjectSaga({ key: 'news', saga });
 
   const [isRerender, setIsRerender] = useState(false);
-  const [usrName, setUsrName] = useState(null);
   const postId = match.params.id;
 
   useEffect(() => {
@@ -84,14 +84,15 @@ export function News(props) {
   useEffect(() => {
     if (props.homeReducer.loginToken.token) {
       localStorage.setItem('authToken', props.homeReducer.loginToken.token);
-      localStorage.setItem('usrId', props.homeReducer.loginToken.uid);
-      localStorage.setItem('usrName', usrName);
+      localStorage.setItem(
+        'usr',
+        JSON.stringify(props.homeReducer.loginToken.user),
+      );
       window.location.reload();
     }
   }, [props.homeReducer.loginToken]);
 
   const handleLogin = values => {
-    setUsrName(values.username);
     props.getLoginToken(values);
   };
 
@@ -99,7 +100,7 @@ export function News(props) {
     const data = {
       ...values,
       postId,
-      userId: localStorage.getItem('usrId'),
+      userId: JSON.parse(localStorage.getItem('usr')).id,
     };
     props.createComment(data);
     setIsRerender(!isRerender);
@@ -238,6 +239,7 @@ export function News(props) {
           mLogin={handleLogin}
           mBanner={props.homeReducer.banners}
           mBreadcrumbs={bcrData}
+          mUpdate={props.updateUser}
         />
       </div>
     </div>
@@ -260,6 +262,7 @@ News.propTypes = {
   createComment: PropTypes.func,
   getLoginToken: PropTypes.func,
   getBanners: PropTypes.func,
+  updateUser: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -268,6 +271,9 @@ const mapStateToProps = createStructuredSelector({
 });
 
 const mapDispatchToProps = dispatch => ({
+  updateUser: data => {
+    dispatch(hAction.updateUser(data));
+  },
   getPost: data => {
     dispatch(action.getPost(data));
   },

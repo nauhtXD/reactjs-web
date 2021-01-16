@@ -897,10 +897,7 @@ export function* createHouseholdSaga({ payload }) {
     } else {
       yield put({
         type: types.CREATE_HOUSEHOLD_FAIL,
-        error:
-          response && response.data
-            ? response.data.errors[0].message
-            : 'API Error',
+        error: response && response.data ? response.data.messages : 'API Error',
       });
       notification.error({
         message: 'Error',

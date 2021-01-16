@@ -31,3 +31,6 @@ export const getBanners = () => apiConfig.get(endpoint.API_ENDPOINT_GET_BANNER);
 // token
 export const checkToken = data =>
   apiConfig.get(`${endpoint.API_ENDPOINT_CHECK_TOKEN}/${data}`);
+// user
+export const updateUser = data =>
+  apiConfig.put(`${endpoint.API_ENDPOINT_UPDATE_USER}/${data.id}`, data);

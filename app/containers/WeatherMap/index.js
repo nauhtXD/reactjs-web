@@ -64,7 +64,6 @@ export function WeatherMap(props) {
   useInjectReducer({ key: 'weatherMap', reducer });
   useInjectSaga({ key: 'weatherMap', saga });
 
-  const [usrName, setUsrName] = useState(null);
   const [history5D, setHis] = useState([]);
   const [center, setCenter] = useState(null);
   const [geo, setGeo] = useState({
@@ -119,14 +118,15 @@ export function WeatherMap(props) {
   useEffect(() => {
     if (props.homeReducer.loginToken.token) {
       localStorage.setItem('authToken', props.homeReducer.loginToken.token);
-      localStorage.setItem('usrId', props.homeReducer.loginToken.uid);
-      localStorage.setItem('usrName', usrName);
+      localStorage.setItem(
+        'usr',
+        JSON.stringify(props.homeReducer.loginToken.user),
+      );
       window.location.reload();
     }
   }, [props.homeReducer.loginToken]);
 
   const handleLogin = values => {
-    setUsrName(values.username);
     props.getLoginToken(values);
   };
 
@@ -231,6 +231,7 @@ export function WeatherMap(props) {
         mWeathers={props.homeReducer.weathers}
         mLogin={handleLogin}
         mBanner={props.homeReducer.banners}
+        mUpdate={props.updateUser}
       />
     </div>
   );
@@ -249,6 +250,7 @@ WeatherMap.propTypes = {
   getLoginToken: PropTypes.func,
   getBanners: PropTypes.func,
   countEpidemics: PropTypes.func,
+  updateUser: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -257,6 +259,9 @@ const mapStateToProps = createStructuredSelector({
 });
 
 const mapDispatchToProps = dispatch => ({
+  updateUser: data => {
+    dispatch(hAction.updateUser(data));
+  },
   countEpidemics: data => {
     dispatch(action.countEpidemics(data));
   },

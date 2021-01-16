@@ -46,7 +46,6 @@ export function MangoWiki(props) {
   useInjectReducer({ key: 'mangoWiki', reducer });
   useInjectSaga({ key: 'mangoWiki', saga });
 
-  const [usrName, setUsrName] = useState(null);
   const [rotate, setRotate] = useState(null);
   const [rotate1, setRotate1] = useState(null);
 
@@ -63,14 +62,15 @@ export function MangoWiki(props) {
   useEffect(() => {
     if (props.homeReducer.loginToken.token) {
       localStorage.setItem('authToken', props.homeReducer.loginToken.token);
-      localStorage.setItem('usrId', props.homeReducer.loginToken.uid);
-      localStorage.setItem('usrName', usrName);
+      localStorage.setItem(
+        'usr',
+        JSON.stringify(props.homeReducer.loginToken.user),
+      );
       window.location.reload();
     }
   }, [props.homeReducer.loginToken]);
 
   const handleLogin = values => {
-    setUsrName(values.username);
     props.getLoginToken(values);
   };
 
@@ -186,6 +186,7 @@ export function MangoWiki(props) {
         mLogin={handleLogin}
         mBanner={props.homeReducer.banners}
         mBreadcrumbs={bcrData}
+        mUpdate={props.updateUser}
       />
     </div>
   );
@@ -202,6 +203,7 @@ MangoWiki.propTypes = {
   getGenusFeatures: PropTypes.func,
   getLoginToken: PropTypes.func,
   getBanners: PropTypes.func,
+  updateUser: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -210,6 +212,9 @@ const mapStateToProps = createStructuredSelector({
 });
 
 const mapDispatchToProps = dispatch => ({
+  updateUser: data => {
+    dispatch(hAction.updateUser(data));
+  },
   getBanners: data => {
     dispatch(hAction.getBanners(data));
   },

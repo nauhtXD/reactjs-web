@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useState } from 'react';
+import React, { memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
@@ -44,8 +44,6 @@ export function Login(props) {
   useInjectReducer({ key: 'login', reducer });
   useInjectSaga({ key: 'login', saga });
 
-  const [usrName, setUsrName] = useState(null);
-
   useEffect(() => {
     if (props.loginReducer.loginToken.token) {
       props.checkToken(props.loginReducer.loginToken.token);
@@ -55,8 +53,10 @@ export function Login(props) {
   useEffect(() => {
     if (props.homeReducer.checkToken.token) {
       localStorage.setItem('authToken', props.loginReducer.loginToken.token);
-      localStorage.setItem('usrId', props.loginReducer.loginToken.uid);
-      localStorage.setItem('usrName', usrName);
+      localStorage.setItem(
+        'usr',
+        JSON.stringify(props.loginReducer.loginToken.user),
+      );
       window.location.href = '/admin';
     }
   }, [props.homeReducer.checkToken]);
@@ -66,7 +66,6 @@ export function Login(props) {
   const handleCLick = () => {
     form.validateFields().then(values => {
       props.getLoginToken(values);
-      setUsrName(values.username);
     });
   };
 

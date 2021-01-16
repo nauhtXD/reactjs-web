@@ -36,6 +36,7 @@ export function Admin() {
     localStorage.clear();
     window.location.href = '/login';
   };
+
   return (
     <div>
       <Helmet>
@@ -61,7 +62,8 @@ export function Admin() {
             </Col>
             <Col span={16}>
               <span style={{ display: 'block' }}>
-                {localStorage.getItem('usrName')}
+                {localStorage.getItem('usr') &&
+                  JSON.parse(localStorage.getItem('usr')).username}
               </span>
               <MyLink onClick={handleLogout}>
                 <span style={{ display: 'block' }}>Đăng xuất</span>

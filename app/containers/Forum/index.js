@@ -37,7 +37,6 @@ export function Forum(props) {
   useInjectReducer({ key: 'forum', reducer });
   useInjectSaga({ key: 'forum', saga });
 
-  const [usrName, setUsrName] = useState(null);
   const [isRerender, setIsRerender] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const [form] = Form.useForm();
@@ -64,8 +63,10 @@ export function Forum(props) {
   useEffect(() => {
     if (props.homeReducer.loginToken.token) {
       localStorage.setItem('authToken', props.homeReducer.loginToken.token);
-      localStorage.setItem('usrId', props.homeReducer.loginToken.uid);
-      localStorage.setItem('usrName', usrName);
+      localStorage.setItem(
+        'usr',
+        JSON.stringify(props.homeReducer.loginToken.user),
+      );
       window.location.reload();
     }
   }, [props.homeReducer.loginToken]);
@@ -79,13 +80,15 @@ export function Forum(props) {
   };
 
   const handleLogin = values => {
-    setUsrName(values.username);
     props.getLoginToken(values);
   };
 
   const handleSubmit = () => {
     form.validateFields().then(values => {
-      const data = { ...values, userId: localStorage.getItem('usrId') };
+      const data = {
+        ...values,
+        userId: JSON.parse(localStorage.getItem('usr')).id,
+      };
       props.createForumPost(data);
       showModal();
       setIsRerender(!isRerender);
@@ -133,6 +136,7 @@ export function Forum(props) {
         mLogin={handleLogin}
         mBanner={props.homeReducer.banners}
         mBreadcrumbs={bcrData}
+        mUpdate={props.updateUser}
       />
       <MyAntdModal
         title="Thảo luận mới"
@@ -174,6 +178,7 @@ Forum.propTypes = {
   getBanners: PropTypes.func,
   getForumPosts: PropTypes.func,
   createForumPost: PropTypes.func,
+  updateUser: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -182,6 +187,9 @@ const mapStateToProps = createStructuredSelector({
 });
 
 const mapDispatchToProps = dispatch => ({
+  updateUser: data => {
+    dispatch(hAction.updateUser(data));
+  },
   getBanners: data => {
     dispatch(hAction.getBanners(data));
   },

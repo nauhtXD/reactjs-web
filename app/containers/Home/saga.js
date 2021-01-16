@@ -378,6 +378,40 @@ export function* checkTokenSaga({ payload }) {
   }
 }
 
+export function* updateUserSaga({ payload }) {
+  try {
+    const response = yield call(api.updateUser, payload);
+    if (response && response.status === 200) {
+      yield put({
+        type: types.UPDATE_USER_SUCCESS,
+      });
+      notification.success({
+        message: 'Success',
+        description: 'Cập nhật thành công',
+      });
+    } else {
+      yield put({
+        type: types.UPDATE_USER_FAIL,
+        error: response && response.data ? response.data.messages : 'API Error',
+      });
+      notification.error({
+        message: 'Error',
+        description:
+          response && response.data ? response.data.messages : 'API Error',
+      });
+    }
+  } catch (err) {
+    yield put({
+      type: types.UPDATE_USER_FAIL,
+      error: err,
+    });
+    notification.error({
+      message: 'Error',
+      description: err,
+    });
+  }
+}
+
 export default function* rootSaga() {
   yield all([
     takeLatest(types.GET_CATEGORY, getCategorySaga),
@@ -392,5 +426,6 @@ export default function* rootSaga() {
     takeLatest(types.GET_LOGIN_TOKEN, getLoginTokenSaga),
     takeLatest(types.GET_BANNER, getBannerSaga),
     takeLatest(types.CHECK_TOKEN, checkTokenSaga),
+    takeLatest(types.UPDATE_USER, updateUserSaga),
   ]);
 }

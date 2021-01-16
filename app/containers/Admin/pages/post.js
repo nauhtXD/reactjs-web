@@ -45,7 +45,9 @@ const init = {
   subcategoryId: 1,
   publishAt: moment(),
   img: [],
-  author: localStorage.getItem('usrName'),
+  author:
+    localStorage.getItem('usr') &&
+    JSON.parse(localStorage.getItem('usr')).username,
 };
 
 export function Post(props) {

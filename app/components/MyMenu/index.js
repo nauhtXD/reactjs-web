@@ -32,6 +32,7 @@ const NavItem = styled(Menu.Item)`
   margin-left: 1.5163vw !important;
   margin-right: 1.5163vw !important;
   :hover,
+  :focus,
   &.ant-menu-item-selected {
     color: ${mColor} !important;
     border-bottom: 0.076vw solid ${mColor} !important;
@@ -43,6 +44,7 @@ const SubItem = styled(Menu.Item)`
   height: 3.0326vw !important;
   line-height: 3.0326vw !important;
   :hover,
+  :focus,
   &.ant-menu-item-selected {
     color: ${menuColor} !important;
   }
@@ -54,7 +56,8 @@ const SubNav = styled(SubMenu)`
       color: ${mColor} !important;
     }
   }
-  &.ant-menu-submenu-active {
+  &.ant-menu-submenu-active,
+  &.ant-menu-submenu-selected {
     color: ${mColor} !important;
     border-bottom: 0.076vw solid ${mColor} !important;
   }
@@ -75,10 +78,17 @@ const MSubLink = styled.a`
 
 function MyMenu(props) {
   const [form] = Form.useForm();
+  const [usrForm] = Form.useForm();
   const [isVisible, setIsVisible] = useState(false);
+  const [profileVisible, setProfileVisible] = useState(false);
 
   const showModal = () => {
     setIsVisible(!isVisible);
+  };
+
+  const showProfile = () => {
+    usrForm.setFieldsValue(JSON.parse(localStorage.getItem('usr')));
+    setProfileVisible(!profileVisible);
   };
 
   const handleLogout = () => {
@@ -89,6 +99,31 @@ function MyMenu(props) {
   const handleLogin = () => {
     form.validateFields().then(values => {
       props.mLogin(values);
+    });
+  };
+
+  const handleUpdate = () => {
+    usrForm.validateFields().then(values => {
+      const data = {
+        ...values,
+        id: JSON.parse(localStorage.getItem('usr')).id,
+      };
+      props.mUpdate(data);
+      setTimeout(
+        MyAntdModal.info({
+          title: 'Cập nhật thành công',
+          content: (
+            <div>
+              <p>Vui lòng đăng nhập lại để tiếp tục</p>
+            </div>
+          ),
+          onOk() {
+            localStorage.clear();
+            window.location.reload();
+          },
+        }),
+        3000,
+      );
     });
   };
 
@@ -119,14 +154,19 @@ function MyMenu(props) {
           )}
 
         {localStorage.getItem('authToken') ? (
-          <NavItem
-            key="logout"
+          <SubNav
+            key="user"
             // icon={}
             style={{ float: 'right' }}
-            onClick={handleLogout}
+            title={JSON.parse(localStorage.getItem('usr')).username}
           >
-            Đăng xuất
-          </NavItem>
+            <SubItem key="profile">
+              <MSubLink onClick={showProfile}>Tài khoản</MSubLink>
+            </SubItem>
+            <SubItem key="logout">
+              <MSubLink onClick={handleLogout}>Đăng xuất</MSubLink>
+            </SubItem>
+          </SubNav>
         ) : (
           <NavItem
             key="login"
@@ -166,6 +206,47 @@ function MyMenu(props) {
           </Form.Item>
         </MyAntdForm>
       </MyAntdModal>
+      <MyAntdModal
+        title="Thông tin tài khoản"
+        centered
+        visible={profileVisible}
+        onCancel={showProfile}
+        onOk={handleUpdate}
+        okText="Chỉnh sửa"
+        cancelText="Đóng"
+      >
+        <MyAntdForm form={usrForm} {...layout}>
+          <Form.Item label="Tên đăng nhập" name="username">
+            <Input readOnly />
+          </Form.Item>
+          <Form.Item
+            label="Mật khẩu"
+            name="password"
+            rules={[{ required: true, message: 'Vui lòng nhập mật khẩu!' }]}
+          >
+            <Input.Password />
+          </Form.Item>
+          <Form.Item
+            label="Email"
+            name="email"
+            rules={[
+              {
+                type: 'email',
+                message: 'Vui lòng nhập đúng định dạng email!',
+              },
+              {
+                required: true,
+                message: 'Vui lòng nhập email!',
+              },
+            ]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item label="Số điện thoại" name="phone">
+            <Input />
+          </Form.Item>
+        </MyAntdForm>
+      </MyAntdModal>
     </div>
   );
 }
@@ -174,6 +255,7 @@ MyMenu.propTypes = {
   mCategories: PropTypes.any,
   mSubCategories: PropTypes.any,
   mLogin: PropTypes.func,
+  mUpdate: PropTypes.func,
 };
 
 export default memo(MyMenu);

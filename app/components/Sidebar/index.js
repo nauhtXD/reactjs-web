@@ -40,7 +40,10 @@ function Sidebar(props) {
 
   const handleCreate = () => {
     form.validateFields().then(values => {
-      const data = { ...values, userId: localStorage.getItem('usrId') };
+      const data = {
+        ...values,
+        userId: JSON.parse(localStorage.getItem('usr')).id,
+      };
       props.mCreateReport(data);
       showModal();
     });

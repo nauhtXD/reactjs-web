@@ -26,6 +26,7 @@ function MyLayout(props) {
         mBreadcrumbs={props.mBreadcrumbs}
         mLogin={props.mLogin}
         mBanner={props.mBanner}
+        mUpdate={props.mUpdate}
       />
       <div style={{ width: '90%', margin: 'auto' }}>
         <Layout style={{ backgroundColor: '#fff' }}>
@@ -65,6 +66,7 @@ MyLayout.propTypes = {
   mDocuments: PropTypes.any,
   mLogin: PropTypes.func,
   mBanner: PropTypes.array,
+  mUpdate: PropTypes.func,
 };
 
 export default memo(MyLayout);

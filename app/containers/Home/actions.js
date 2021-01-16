@@ -103,3 +103,10 @@ export function checkToken(data) {
     payload: data,
   };
 }
+
+export function updateUser(data) {
+  return {
+    type: types.UPDATE_USER,
+    payload: data,
+  };
+}

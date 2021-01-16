@@ -52,7 +52,6 @@ export function Documents(props) {
   const [defValue, setDefValue] = useState(null);
   const [searchValue, setSearchValue] = useState(null);
   const [dataSource, setDataSource] = useState(null);
-  const [usrName, setUsrName] = useState(null);
 
   useEffect(() => {
     props.getContacts();
@@ -84,14 +83,15 @@ export function Documents(props) {
   useEffect(() => {
     if (props.homeReducer.loginToken.token) {
       localStorage.setItem('authToken', props.homeReducer.loginToken.token);
-      localStorage.setItem('usrId', props.homeReducer.loginToken.uid);
-      localStorage.setItem('usrName', usrName);
+      localStorage.setItem(
+        'usr',
+        JSON.stringify(props.homeReducer.loginToken.user),
+      );
       window.location.reload();
     }
   }, [props.homeReducer.loginToken]);
 
   const handleLogin = values => {
-    setUsrName(values.username);
     props.getLoginToken(values);
   };
 
@@ -207,6 +207,7 @@ export function Documents(props) {
           mLogin={handleLogin}
           mBanner={props.homeReducer.banners}
           mBreadcrumbs={bcrData}
+          mUpdate={props.updateUser}
         />
         <MyAntdModal
           title="Chi tiết"
@@ -257,6 +258,7 @@ Documents.propTypes = {
   getCityList: PropTypes.func,
   getLoginToken: PropTypes.func,
   getBanners: PropTypes.func,
+  updateUser: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -265,6 +267,9 @@ const mapStateToProps = createStructuredSelector({
 });
 
 const mapDispatchToProps = dispatch => ({
+  updateUser: data => {
+    dispatch(hAction.updateUser(data));
+  },
   getBanners: data => {
     dispatch(hAction.getBanners(data));
   },

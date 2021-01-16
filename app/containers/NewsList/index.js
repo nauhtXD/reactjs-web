@@ -30,7 +30,6 @@ export function NewsList(props) {
   useInjectReducer({ key: 'newsList', reducer });
   useInjectSaga({ key: 'newsList', saga });
 
-  const [usrName, setUsrName] = useState(null);
   const [bcrData, setBcrData] = useState(null);
 
   useEffect(() => {
@@ -60,14 +59,15 @@ export function NewsList(props) {
   useEffect(() => {
     if (props.homeReducer.loginToken.token) {
       localStorage.setItem('authToken', props.homeReducer.loginToken.token);
-      localStorage.setItem('usrId', props.homeReducer.loginToken.uid);
-      localStorage.setItem('usrName', usrName);
+      localStorage.setItem(
+        'usr',
+        JSON.stringify(props.homeReducer.loginToken.user),
+      );
       window.location.reload();
     }
   }, [props.homeReducer.loginToken]);
 
   const handleLogin = values => {
-    setUsrName(values.username);
     props.getLoginToken(values);
   };
 
@@ -129,6 +129,7 @@ export function NewsList(props) {
           mLogin={handleLogin}
           mBanner={props.homeReducer.banners}
           mBreadcrumbs={bcrData}
+          mUpdate={props.updateUser}
         />
       </div>
     </div>
@@ -148,6 +149,7 @@ NewsList.propTypes = {
   getCityList: PropTypes.func,
   getLoginToken: PropTypes.func,
   getBanners: PropTypes.func,
+  updateUser: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -156,6 +158,9 @@ const mapStateToProps = createStructuredSelector({
 });
 
 const mapDispatchToProps = dispatch => ({
+  updateUser: data => {
+    dispatch(hAction.updateUser(data));
+  },
   getBanners: data => {
     dispatch(hAction.getBanners(data));
   },
