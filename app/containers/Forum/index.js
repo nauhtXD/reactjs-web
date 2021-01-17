@@ -70,6 +70,11 @@ export function Forum(props) {
     props.getForumPosts();
   }, [isRerender]);
 
+  useEffect(() => {
+    if (localStorage.getItem('usr'))
+      props.getForumPostsByUID(JSON.parse(localStorage.getItem('usr')).id);
+  }, [localStorage.getItem('usr')]);
+
   const showModal = () => {
     setIsVisible(!isVisible);
   };
@@ -162,6 +167,7 @@ Forum.propTypes = {
   getForumPosts: PropTypes.func,
   createForumPost: PropTypes.func,
   updateUser: PropTypes.func,
+  getForumPostsByUID: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -170,6 +176,9 @@ const mapStateToProps = createStructuredSelector({
 });
 
 const mapDispatchToProps = dispatch => ({
+  getForumPostsByUID: data => {
+    dispatch(hAction.getForumPostsByUID(data));
+  },
   updateUser: data => {
     dispatch(hAction.updateUser(data));
   },

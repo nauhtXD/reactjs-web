@@ -67,6 +67,11 @@ export function NewsList(props) {
     }
   }, [props.homeReducer.loginToken]);
 
+  useEffect(() => {
+    if (localStorage.getItem('usr'))
+      props.getForumPostsByUID(JSON.parse(localStorage.getItem('usr')).id);
+  }, [localStorage.getItem('usr')]);
+
   const handleLogin = values => {
     props.getLoginToken(values);
   };
@@ -135,6 +140,7 @@ export function NewsList(props) {
           mBanner={props.homeReducer.banners}
           mBreadcrumbs={bcrData}
           mUpdate={props.updateUser}
+          mThread={props.homeReducer.forumPosts}
         />
       </div>
     </div>
@@ -155,6 +161,7 @@ NewsList.propTypes = {
   getLoginToken: PropTypes.func,
   getBanners: PropTypes.func,
   updateUser: PropTypes.func,
+  getForumPostsByUID: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -163,6 +170,9 @@ const mapStateToProps = createStructuredSelector({
 });
 
 const mapDispatchToProps = dispatch => ({
+  getForumPostsByUID: data => {
+    dispatch(hAction.getForumPostsByUID(data));
+  },
   updateUser: data => {
     dispatch(hAction.updateUser(data));
   },

@@ -83,6 +83,11 @@ export function ForumPost(props) {
     props.getForumComments(forumPostId);
   }, [isRerender]);
 
+  useEffect(() => {
+    if (localStorage.getItem('usr'))
+      props.getForumPostsByUID(JSON.parse(localStorage.getItem('usr')).id);
+  }, [localStorage.getItem('usr')]);
+
   const handleSubmit = values => {
     const data = {
       ...values,
@@ -187,6 +192,7 @@ export function ForumPost(props) {
         mBanner={props.homeReducer.banners}
         mBreadcrumbs={bcrData}
         mUpdate={props.updateUser}
+        mThread={props.homeReducer.forumPosts}
       />
     </div>
   );
@@ -208,6 +214,7 @@ ForumPost.propTypes = {
   getForumComments: PropTypes.func,
   createForumComment: PropTypes.func,
   updateUser: PropTypes.func,
+  getForumPostsByUID: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -216,6 +223,9 @@ const mapStateToProps = createStructuredSelector({
 });
 
 const mapDispatchToProps = dispatch => ({
+  getForumPostsByUID: data => {
+    dispatch(hAction.getForumPostsByUID(data));
+  },
   updateUser: data => {
     dispatch(hAction.updateUser(data));
   },
