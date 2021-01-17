@@ -29,6 +29,8 @@ export const initialState = {
   banners: [],
   loadingCheckToken: false,
   checkToken: [],
+  loadingForumPosts: false,
+  forumPosts: [],
 };
 
 /* eslint-disable default-case, no-param-reassign */
@@ -155,6 +157,17 @@ const homeReducer = (state = initialState, action) =>
       case types.CHECK_TOKEN_FAIL:
         draft.checkToken = [];
         draft.loadingCheckToken = false;
+        break;
+      case types.GET_FORUM_POST_BY_UID:
+        draft.loadingForumPosts = true;
+        break;
+      case types.GET_FORUM_POST_BY_UID_SUCCESS:
+        draft.forumPosts = action.forumPosts;
+        draft.loadingForumPosts = false;
+        break;
+      case types.GET_FORUM_POST_BY_UID_FAIL:
+        draft.forumPosts = [];
+        draft.loadingForumPosts = false;
         break;
     }
   });

@@ -39,6 +39,10 @@ const MyLink = styled.a`
   }
 `;
 
+const MyP = styled.p`
+  font-size: 1.06141vw;
+`;
+
 const MyRouterLink = styled(Link)`
   color: #000;
   font-size: 1.06141vw !important;
@@ -87,6 +91,33 @@ const MyAntdList = styled(List)`
   .ant-list-item,
   .ant-list-header {
     padding: 0.9vw 1.81956vw;
+  }
+  .ant-pagination-item-active {
+    border-color: ${primaryColor} !important;
+  }
+  .ant-pagination-item-active a {
+    color: ${primaryColor} !important;
+  }
+  .ant-pagination-item {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    :hover {
+      &.ant-pagination-item a {
+        color: ${primaryColor} !important;
+      }
+      border-color: ${primaryColor} !important;
+    }
+  }
+  .ant-pagination-prev .ant-pagination-item-link,
+  .ant-pagination-next .ant-pagination-item-link {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    :hover {
+      color: ${primaryColor} !important;
+      border-color: ${primaryColor} !important;
+    }
   }
 `;
 
@@ -368,6 +399,7 @@ const UpIcon = styled(UpSquareTwoTone)`
 export {
   primaryColor,
   MyLink,
+  MyP,
   MyRouterLink,
   MyBreadcrumb,
   MyComment,

@@ -22,7 +22,12 @@ import makeSelectHome from '../Home/selectors';
 import MyLayout from '../../components/MyLayout/index';
 import CommentForm from '../../components/CommentForm/index';
 import TitleCom from '../../components/TitleCom/index';
-import { API_KEY, MyAntdList, MyComment } from '../../components/Style/index';
+import {
+  API_KEY,
+  MyAntdList,
+  MyComment,
+  MyP,
+} from '../../components/Style/index';
 
 const bcrData = [
   {
@@ -114,10 +119,10 @@ export function ForumPost(props) {
                             src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
                             style={{ borderRadius: '50%' }}
                           />
-                          <p style={{ fontSize: '1.14vw' }}>
+                          <MyP style={{ fontSize: '1.14vw' }}>
                             {props.forumPostReducer.forumPost.user &&
                               props.forumPostReducer.forumPost.user.username}
-                          </p>
+                          </MyP>
                         </div>
                       </Col>
                       <Col span={20}>
@@ -133,9 +138,9 @@ export function ForumPost(props) {
                             props.forumPostReducer.forumPost.createdAt,
                           ).format('L')}
                         </Divider>
-                        <p style={{ fontSize: '1.14vw' }}>
+                        <MyP style={{ fontSize: '1.14vw' }}>
                           {props.forumPostReducer.forumPost.content}
-                        </p>
+                        </MyP>
                       </Col>
                     </Row>
                   </div>

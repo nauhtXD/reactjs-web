@@ -67,7 +67,7 @@ function Sidebar(props) {
         <TitleCom
           mCategory="Văn bản hội"
           mCont={
-            <div style={{ height: '8.72vw', margin: 'auto 0.76vw' }}>
+            <div style={{ height: '6.823351vw', margin: 'auto 0.76vw' }}>
               {props.mDocuments.map(i => (
                 <NewDiv key={i.id}>
                   <MyText>

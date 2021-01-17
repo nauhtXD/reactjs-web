@@ -110,3 +110,10 @@ export function updateUser(data) {
     payload: data,
   };
 }
+
+export function getForumPostsByUID(data) {
+  return {
+    type: types.GET_FORUM_POST_BY_UID,
+    payload: data,
+  };
+}

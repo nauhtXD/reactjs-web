@@ -34,3 +34,6 @@ export const checkToken = data =>
 // user
 export const updateUser = data =>
   apiConfig.put(`${endpoint.API_ENDPOINT_UPDATE_USER}/${data.id}`, data);
+// forumPost
+export const getForumPostsByUID = data =>
+  apiConfig.get(`${endpoint.API_ENDPOINT_GET_FORUM_POST_BY_UID}/${data}`);

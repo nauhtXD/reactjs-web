@@ -77,3 +77,4 @@ export const API_ENDPOINT_COUNT_EPIDEMIC = 'epidemicHistories/count';
 export const API_ENDPOINT_GET_FORUM_COMMENT = 'forumComments';
 // forumPost
 export const API_ENDPOINT_GET_FORUM_POST = 'forumPosts';
+export const API_ENDPOINT_GET_FORUM_POST_BY_UID = 'forumPosts/user';

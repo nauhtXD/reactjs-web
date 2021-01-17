@@ -24,6 +24,7 @@ function Header(props) {
         mSubCategories={props.mSubCategories}
         mLogin={props.mLogin}
         mUpdate={props.mUpdate}
+        mThread={props.mThread}
       />
       <div style={{ margin: '3.79vw auto auto auto', width: '90%' }}>
         {props.mBanner && (
@@ -99,6 +100,7 @@ Header.propTypes = {
   mLogin: PropTypes.func,
   mBanner: PropTypes.array,
   mUpdate: PropTypes.func,
+  mThread: PropTypes.any,
 };
 
 export default memo(Header);

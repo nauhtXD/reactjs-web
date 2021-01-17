@@ -5,8 +5,7 @@ import { Helmet } from 'react-helmet';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 // import styled from 'styled-component';
-import { Form, List, Input } from 'antd';
-import moment from 'moment';
+import { Form, Input } from 'antd';
 
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
@@ -20,13 +19,8 @@ import makeSelectHome from '../Home/selectors';
 
 import MyLayout from '../../components/MyLayout/index';
 import TitleCom from '../../components/TitleCom/index';
-import {
-  API_KEY,
-  MyAntdList,
-  MyAntdModal,
-  MyAntdForm,
-  MyLink,
-} from '../../components/Style/index';
+import ThreadList from '../../components/ThreadList/index';
+import { API_KEY, MyAntdModal, MyAntdForm } from '../../components/Style/index';
 
 const bcrData = [
   {
@@ -109,39 +103,7 @@ export function Forum(props) {
               mCategory="Danh sách thảo luận"
               mCont={
                 <div>
-                  <MyAntdList
-                    itemLayout="vertical"
-                    size="large"
-                    bordered
-                    pagination={{
-                      defaultPageSize: 5,
-                      showSizeChanger: true,
-                      pageSizeOptions: ['5', '10', '20'],
-                    }}
-                    dataSource={props.forumReducer.forumPosts}
-                    renderItem={item => (
-                      <List.Item
-                        key={item.id}
-                        extra={
-                          <div>
-                            <p>Lượt trả lời: {item.replies}</p>
-                            <p>Lượt xem: {item.views}</p>
-                            <p>
-                              Cập nhật: {moment(item.updatedAt).format('llll')}
-                            </p>
-                          </div>
-                        }
-                      >
-                        <MyLink href={`/forumPost/${item.id}`}>
-                          <b style={{ fontSize: 19 }}>{item.title}</b>
-                        </MyLink>
-                        <p style={{ opacity: 0.6 }}>
-                          {`${item.user.username} - 
-                          ${moment(item.createdAt).format('llll')}`}
-                        </p>
-                      </List.Item>
-                    )}
-                  />
+                  <ThreadList mData={props.forumReducer.forumPosts} />
                 </div>
               }
               mCreate={localStorage.getItem('authToken') ? showModal : null}

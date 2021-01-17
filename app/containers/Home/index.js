@@ -50,6 +50,11 @@ export function Home(props) {
     }
   }, [props.homeReducer.loginToken]);
 
+  useEffect(() => {
+    if (localStorage.getItem('usr'))
+      props.getForumPostsByUID(JSON.parse(localStorage.getItem('usr')).id);
+  }, [localStorage.getItem('usr')]);
+
   const handleLogin = values => {
     props.getLoginToken(values);
   };
@@ -210,6 +215,7 @@ export function Home(props) {
         mLogin={handleLogin}
         mBanner={props.homeReducer.banners}
         mUpdate={props.updateUser}
+        mThread={props.homeReducer.forumPosts}
       />
     </div>
   );
@@ -229,6 +235,7 @@ Home.propTypes = {
   getLoginToken: PropTypes.func,
   getBanners: PropTypes.func,
   updateUser: PropTypes.func,
+  getForumPostsByUID: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -271,6 +278,9 @@ const mapDispatchToProps = dispatch => ({
   },
   updateUser: data => {
     dispatch(action.updateUser(data));
+  },
+  getForumPostsByUID: data => {
+    dispatch(action.getForumPostsByUID(data));
   },
 });
 

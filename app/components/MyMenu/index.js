@@ -8,6 +8,7 @@ import React, { memo, useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Menu, Form, Input } from 'antd';
+import ThreadList from '../ThreadList/index';
 import { layout, UIcon, MyAntdForm, MyAntdModal } from '../Style/index';
 
 const { SubMenu } = Menu;
@@ -81,14 +82,19 @@ function MyMenu(props) {
   const [usrForm] = Form.useForm();
   const [isVisible, setIsVisible] = useState(false);
   const [profileVisible, setProfileVisible] = useState(false);
+  const [threadVisible, setThreadVisible] = useState(false);
+  const [epidemicVisible, setEpidemicVisible] = useState(false);
 
-  const showModal = () => {
-    setIsVisible(!isVisible);
-  };
-
-  const showProfile = () => {
-    usrForm.setFieldsValue(JSON.parse(localStorage.getItem('usr')));
-    setProfileVisible(!profileVisible);
+  const showModal = key => {
+    if (key === 0) setIsVisible(!isVisible);
+    else if (key === 1) {
+      usrForm.setFieldsValue(JSON.parse(localStorage.getItem('usr')));
+      setProfileVisible(!profileVisible);
+    } else if (key === 2) {
+      setThreadVisible(!threadVisible);
+    } else if (key === 3) {
+      setEpidemicVisible(!epidemicVisible);
+    }
   };
 
   const handleLogout = () => {
@@ -158,8 +164,18 @@ function MyMenu(props) {
             title={JSON.parse(localStorage.getItem('usr')).username}
           >
             <SubItem key="profile">
-              <MSubLink onClick={showProfile}>Tài khoản</MSubLink>
+              <MSubLink onClick={() => showModal(1)}>Tài khoản</MSubLink>
             </SubItem>
+            <SubItem key="thread">
+              <MSubLink onClick={() => showModal(2)}>Bài viết</MSubLink>
+            </SubItem>
+            {JSON.parse(localStorage.getItem('usr')).userType.name.includes(
+              'user',
+            ) && (
+              <SubItem key="epidemic">
+                <MSubLink onClick={() => showModal(3)}>Dịch bệnh</MSubLink>
+              </SubItem>
+            )}
             <SubItem key="logout">
               <MSubLink onClick={handleLogout}>Đăng xuất</MSubLink>
             </SubItem>
@@ -169,7 +185,7 @@ function MyMenu(props) {
             key="login"
             icon={<UIcon />}
             style={{ float: 'right' }}
-            onClick={showModal}
+            onClick={() => showModal(0)}
           >
             Đăng nhập
           </NavItem>
@@ -179,7 +195,7 @@ function MyMenu(props) {
         title="Đăng nhập"
         centered
         visible={isVisible}
-        onCancel={showModal}
+        onCancel={() => showModal(0)}
         onOk={handleLogin}
         okText="Đăng nhập"
         cancelText="Hủy"
@@ -207,7 +223,7 @@ function MyMenu(props) {
         title="Thông tin tài khoản"
         centered
         visible={profileVisible}
-        onCancel={showProfile}
+        onCancel={() => showModal(1)}
         onOk={handleUpdate}
         okText="Chỉnh sửa"
         cancelText="Đóng"
@@ -244,6 +260,16 @@ function MyMenu(props) {
           </Form.Item>
         </MyAntdForm>
       </MyAntdModal>
+      <MyAntdModal
+        title="Bài viết của tôi"
+        centered
+        visible={threadVisible}
+        onCancel={() => showModal(2)}
+        footer={null}
+        width={800}
+      >
+        <ThreadList mData={props.mThread} />
+      </MyAntdModal>
     </div>
   );
 }
@@ -253,6 +279,7 @@ MyMenu.propTypes = {
   mSubCategories: PropTypes.any,
   mLogin: PropTypes.func,
   mUpdate: PropTypes.func,
+  mThread: PropTypes.any,
 };
 
 export default memo(MyMenu);
