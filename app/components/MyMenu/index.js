@@ -83,7 +83,6 @@ function MyMenu(props) {
   const [isVisible, setIsVisible] = useState(false);
   const [profileVisible, setProfileVisible] = useState(false);
   const [threadVisible, setThreadVisible] = useState(false);
-  const [epidemicVisible, setEpidemicVisible] = useState(false);
 
   const showModal = key => {
     if (key === 0) setIsVisible(!isVisible);
@@ -92,14 +91,12 @@ function MyMenu(props) {
       setProfileVisible(!profileVisible);
     } else if (key === 2) {
       setThreadVisible(!threadVisible);
-    } else if (key === 3) {
-      setEpidemicVisible(!epidemicVisible);
     }
   };
 
   const handleLogout = () => {
     localStorage.clear();
-    window.location.reload();
+    window.location.href = '/';
   };
 
   const handleLogin = () => {
@@ -170,10 +167,14 @@ function MyMenu(props) {
               <MSubLink onClick={() => showModal(2)}>Bài viết</MSubLink>
             </SubItem>
             {JSON.parse(localStorage.getItem('usr')).userType.name.includes(
-              'user',
+              'User',
             ) && (
               <SubItem key="epidemic">
-                <MSubLink onClick={() => showModal(3)}>Dịch bệnh</MSubLink>
+                <MSubLink
+                  href={`/garden/${JSON.parse(localStorage.getItem('usr')).id}`}
+                >
+                  Dịch bệnh
+                </MSubLink>
               </SubItem>
             )}
             <SubItem key="logout">

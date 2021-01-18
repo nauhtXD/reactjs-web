@@ -32,6 +32,7 @@ import NewsList from '../NewsList/Loadable';
 import Introduce from '../Introduce/Loadable';
 import Forum from '../Forum/Loadable';
 import ForumPost from '../ForumPost/Loadable';
+import Garden from '../Garden/Loadable';
 
 import MangoWiki from '../MangoWiki/Loadable';
 import WikiList from '../MangoWiki/pages/list';
@@ -71,6 +72,7 @@ function App(props) {
           <Route exact path="/introduce" component={Introduce} />
           <Route exact path="/forum" component={Forum} />
           <Route exact path="/forumPost/:id" component={ForumPost} />
+          <Route exact path="/garden/:id" component={Garden} />
 
           <Route path="/mangowiki" component={MangoWiki} />
           <Route exact path="/mangowiki/news/new/:id" component={WikiNews} />

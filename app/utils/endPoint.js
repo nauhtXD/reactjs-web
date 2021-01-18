@@ -62,6 +62,7 @@ export const API_ENDPOINT_DELETE_HOUSEHOLD = 'households/delete';
 export const API_ENDPOINT_GET_LAND = 'lands';
 // plant
 export const API_ENDPOINT_GET_PLANT = 'plants';
+export const API_ENDPOINT_GET_PLANT_BY_UID = 'plants/user';
 export const API_ENDPOINT_UPDATE_PLANT = 'plants/update';
 export const API_ENDPOINT_DELETE_PLANT = 'plants/delete';
 // banner
@@ -71,7 +72,14 @@ export const API_ENDPOINT_UPDATE_BANNER = 'banners/update';
 export const API_ENDPOINT_GET_FIELD = 'fields';
 // documentType
 export const API_ENDPOINT_GET_DOCUMENT_TYPE = 'documentTypes';
+// epidemic
+export const API_ENDPOINT_GET_EPIDEMIC = 'epidemics';
 // epidemicHistory
+export const API_ENDPOINT_GET_EPIDEMIC_HISTORY = 'epidemicHistories';
+export const API_ENDPOINT_UPDATE_EPIDEMIC_HISTORY = 'epidemicHistories/update';
+export const API_ENDPOINT_DELETE_EPIDEMIC_HISTORY = 'epidemicHistories/delete';
+export const API_ENDPOINT_GET_EPIDEMIC_HISTORY_BY_UID =
+  'epidemicHistories/user';
 export const API_ENDPOINT_COUNT_EPIDEMIC = 'epidemicHistories/count';
 // forumComment
 export const API_ENDPOINT_GET_FORUM_COMMENT = 'forumComments';
