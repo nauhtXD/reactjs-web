@@ -152,7 +152,7 @@ export function Garden(props) {
   const handleSelect = e => {
     const data = props.gardenReducer.epidemics;
     const remove = props.gardenReducer.epidemicHistories.map(
-      i => i.plantId === e && i.epidemicId,
+      i => i.plantId === e && i.status && i.epidemicId,
     );
     const filterData = data.filter(i => remove.indexOf(i.id) === -1);
     setEpidemicList(filterData);
@@ -277,6 +277,7 @@ export function Garden(props) {
                 </div>
               }
               mCreate={
+                localStorage.getItem('usr') &&
                 JSON.parse(localStorage.getItem('usr')).userType.name.includes(
                   'User',
                 )
