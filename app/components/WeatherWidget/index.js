@@ -9,7 +9,6 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import kToC from 'kelvin-to-celsius';
 import { Card } from 'antd';
-// import { primaryColor } from '../Style/index';
 
 const fgColor = '#000';
 const primaryColor = 'linear-gradient(to bottom, #feb020, #ffd05c)';
