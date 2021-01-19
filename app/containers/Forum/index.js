@@ -27,6 +27,7 @@ const bcrData = [
     name: 'Thảo luận',
   },
 ];
+let k = -1;
 
 export function Forum(props) {
   useInjectReducer({ key: 'forum', reducer });
@@ -69,6 +70,15 @@ export function Forum(props) {
   useEffect(() => {
     props.getForumPosts();
   }, [isRerender]);
+
+  useEffect(() => {
+    props.getForumPosts();
+    if (k === -1) k = 0;
+  }, [isRerender]);
+
+  useEffect(() => {
+    props.getForumPosts();
+  }, [isRerender, k]);
 
   useEffect(() => {
     if (localStorage.getItem('usr'))

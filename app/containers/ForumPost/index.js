@@ -38,6 +38,7 @@ const bcrData = [
   },
 ];
 const dateFormat = 'L';
+let k = -1;
 
 export function ForumPost(props) {
   // eslint-disable-next-line react/prop-types
@@ -82,6 +83,15 @@ export function ForumPost(props) {
   useEffect(() => {
     props.getForumComments(forumPostId);
   }, [isRerender]);
+
+  useEffect(() => {
+    props.getForumComments(forumPostId);
+    if (k === -1) k = 0;
+  }, [isRerender]);
+
+  useEffect(() => {
+    props.getForumComments(forumPostId);
+  }, [isRerender, k]);
 
   useEffect(() => {
     if (localStorage.getItem('usr'))

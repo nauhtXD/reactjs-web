@@ -20,7 +20,12 @@ import makeSelectHome from '../Home/selectors';
 
 import MyLayout from '../../components/MyLayout/index';
 import TitleCom from '../../components/TitleCom/index';
-import { MyLink, ContentDiv, API_KEY } from '../../components/Style/index';
+import {
+  MyLink,
+  ContentDiv,
+  API_KEY,
+  MyAntdList,
+} from '../../components/Style/index';
 
 const dateFormat = 'L';
 
@@ -94,7 +99,7 @@ export function NewsList(props) {
                   mCategory={props.newsListReducer.posts[0].subcategory.name}
                   mCont={
                     <div>
-                      <List
+                      <MyAntdList
                         itemLayout="vertical"
                         size="large"
                         pagination={{
