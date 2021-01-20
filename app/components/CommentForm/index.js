@@ -20,7 +20,11 @@ function CommentForm(props) {
   };
   return (
     <MyAntdForm form={form}>
-      <Form.Item name="content" style={{ marginBottom: '0.379vw' }}>
+      <Form.Item
+        name="content"
+        style={{ marginBottom: '0.379vw' }}
+        rules={[{ required: true, message: 'Vui lòng nhập nội dung!' }]}
+      >
         <Input.TextArea
           placeholder="Để lại bình luận"
           style={{ fontSize: '1.14vw' }}
