@@ -441,7 +441,11 @@ export function Garden(props) {
                 ))}
             </Select>
           </Form.Item>
-          <Form.Item label="Nội dung" name="content">
+          <Form.Item
+            label="Nội dung"
+            name="content"
+            rules={[{ required: true, message: 'Vui lòng nhập nội dung!' }]}
+          >
             <Input.TextArea />
           </Form.Item>
         </MyAntdForm>

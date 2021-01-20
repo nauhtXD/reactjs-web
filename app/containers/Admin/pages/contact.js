@@ -67,10 +67,11 @@ export function Contact(props) {
   };
 
   const handleClick = (record, key) => {
-    const data = { ...record };
-    delete data.map;
-    if (key === 0) props.updateContact(data);
-    else props.deleteContact(data);
+    if (key === 0) {
+      const data = { ...record };
+      delete data.map;
+      props.updateContact(data);
+    } else props.deleteContact(record);
     setIsReRender(!isReRender);
   };
 
