@@ -7,7 +7,7 @@ import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
-import { Form, Input, Select, Row, Col } from 'antd';
+import { Form, Input, Select, Row, Col, notification } from 'antd';
 
 import reducer from '../reducer';
 import saga from '../saga';
@@ -79,6 +79,14 @@ export function Household(props) {
   const handleCreate = record => {
     const userTypeId = 2;
     const input = { ...record, user: { ...record.user, userTypeId } };
+    console.log(input.user);
+    if (input.user.password !== input.user.retype) {
+      notification.error({
+        message: 'Error',
+        description: 'Mật khẩu nhập lại không trùng khớp',
+      });
+      return 1;
+    }
     props.createHousehold(input);
     setIsRerender(!isRerender);
     return 0;
@@ -119,6 +127,13 @@ export function Household(props) {
                 ))}
             </Select>
           </Form.Item>
+          <Form.Item
+            label="Địa chỉ"
+            name="address"
+            rules={[{ required: true, message: 'Vui lòng nhập địa chỉ!' }]}
+          >
+            <Input />
+          </Form.Item>
           <Form.Item name="provinceId" label="Tỉnh/TP">
             <Select>
               {props.adminReducer.provinces.length > 0 &&
@@ -148,6 +163,13 @@ export function Household(props) {
             <Input.Password />
           </Form.Item>
           <Form.Item
+            label="Nhập lại mật khẩu"
+            name={['user', 'retype']}
+            rules={[{ required: true, message: 'Vui lòng nhập lại mật khẩu!' }]}
+          >
+            <Input.Password />
+          </Form.Item>
+          <Form.Item
             label="Email"
             name={['user', 'email']}
             rules={[
@@ -163,7 +185,13 @@ export function Household(props) {
           >
             <Input />
           </Form.Item>
-          <Form.Item label="Số điện thoại" name={['user', 'phone']}>
+          <Form.Item
+            label="Số điện thoại"
+            name={['user', 'phone']}
+            rules={[
+              { required: true, message: 'Vui lòng nhập số điện thoại!' },
+            ]}
+          >
             <Input />
           </Form.Item>
         </Col>
@@ -196,6 +224,13 @@ export function Household(props) {
               </Option>
             ))}
         </Select>
+      </Form.Item>
+      <Form.Item
+        label="Địa chỉ"
+        name="address"
+        rules={[{ required: true, message: 'Vui lòng nhập địa chỉ!' }]}
+      >
+        <Input />
       </Form.Item>
       <Form.Item name="provinceId" label="Tỉnh/TP">
         <Select>
