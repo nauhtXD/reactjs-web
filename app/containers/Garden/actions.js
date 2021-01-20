@@ -34,3 +34,31 @@ export function getPlants(data) {
     payload: data,
   };
 }
+
+export function createPlant(data) {
+  return {
+    type: types.CREATE_PLANT,
+    payload: data,
+  };
+}
+
+export function updatePlant(data) {
+  return {
+    type: types.UPDATE_PLANT,
+    payload: data,
+  };
+}
+
+export function deletePlant(data) {
+  return {
+    type: types.DELETE_PLANT,
+    payload: data,
+  };
+}
+
+export function getGenusFeatures(data) {
+  return {
+    type: types.GET_GENUS_FEATURE,
+    payload: data,
+  };
+}

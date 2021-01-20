@@ -233,7 +233,7 @@ export function getGenusFeatures(data) {
   };
 }
 
-// #region PLANT
+// #region plant
 export function getPlants(data) {
   return {
     type: types.GET_PLANT,

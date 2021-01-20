@@ -5,7 +5,7 @@ import { Helmet } from 'react-helmet';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 // import styled from 'styled-component';
-import { Divider, Form, Input, Select } from 'antd';
+import { Divider, Form, Input, Select, DatePicker } from 'antd';
 import moment from 'moment';
 
 import { useInjectSaga } from 'utils/injectSaga';
@@ -26,6 +26,7 @@ import {
   API_KEY,
   MyAntdModal,
   MyAntdForm,
+  MyLink,
   layout,
 } from '../../components/Style/index';
 
@@ -37,6 +38,73 @@ const bcrData = [
 
 const { Option } = Select;
 let k = -1;
+const dateFormat = 'DD/MM/YYYY';
+
+const plantPropertyNames = [
+  {
+    title: 'Loại cây',
+    data: ['genusFeature', 'name'],
+  },
+
+  {
+    title: 'Số gốc cây',
+    data: 'root',
+  },
+  {
+    title: 'Ngày trồng',
+    data: 'publishAt',
+    render: record => moment(record).format(dateFormat),
+  },
+  {
+    title: 'Cập nhật lần cuối',
+    data: 'updateAt',
+    render: record => moment(record).format(dateFormat),
+  },
+];
+
+const propertyNames = [
+  {
+    title: 'Loại cây',
+    data: ['plant', 'genusFeature', 'name'],
+  },
+
+  {
+    title: 'Tên bệnh',
+    data: ['epidemic', 'name'],
+  },
+  {
+    title: 'Ngày bắt đầu',
+    data: 'createdAt',
+    render: record => moment(record).format(dateFormat),
+  },
+  {
+    title: 'Trạng thái',
+    data: 'status',
+  },
+];
+
+const propertyNames1 = [
+  {
+    title: 'Loại cây',
+    data: ['plant', 'genusFeature', 'name'],
+  },
+
+  {
+    title: 'Tên bệnh',
+    data: ['epidemic', 'name'],
+  },
+  {
+    title: 'Ngày bắt đầu',
+    data: 'createdAt',
+    render: record => moment(record).format(dateFormat),
+  },
+  {
+    title: 'Ngày kết thúc',
+    data: 'updatedAt',
+    render: record => moment(record).format(dateFormat),
+  },
+];
+
 export function Garden(props) {
   // eslint-disable-next-line react/prop-types
   const { match } = props;
@@ -45,7 +113,9 @@ export function Garden(props) {
 
   const userId = match.params.id;
   const [form] = Form.useForm();
+  const [plantForm] = Form.useForm();
   const [isVisible, setIsVisible] = useState(false);
+  const [plantVisible, setPlantVisible] = useState(false);
   const [isRerender, setIsRerender] = useState(false);
   const [stillList, setStillList] = useState([]);
   const [historyList, setHistoryList] = useState([]);
@@ -59,6 +129,7 @@ export function Garden(props) {
     props.getLastestDocuments(4);
     props.getBanners();
     props.getEpidemics();
+    props.getGenusFeatures();
     props.getEpidemicHistories(userId);
     props.getPlants(userId);
   }, []);
@@ -99,6 +170,11 @@ export function Garden(props) {
   }, [props.gardenReducer.epidemicHistories]);
 
   useEffect(() => {
+    if (localStorage.getItem('usr'))
+      props.getForumPostsByUID(JSON.parse(localStorage.getItem('usr')).id);
+  }, [localStorage.getItem('usr')]);
+
+  useEffect(() => {
     props.getEpidemicHistories(userId);
   }, [isRerender]);
 
@@ -111,11 +187,6 @@ export function Garden(props) {
     props.getEpidemicHistories(userId);
   }, [isRerender, k]);
 
-  useEffect(() => {
-    if (localStorage.getItem('usr'))
-      props.getForumPostsByUID(JSON.parse(localStorage.getItem('usr')).id);
-  }, [localStorage.getItem('usr')]);
-
   const handleLogin = values => {
     props.getLoginToken(values);
   };
@@ -127,26 +198,53 @@ export function Garden(props) {
     setIsRerender(!isRerender);
   };
 
-  const showModal = () => {
-    if (props.gardenReducer.plants[0]) {
-      const { id } = props.gardenReducer.plants[0];
-      form.setFieldsValue({
-        plantId: id,
-      });
-      handleSelect(id);
-    }
-    setIsVisible(!isVisible);
+  const handleClick = (record, key) => {
+    console.log(record);
+    // if (key === 0) props.updatePlant(record);
+    // else props.deletePlant(record);
+    // setIsRerender(!isRerender);
   };
 
-  const handleSubmit = () => {
-    form.validateFields().then(values => {
-      const data = {
-        ...values,
-      };
-      props.createEpidemicHistory(data);
-      showModal();
-      setIsRerender(!isRerender);
-    });
+  const showModal = key => {
+    if (key === 1) {
+      plantForm.setFieldsValue({
+        genusFeatureId: 1,
+        publishAt: moment(),
+        root: 1,
+      });
+      setPlantVisible(!plantVisible);
+    } else if (key === 2) {
+      if (props.gardenReducer.plants[0]) {
+        const { id } = props.gardenReducer.plants[0];
+        form.setFieldsValue({
+          plantId: id,
+        });
+        handleSelect(id);
+      }
+      setIsVisible(!isVisible);
+    }
+  };
+
+  const handleSubmit = key => {
+    if (key === 1) {
+      plantForm.validateFields().then(values => {
+        const data = {
+          ...values,
+          householdId: 1,
+        };
+        props.createPlant(data);
+        showModal(1);
+      });
+    } else if (key === 2) {
+      form.validateFields().then(values => {
+        const data = {
+          ...values,
+        };
+        props.createEpidemicHistory(data);
+        showModal(2);
+      });
+    }
+    setIsRerender(!isRerender);
   };
 
   const handleSelect = e => {
@@ -159,69 +257,24 @@ export function Garden(props) {
     form.setFieldsValue({ epidemicId: filterData[0].id || filterData.id });
   };
 
-  const propertyNames = [
-    {
-      title: 'Loại cây',
-      data: ['plant', 'genusFeature', 'name'],
-    },
-
-    {
-      title: 'Tên bệnh',
-      data: ['epidemic', 'name'],
-    },
-    {
-      title: 'Ngày bắt đầu',
-      data: 'createdAt',
-      render: record => moment(record).format('L'),
-    },
-    {
-      title: 'Trạng thái',
-      data: 'status',
-    },
-  ];
-
-  const propertyNames1 = [
-    {
-      title: 'Loại cây',
-      data: ['plant', 'genusFeature', 'name'],
-    },
-
-    {
-      title: 'Tên bệnh',
-      data: ['epidemic', 'name'],
-    },
-    {
-      title: 'Ngày bắt đầu',
-      data: 'createdAt',
-      render: record => moment(record).format('L'),
-    },
-    {
-      title: 'Ngày kết thúc',
-      data: 'updatedAt',
-      render: record => moment(record).format('L'),
-    },
-  ];
-
   const myModal = [
     <div>
       <Form.Item label="Loại cây" name="plantId">
         <Select disabled>
-          {props.gardenReducer.plants &&
-            props.gardenReducer.plants.map(i => (
-              <Option key={i.id} value={i.id}>
-                {i.genusFeature.name}
-              </Option>
-            ))}
+          {props.gardenReducer.plants.map(i => (
+            <Option key={i.id} value={i.id}>
+              {i.genusFeature.name}
+            </Option>
+          ))}
         </Select>
       </Form.Item>
       <Form.Item label="Dịch bệnh" name="epidemicId">
         <Select disabled>
-          {props.gardenReducer.epidemics &&
-            props.gardenReducer.epidemics.map(i => (
-              <Option key={i.id} value={i.id}>
-                {i.name}
-              </Option>
-            ))}
+          {props.gardenReducer.epidemics.map(i => (
+            <Option key={i.id} value={i.id}>
+              {i.name}
+            </Option>
+          ))}
         </Select>
       </Form.Item>
       <Form.Item label="Trạng thái" name="status">
@@ -229,6 +282,30 @@ export function Garden(props) {
           <Option value={false}>Đã kết thúc</Option>
           <Option value>Đang diễn ra</Option>
         </Select>
+      </Form.Item>
+    </div>,
+  ];
+
+  const myPlantModal = [
+    <div>
+      <Form.Item name="genusFeatureId" label="Loại cây">
+        <Select>
+          {props.gardenReducer.genusFeatures.map(i => (
+            <Option key={i.id} value={i.id}>
+              {i.name}
+            </Option>
+          ))}
+        </Select>
+      </Form.Item>
+      <Form.Item
+        name="root"
+        label="Số gốc cây"
+        rules={[{ required: true, message: 'Vui lòng nhập số gốc cây!' }]}
+      >
+        <Input type="number" />
+      </Form.Item>
+      <Form.Item name="publishAt" label="Thời gian trồng">
+        <DatePicker format={dateFormat} />
       </Form.Item>
     </div>,
   ];
@@ -243,33 +320,55 @@ export function Garden(props) {
         mCont={
           <div>
             <TitleCom
-              mCategory="Lịch sử dịch bệnh"
+              mCategory="Vườn cây của tôi"
               mCont={
                 <div>
-                  {props.gardenReducer.epidemicHistories[0] ? (
+                  {props.gardenReducer.plants ? (
                     <div>
-                      <Divider
-                        orientation="left"
-                        style={{ fontSize: '1.14vw' }}
-                      >
-                        Đang diễn ra
-                      </Divider>
                       <MyTable
-                        mData={stillList}
-                        mPropertyNames={propertyNames}
-                        mUpdate={handleUpdate}
-                        mModal={myModal}
+                        mPropertyNames={plantPropertyNames}
+                        mData={props.gardenReducer.plants}
+                        mUpdate={handleClick}
+                        mDelete={handleClick}
+                        mModal={myPlantModal}
                       />
-                      <Divider
-                        orientation="left"
-                        style={{ fontSize: '1.14vw' }}
-                      >
-                        Đã kết thúc
-                      </Divider>
-                      <MyTable
-                        mData={historyList}
-                        mPropertyNames={propertyNames1}
-                      />
+                      {props.gardenReducer.epidemicHistories[0] && (
+                        <div>
+                          <Divider
+                            orientation="center"
+                            style={{ fontSize: '1.14vw' }}
+                          >
+                            Lịch sử dịch bệnh
+                          </Divider>
+                          <Divider
+                            orientation="left"
+                            style={{ fontSize: '1.14vw' }}
+                          >
+                            Đang diễn ra
+                            <span style={{ float: 'right' }}>
+                              <MyLink onClick={() => showModal(2)}>
+                                Tạo mới
+                              </MyLink>
+                            </span>
+                          </Divider>
+                          <MyTable
+                            mData={stillList}
+                            mPropertyNames={propertyNames}
+                            mUpdate={handleUpdate}
+                            mModal={myModal}
+                          />
+                          <Divider
+                            orientation="left"
+                            style={{ fontSize: '1.14vw' }}
+                          >
+                            Đã kết thúc
+                          </Divider>
+                          <MyTable
+                            mData={historyList}
+                            mPropertyNames={propertyNames1}
+                          />
+                        </div>
+                      )}
                     </div>
                   ) : (
                     <div>Không có dữ liệu cây trồng</div>
@@ -281,7 +380,7 @@ export function Garden(props) {
                 JSON.parse(localStorage.getItem('usr')).userType.name.includes(
                   'User',
                 )
-                  ? showModal
+                  ? () => showModal(1)
                   : null
               }
             />
@@ -300,11 +399,24 @@ export function Garden(props) {
         mThread={props.homeReducer.forumPosts}
       />
       <MyAntdModal
+        title="Thêm cây trồng"
+        centered
+        visible={plantVisible}
+        onCancel={() => showModal(1)}
+        onOk={() => handleSubmit(1)}
+        okText="Tạo"
+        cancelText="Hủy"
+      >
+        <MyAntdForm form={plantForm} {...layout}>
+          {myPlantModal}
+        </MyAntdForm>
+      </MyAntdModal>
+      <MyAntdModal
         title="Thêm lịch sử"
         centered
         visible={isVisible}
-        onCancel={showModal}
-        onOk={handleSubmit}
+        onCancel={() => showModal(2)}
+        onOk={() => handleSubmit(2)}
         okText="Tạo"
         cancelText="Hủy"
       >
@@ -357,6 +469,10 @@ Garden.propTypes = {
   createEpidemicHistory: PropTypes.func,
   getPlants: PropTypes.func,
   updateEpidemicHistory: PropTypes.func,
+  createPlant: PropTypes.func,
+  updatePlant: PropTypes.func,
+  deletePlant: PropTypes.func,
+  getGenusFeatures: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -412,6 +528,18 @@ const mapDispatchToProps = dispatch => ({
   },
   getPlants: data => {
     dispatch(action.getPlants(data));
+  },
+  getGenusFeatures: data => {
+    dispatch(action.getGenusFeatures(data));
+  },
+  createPlant: data => {
+    dispatch(action.createPlant(data));
+  },
+  updatePlant: data => {
+    dispatch(action.updatePlant(data));
+  },
+  deletePlant: data => {
+    dispatch(action.deletePlant(data));
   },
 });
 

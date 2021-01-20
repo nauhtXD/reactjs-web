@@ -8,6 +8,8 @@ export const initialState = {
   epidemicHistories: [],
   loadingPlants: false,
   plants: [],
+  loadingGenusFeatures: false,
+  genusFeatures: [],
 };
 
 /* eslint-disable default-case, no-param-reassign */
@@ -46,6 +48,17 @@ const gardenReducer = (state = initialState, action) =>
       case types.GET_PLANT_FAIL:
         draft.loadingPlants = false;
         draft.plants = [];
+        break;
+      case types.GET_GENUS_FEATURE:
+        draft.loadingGenusFeatures = true;
+        break;
+      case types.GET_GENUS_FEATURE_SUCCESS:
+        draft.genusFeatures = action.genusFeatures;
+        draft.loadingGenusFeatures = false;
+        break;
+      case types.GET_GENUS_FEATURE_FAIL:
+        draft.genusFeatures = [];
+        draft.loadingGenusFeatures = false;
         break;
     }
   });

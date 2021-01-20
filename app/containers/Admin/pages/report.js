@@ -7,6 +7,7 @@ import { compose } from 'redux';
 import { useInjectSaga } from 'utils/injectSaga';
 import { useInjectReducer } from 'utils/injectReducer';
 import { Form, Input, Select } from 'antd';
+import moment from 'moment';
 
 import reducer from '../reducer';
 import saga from '../saga';
@@ -19,6 +20,7 @@ const { Option } = Select;
 const { TextArea } = Input;
 
 let k = -1;
+const dateFormat = 'DD/MM/YYYY';
 
 export function Report(props) {
   useInjectReducer({ key: 'admin', reducer });
@@ -52,6 +54,16 @@ export function Report(props) {
     {
       title: 'Trạng thái',
       data: ['status', 'name'],
+    },
+    {
+      title: 'Thời gian gửi',
+      data: 'createdAt',
+      render: record => moment(record).format(dateFormat),
+    },
+    {
+      title: 'Cập nhật lần cuối ',
+      data: 'updatedAt',
+      render: record => moment(record).format(dateFormat),
     },
   ];
 

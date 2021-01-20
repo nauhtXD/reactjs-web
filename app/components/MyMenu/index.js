@@ -173,7 +173,7 @@ function MyMenu(props) {
                 <MSubLink
                   href={`/garden/${JSON.parse(localStorage.getItem('usr')).id}`}
                 >
-                  Dịch bệnh
+                  Vườn cây
                 </MSubLink>
               </SubItem>
             )}
