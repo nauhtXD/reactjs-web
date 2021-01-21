@@ -132,6 +132,7 @@ export function Garden(props) {
     props.getGenusFeatures();
     props.getEpidemicHistories(userId);
     props.getPlants(userId);
+    props.getHousehold(userId);
   }, []);
 
   useEffect(() => {
@@ -230,7 +231,7 @@ export function Garden(props) {
       plantForm.validateFields().then(values => {
         const data = {
           ...values,
-          householdId: 1,
+          householdId: props.gardenReducer.household.id,
         };
         props.createPlant(data);
         showModal(1);
@@ -477,6 +478,7 @@ Garden.propTypes = {
   updatePlant: PropTypes.func,
   deletePlant: PropTypes.func,
   getGenusFeatures: PropTypes.func,
+  getHousehold: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -544,6 +546,9 @@ const mapDispatchToProps = dispatch => ({
   },
   deletePlant: data => {
     dispatch(action.deletePlant(data));
+  },
+  getHousehold: data => {
+    dispatch(action.getHousehold(data));
   },
 });
 

@@ -297,6 +297,37 @@ export function* getGenusFeatureSaga({ payload }) {
   }
 }
 
+export function* getHouseholdSaga({ payload }) {
+  try {
+    const response = yield call(api.getHousehold, payload);
+    if (response && response.status === 200) {
+      yield put({
+        type: types.GET_HOUSEHOLD_SUCCESS,
+        household: response.data.data,
+      });
+    } else {
+      yield put({
+        type: types.GET_HOUSEHOLD_FAIL,
+        error: response && response.data ? response.data.messages : 'API Error',
+      });
+      notification.error({
+        message: 'Error',
+        description:
+          response && response.data ? response.data.messages : 'API Error',
+      });
+    }
+  } catch (err) {
+    yield put({
+      type: types.GET_HOUSEHOLD_FAIL,
+      error: err,
+    });
+    notification.error({
+      message: 'Error',
+      description: err,
+    });
+  }
+}
+
 export default function* rootSaga() {
   yield all([
     takeLatest(types.GET_EPIDEMIC, getEpidemicSaga),
@@ -308,5 +339,6 @@ export default function* rootSaga() {
     takeLatest(types.UPDATE_PLANT, updatePlantSaga),
     takeLatest(types.DELETE_PLANT, deletePlantSaga),
     takeLatest(types.GET_GENUS_FEATURE, getGenusFeatureSaga),
+    takeLatest(types.GET_HOUSEHOLD, getHouseholdSaga),
   ]);
 }

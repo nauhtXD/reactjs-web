@@ -28,3 +28,6 @@ export const deletePlant = data =>
 // genusFeatures
 export const getGenusFeatures = () =>
   apiConfig.get(endpoint.API_ENDPOINT_GET_GENUS_FEATURE);
+// household
+export const getHousehold = data =>
+  apiConfig.get(`${endpoint.API_ENDPOINT_GET_HOUSEHOLD}/${data}`);

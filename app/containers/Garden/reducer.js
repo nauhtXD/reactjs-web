@@ -10,6 +10,8 @@ export const initialState = {
   plants: [],
   loadingGenusFeatures: false,
   genusFeatures: [],
+  loadingHousehold: false,
+  household: [],
 };
 
 /* eslint-disable default-case, no-param-reassign */
@@ -59,6 +61,17 @@ const gardenReducer = (state = initialState, action) =>
       case types.GET_GENUS_FEATURE_FAIL:
         draft.genusFeatures = [];
         draft.loadingGenusFeatures = false;
+        break;
+      case types.GET_HOUSEHOLD:
+        draft.loadingHousehold = true;
+        break;
+      case types.GET_HOUSEHOLD_SUCCESS:
+        draft.household = action.household;
+        draft.loadingHousehold = false;
+        break;
+      case types.GET_HOUSEHOLD_FAIL:
+        draft.household = [];
+        draft.loadingHousehold = false;
         break;
     }
   });

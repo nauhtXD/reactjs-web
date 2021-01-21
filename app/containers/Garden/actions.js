@@ -62,3 +62,10 @@ export function getGenusFeatures(data) {
     payload: data,
   };
 }
+
+export function getHousehold(data) {
+  return {
+    type: types.GET_HOUSEHOLD,
+    payload: data,
+  };
+}
