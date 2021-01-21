@@ -29,6 +29,8 @@ import {
 
 const primaryColor = '#77B81E';
 
+const dateFormat = 'DD/MM/YYYY';
+
 const API_KEY = 'f9b8a21d57e020513b5c7e50113dd4ea';
 
 const MyLink = styled.a`
@@ -254,7 +256,6 @@ const MyInlineMenu = styled(Menu)`
     margin-right: 0.76vw;
     font-size: 0.76vw;
   }
-  }
   .ant-menu-submenu-title a {
     color: #000 !important;
     font-size: 1.06141vw !important;
@@ -272,7 +273,7 @@ const MyInlineMenu = styled(Menu)`
     .ant-menu-sub .ant-menu-submenu-title {
       padding-left: 3.63912vw !important;
     }
-    .ant-menu-sub .ant-menu-item {
+    .ant-menu-sub .ant-menu-submenu-title .ant-menu-item {
       padding-left: 5.45868vw !important;
     }
   }
@@ -398,6 +399,7 @@ const UpIcon = styled(UpSquareTwoTone)`
 
 export {
   primaryColor,
+  dateFormat,
   MyLink,
   MyP,
   MyRouterLink,

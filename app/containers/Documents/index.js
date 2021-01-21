@@ -31,11 +31,10 @@ import {
   MyAntdSearch,
   MyAntdForm,
   API_KEY,
+  dateFormat,
 } from '../../components/Style/index';
 
 const { Column } = Table;
-
-const dateFormat = 'L';
 
 const bcrData = [
   {

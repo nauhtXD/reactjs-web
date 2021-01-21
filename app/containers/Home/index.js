@@ -14,9 +14,12 @@ import makeSelect from './selectors';
 import MyLayout from '../../components/MyLayout/Loadable';
 import ImgCom from '../../components/ImgCom/Loadable';
 import TitleCom from '../../components/TitleCom/Loadable';
-import { MyLink, ContentDiv, API_KEY } from '../../components/Style/index';
-
-const dateFormat = 'L';
+import {
+  MyLink,
+  ContentDiv,
+  API_KEY,
+  dateFormat,
+} from '../../components/Style/index';
 
 export function Home(props) {
   useEffect(() => {

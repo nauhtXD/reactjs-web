@@ -19,7 +19,7 @@ const menuColor = '#77b81e';
 const FMenu = styled(Menu)`
   background-color: ${menuColor} !important;
   position: fixed;
-  z-index: 1024;
+  z-index: 2;
   overflow: hidden;
   top: 0;
   width: 100%;

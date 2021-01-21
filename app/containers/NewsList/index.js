@@ -25,9 +25,8 @@ import {
   ContentDiv,
   API_KEY,
   MyAntdList,
+  dateFormat,
 } from '../../components/Style/index';
-
-const dateFormat = 'L';
 
 export function NewsList(props) {
   // eslint-disable-next-line react/prop-types

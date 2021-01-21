@@ -79,7 +79,6 @@ export function Household(props) {
   const handleCreate = record => {
     const userTypeId = 2;
     const input = { ...record, user: { ...record.user, userTypeId } };
-    console.log(input.user);
     if (input.user.password !== input.user.retype) {
       notification.error({
         message: 'Error',

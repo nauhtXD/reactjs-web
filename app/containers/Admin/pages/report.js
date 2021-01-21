@@ -15,12 +15,12 @@ import saga from '../saga';
 import AdminTable from '../../../components/AdminTable/Loadable';
 import makeSelect from '../selectors';
 import * as action from '../actions';
+import { dateFormat } from '../../../components/Style/index';
 
 const { Option } = Select;
 const { TextArea } = Input;
 
 let k = -1;
-const dateFormat = 'DD/MM/YYYY';
 
 export function Report(props) {
   useInjectReducer({ key: 'admin', reducer });

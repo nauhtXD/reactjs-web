@@ -40,6 +40,7 @@ function MyMap(props) {
         style={{
           height: '26.54vw',
           width: '150%',
+          zIndex: 1,
         }}
         zoom={mZoom}
         center={currCenter}

@@ -51,7 +51,7 @@ function Sidebar(props) {
 
   return (
     <div>
-      <Carousel autoplay>
+      <Carousel autoplay style={{ cursor: 'pointer' }}>
         {props.mWeathers &&
           props.mWeathers.map(i => (
             <WeatherWidget

@@ -12,6 +12,7 @@ import { Card } from 'antd';
 
 // import { FormattedMessage } from 'react-intl';
 // import messages from './messages';
+import { dateFormat } from '../Style/index';
 
 const cardStyle = {
   minWidth: '16.6793vw',
@@ -32,7 +33,7 @@ function Epidemic(props) {
         size="small"
         title={
           <MyP>{`${props.mData[0] &&
-            props.mData[0].province}, ${moment().format('DD/MM/YYYY')}`}</MyP>
+            props.mData[0].province}, ${moment().format(dateFormat)}`}</MyP>
         }
       >
         {props.mData[0] &&

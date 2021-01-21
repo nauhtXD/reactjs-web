@@ -21,9 +21,13 @@ import * as action from '../actions';
 
 import AdminTable from '../../../components/AdminTable/index';
 import MyUpload from '../../../components/MyUpload/index';
-import { MyBox, layout, ContentDiv } from '../../../components/Style/index';
+import {
+  MyBox,
+  layout,
+  ContentDiv,
+  dateFormat,
+} from '../../../components/Style/index';
 
-const dateFormat = 'L';
 const { Option } = Select;
 
 const MyContentDiv = styled(ContentDiv)`

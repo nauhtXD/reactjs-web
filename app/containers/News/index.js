@@ -38,9 +38,9 @@ import {
   API_KEY,
   MyAntdList,
   MyComment,
+  dateFormat,
 } from '../../components/Style/index';
 
-const dateFormat = 'L';
 const bcrData = [
   {
     name: 'Tin tức',
@@ -137,7 +137,7 @@ export function News(props) {
                     >
                       Ngày đăng:{' '}
                       {moment(props.newsReducer.post.publishAt).format(
-                        'DD-MM-YYYY',
+                        dateFormat,
                       )}
                     </p>
                     <p style={{ fontSize: '1.5163vm' }}>

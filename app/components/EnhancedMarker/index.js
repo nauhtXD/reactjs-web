@@ -12,6 +12,7 @@ import moment from 'moment';
 
 // import { FormattedMessage } from 'react-intl';
 // import messages from './messages';
+import { dateFormat } from '../Style/index';
 
 const MyStyle = styled.div`
   height: 2.27445vw;
@@ -44,7 +45,7 @@ function EnhancedMarker(props) {
           {props.mTemp && kToC(props.mTemp)}
           °C
         </MyP>
-        <MyP>{moment().format('DD/MM/YYYY')}</MyP>
+        <MyP>{moment().format(dateFormat)}</MyP>
       </div>
     </MyStyle>
   );

@@ -28,6 +28,7 @@ import {
   MyAntdForm,
   MyLink,
   layout,
+  dateFormat,
 } from '../../components/Style/index';
 
 const bcrData = [
@@ -38,7 +39,6 @@ const bcrData = [
 
 const { Option } = Select;
 let k = -1;
-const dateFormat = 'DD/MM/YYYY';
 
 const plantPropertyNames = [
   {

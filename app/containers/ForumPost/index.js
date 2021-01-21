@@ -27,6 +27,7 @@ import {
   MyAntdList,
   MyComment,
   MyP,
+  dateFormat,
 } from '../../components/Style/index';
 
 const bcrData = [
@@ -37,7 +38,6 @@ const bcrData = [
     name: 'Bài viết',
   },
 ];
-const dateFormat = 'L';
 let k = -1;
 
 export function ForumPost(props) {
@@ -151,7 +151,7 @@ export function ForumPost(props) {
                         >
                           {moment(
                             props.forumPostReducer.forumPost.createdAt,
-                          ).format('L')}
+                          ).format(dateFormat)}
                         </Divider>
                         <MyP style={{ fontSize: '1.14vw' }}>
                           {props.forumPostReducer.forumPost.content}

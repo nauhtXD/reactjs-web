@@ -168,6 +168,7 @@ export function WeatherMap(props) {
               style={{
                 height: '40vw',
                 width: '100%',
+                zIndex: 1,
               }}
               center={center && [center.latitude, center.longitude]}
               zoom={mZoom}
