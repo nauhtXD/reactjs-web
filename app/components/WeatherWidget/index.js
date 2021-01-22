@@ -54,7 +54,7 @@ function WeatherWidget(props) {
         >
           <img
             alt="ex"
-            src={`http://openweathermap.org/img/wn/${props.mIcon}.png`}
+            src={`https://openweathermap.org/img/wn/${props.mIcon}.png`}
           />
           {props.mTemp && kToC(props.mTemp)}
           °C

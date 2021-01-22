@@ -35,7 +35,7 @@ function WeatherHistory(props) {
               <MyCard key={i.dt}>
                 <p>{moment.unix(i.dt).format('DD/MM')}</p>
                 <img
-                  src={`http://openweathermap.org/img/wn/${
+                  src={`https://openweathermap.org/img/wn/${
                     i.weather[0].icon
                   }.png`}
                   alt="example"

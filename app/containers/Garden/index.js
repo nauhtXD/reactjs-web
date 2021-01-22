@@ -176,15 +176,18 @@ export function Garden(props) {
   }, [localStorage.getItem('usr')]);
 
   useEffect(() => {
+    props.getPlants(userId);
     props.getEpidemicHistories(userId);
   }, [isRerender]);
 
   useEffect(() => {
+    props.getPlants(userId);
     props.getEpidemicHistories(userId);
     if (k === -1) k = 0;
   }, [isRerender]);
 
   useEffect(() => {
+    props.getPlants(userId);
     props.getEpidemicHistories(userId);
   }, [isRerender, k]);
 
@@ -200,10 +203,11 @@ export function Garden(props) {
   };
 
   const handleClick = (record, key) => {
-    console.log(record);
-    // if (key === 0) props.updatePlant(record);
-    // else props.deletePlant(record);
-    // setIsRerender(!isRerender);
+    const data = { ...record };
+    data.publishAt = moment(record.publishAt).format();
+    if (key === 0) props.updatePlant(data);
+    else props.deletePlant(data);
+    setIsRerender(!isRerender);
   };
 
   const showModal = key => {
