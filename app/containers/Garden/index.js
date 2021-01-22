@@ -259,7 +259,11 @@ export function Garden(props) {
     );
     const filterData = data.filter(i => remove.indexOf(i.id) === -1);
     setEpidemicList(filterData);
-    form.setFieldsValue({ epidemicId: filterData[0].id || filterData.id });
+    form.setFieldsValue({
+      epidemicId: filterData[0]
+        ? filterData[0].id
+        : 'Không còn dữ liệu dịch bệnh khác',
+    });
   };
 
   const myModal = [
