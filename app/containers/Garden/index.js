@@ -206,7 +206,7 @@ export function Garden(props) {
     const data = { ...record };
     data.publishAt = moment(record.publishAt).format();
     if (key === 0) props.updatePlant(data);
-    else props.deletePlant(data);
+    else props.deletePlant(record);
     setIsRerender(!isRerender);
   };
 
