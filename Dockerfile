@@ -1,5 +1,5 @@
 FROM node:alpine as builder
-RUN apk --update add --no-cache \
+RUN apk --update add \
     autoconf \
     automake \
     bash \
@@ -14,12 +14,13 @@ WORKDIR /app
 # Copy the file from your host to your current location
 COPY package.json .
 # Run the command inside your image filesystem
-RUN npm install
+RUN npm install --legacy-peer-deps
+
 # Copy the rest of your app's source code from your host to your image filesystem.
 COPY . /app
 
 ARG NODE_ENV
-ENV NODE_ENV $NODE_ENV
+ENV NODE_ENV=${NODE_ENV}
 RUN echo "Build environment $NODE_ENV"
 RUN echo "export default '$NODE_ENV';" > app/env.js
 RUN cat app/env.js
